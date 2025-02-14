@@ -7,7 +7,7 @@ type Instrumen = {
     date: string
     // In TypeScript, this is called a string union type.
     // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.
-    status: 'pending' | 'operational';
+    status: 'pending' | 'tersedia';
   };
 export const instruments: Instrumen[] = [
     {
@@ -25,7 +25,7 @@ export const instruments: Instrumen[] = [
       merk_instrumen: 'Agilent Technologies',
       tipe_instrumen: '240FS AA',
       layanan: 'I, II, III, VI, IX X',
-      status: 'operational',
+      status: 'tersedia',
       date: '2022-11-14',
     },
     // ...

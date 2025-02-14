@@ -26,17 +26,17 @@ const items = [
   },
   {
     title: "Daftar Alat",
-    url: "/tabel",
+    url: "/daftar-alat",
     icon: FlaskConical,
   },
   {
     title: "Daftar Instrumen",
-    url: "#",
+    url: '/daftar-instrumen',
     icon: Calculator,
   },
   {
     title: "Daftar Barang",
-    url: "#",
+    url: "/daftar-barang",
     icon: Armchair,
   },
   {
