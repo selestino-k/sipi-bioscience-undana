@@ -12,10 +12,12 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 enum Status {
   TERSEDIA
   PENDING
 }
+
 model Instrumen {
   id                  Int         @id @default(autoincrement())
   createdAt           DateTime    @default(now())
@@ -24,6 +26,40 @@ model Instrumen {
   merk_instrumen      String      @db.VarChar(255)
   tipe_instrumen      String      @db.VarChar(255)
   layanan             String      @db.VarChar(255)
-  status              String      @default("TERSEDIA") // Custom boolean-like field
+  status              String      @default("PENDING") // Custom boolean-like field
 }
 
+model Alat {
+  id                  Int         @id @default(autoincrement())
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  nama_alat           String      @db.VarChar(255)
+  merk_alat           String      @db.VarChar(255)
+  tipe_alat           String      @db.VarChar(255)
+  layanan             String      @db.VarChar(255)
+  status              String      @default("PENDING") // Custom boolean-like field
+}
+
+model Barang {
+  id                  Int         @id @default(autoincrement())
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  nama_barang         String      @db.VarChar(255)
+  merk_barang         String      @db.VarChar(255)
+  tipe_barang         String      @db.VarChar(255)
+}
+
+model Bahan {
+  id                  Int         @id @default(autoincrement())
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  nama_bahan          String      @db.VarChar(255)
+  tipe_bahan          String      @db.VarChar(255)
+  status              String      @default("PENDING") // Custom boolean-like field
+}
+
+model User {
+  id                  Int         @id @default(autoincrement())
+  email               String      @unique
+  name                String?
+}

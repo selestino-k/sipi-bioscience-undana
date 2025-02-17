@@ -26,6 +26,5 @@ export const alat: Alat[] = [
       status: 'tersedia',
       date: '2022-11-14',
     },
-    // ...
   ];
    

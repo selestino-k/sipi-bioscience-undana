@@ -3,36 +3,26 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 
-export type Alat = {
-  id_alat: number
-  merk_alat: string
-  nama_alat: string
-  tipe_alat: string
-  layanan: string
+export type Bahan = {
+  id_bahan: number
+  nama_bahan: string
+  tipe_bahan: string
   date: string
   status: 'pending' | 'tersedia';
 }
 
-export const columns: ColumnDef<Alat>[] = [
+export const columns: ColumnDef<Bahan>[] = [
  {
     accessorKey: "id_alat",
     header: "ID",
   },
   {
-    accessorKey: "merk_alat",
-    header: "Merk",
-  },
-  {
-    accessorKey: "nama_alat",
+    accessorKey: "nama_bahan",
     header: "Nama",
   },
   {
-    accessorKey: "tipe_alat",
+    accessorKey: "tipe_bahan",
     header: "Tipe",
-  },
-  {
-    accessorKey: "layanan",
-    header: "Layanan",
   },
   {
     accessorKey: "date",
