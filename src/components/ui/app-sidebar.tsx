@@ -41,7 +41,7 @@ const items = [
   },
   {
     title: "Jadwal",
-    url: "#",
+    url: "/jadwal",
     icon: Calendar,
   },
   {

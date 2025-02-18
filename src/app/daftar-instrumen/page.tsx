@@ -1,10 +1,15 @@
 import { DataTable } from "@/components/ui/data-table";
-import {columns, Instrumen} from "@/app/daftar-instrumen/columns";
-import { instruments } from "../lib/data-instrument";
-  
+import { columns } from "@/app/daftar-instrumen/columns";
+import prisma from "../lib/prisma";
+import { Instrumen } from "@prisma/client";
+
+
+const instrumen = await prisma.instrumen.findMany()
+
+
 async function getData(): Promise<Instrumen[]> {
     // Fetch data from your API here.
-    return instruments
+    return instrumen
 }
 
 export default async function DaftarInstrumen() {
@@ -19,7 +24,6 @@ export default async function DaftarInstrumen() {
                     <DataTable columns={columns} data={data} />
                 </div>
             </main>
-            
             <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
 
             </footer>

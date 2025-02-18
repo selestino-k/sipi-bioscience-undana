@@ -1,22 +1,25 @@
-import { DataTable } from "@/components/ui/data-table";
-import {columns, Bahan} from "@/app/daftar-bahan/columns"; 
-import { bahan } from "../lib/test-query/data-bahan";
-  
-async function getData(): Promise<Bahan[]> {
-    // Fetch data from your API here.
-    return bahan
-}
+"use client"
 
-export default async function DaftarBahan() {
-    const data = await getData()
+import * as React from "react"
+
+import { Calendar } from "@/components/ui/calendar"
+
+export default function Jadwal() {
+    const [date, setDate] = React.useState<Date | undefined>(new Date())
+
     return (
         <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
             <main className="flex flex-col gap-3 row-start-2 items-center sm:items-start">
                 <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-5xl sm:tracking-tight">
-                Daftar Bahan Kimia
+                Jadwal Pemakaian Inventaris
                 </h2>          
                 <div className="container mx-auto py-10">
-                    <DataTable columns={columns} data={data} />
+                    <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        className="rounded-md border shadow"
+                    />
                 </div>
             </main>
             

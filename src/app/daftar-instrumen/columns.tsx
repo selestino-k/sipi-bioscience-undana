@@ -1,25 +1,24 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import Link from "next/link"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Instrumen = {
-    id_instrumen: number
+    id: number
     merk_instrumen: string
     nama_instrumen: string
     tipe_instrumen: string
     layanan: string
-    date: string
-    // In TypeScript, this is called a string union type.
-    // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.
-    status: 'pending' | 'tersedia';
+    status: string
 }
 
 export const columns: ColumnDef<Instrumen>[] = [
  {
-    accessorKey: "id_instrumen",
-    header: "ID",
+    accessorKey: "id",
+    header: "No",
   },
   {
     accessorKey: "merk_instrumen",
@@ -38,11 +37,21 @@ export const columns: ColumnDef<Instrumen>[] = [
     header: "Layanan",
   },
   {
-    accessorKey: "date",
-    header: "Tanggal",
-  },
-  {
     accessorKey: "status",
     header: "Status",
+  },
+  {
+    accessorKey: "action",
+    header: "Aksi",
+    id: "actions",
+    cell: () => {
+      return (
+      <Button asChild>
+        <Link href="/">
+          <Plus />
+        </Link>
+      </Button>      )
+    },
+    
   },
 ]

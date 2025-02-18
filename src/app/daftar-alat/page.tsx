@@ -1,6 +1,6 @@
 import { DataTable } from "@/components/ui/data-table";
 import {columns, Alat} from "@/app/daftar-alat/columns";
-import { alat } from "../lib/data-alat";
+import { alat } from "../lib/test-query/data-alat";
   
 async function getData(): Promise<Alat[]> {
     // Fetch data from your API here.

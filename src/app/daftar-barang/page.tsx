@@ -1,6 +1,6 @@
 import { DataTable } from "@/components/ui/data-table";
 import {columns, Barang} from "@/app/daftar-barang/columns";
-import { barang } from "../lib/data-barang";
+import { barang } from "../lib/test-query/data-barang";
 
 async function getData(): Promise<Barang[]> {
     // Fetch data from your API here.
