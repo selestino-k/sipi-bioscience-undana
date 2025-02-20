@@ -1,15 +1,20 @@
 
-import { signIn } from "@/auth"
- 
-export default function SignIn() {
+import { signIn } from "@/lib/auth";
+import { Button } from "./button"
+
+
+const GoogleSignIn=() =>{
   return (
     <form
       action={async () => {
-        "use server"
-        await signIn("google")
+        "use server";
+        await signIn("google");
       }}
     >
-      <button type="submit">Signin with Google</button>
+    <Button variant="secondary" >
+      Continue with Google
+    </Button>
     </form>
   )
 } 
+export {GoogleSignIn};

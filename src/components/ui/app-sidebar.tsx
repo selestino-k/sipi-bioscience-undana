@@ -1,3 +1,4 @@
+
 import { Calendar, Home, Search,Calculator, FlaskConical, Armchair } from "lucide-react"
 import {
   Sidebar,
@@ -17,6 +18,10 @@ import {
 } from "@/components/ui/dropdown-menu" 
 // Menu items.
 import { Button } from "@/components/ui/button"
+import { SignOut } from "./sign-out"
+
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 const items = [
   {
@@ -51,8 +56,10 @@ const items = [
   }
   
 ]
- 
-export function AppSidebar() {
+const AppSidebar = async()=> {
+  const session = await auth();
+      
+      if (!session) redirect ('/sign-in');
   return (
     <Sidebar>
       <SidebarContent>
@@ -65,10 +72,10 @@ export function AppSidebar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
                 <DropdownMenuItem>
-                Pengaturan Profil
+                <b>{session.user?.email}</b> 
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                Keluar
+                    <SignOut></SignOut>
                 </DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>
@@ -90,3 +97,4 @@ export function AppSidebar() {
     </Sidebar>
   )
 }
+export {AppSidebar};

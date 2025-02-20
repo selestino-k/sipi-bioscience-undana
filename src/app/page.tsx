@@ -1,4 +1,11 @@
-export default async function Beranda() {
+import { SignOut } from "@/components/ui/sign-out";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+const Page = async() => {
+    const session = await auth();
+    if (!session) redirect('/');
+    
     return (
         <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
             <main className="flex flex-col gap-3 row-start-2 items-center sm:items-start">
@@ -10,8 +17,11 @@ export default async function Beranda() {
                 </h2>   
                 <h3 className="text-lg">
                     Universitas Nusa Cendana
+                </h3> 
+                <h3 className="text-lg">
+                    Masuk sebagai : <b>{session.user?.email}</b> 
                 </h3>            
-                
+                <SignOut></SignOut>
             </main>
             
             <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
@@ -19,7 +29,9 @@ export default async function Beranda() {
             </footer>
         </div>
     );
-}
+};
+
+export default Page;
 
    
   
