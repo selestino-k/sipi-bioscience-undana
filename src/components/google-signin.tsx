@@ -1,6 +1,6 @@
 
 import { signIn } from "@/lib/auth";
-import { Button } from "./button"
+import { Button } from "./ui/button"
 
 
 const GoogleSignIn=() =>{

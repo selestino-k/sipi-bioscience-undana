@@ -18,10 +18,8 @@ import {
 } from "@/components/ui/dropdown-menu" 
 // Menu items.
 import { Button } from "@/components/ui/button"
-import { SignOut } from "./sign-out"
+import { SignOut } from "../sign-out"
 
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
 const items = [
   {
@@ -56,10 +54,8 @@ const items = [
   }
   
 ]
-const AppSidebar = async()=> {
-  const session = await auth();
-      
-      if (!session) redirect ('/sign-in');
+export function AppSidebar(){
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -72,7 +68,6 @@ const AppSidebar = async()=> {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
                 <DropdownMenuItem>
-                <b>{session.user?.email}</b> 
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <SignOut></SignOut>
@@ -97,4 +92,3 @@ const AppSidebar = async()=> {
     </Sidebar>
   )
 }
-export {AppSidebar};

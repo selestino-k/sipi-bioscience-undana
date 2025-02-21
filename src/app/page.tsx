@@ -1,10 +1,11 @@
-import { SignOut } from "@/components/ui/sign-out";
+import { SignOut } from "@/components/sign-out";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-const Page = async() => {
+
+const Page = async () => {
     const session = await auth();
-    if (!session) redirect('/');
+     if (!session) redirect("/sign-in");
     
     return (
         <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -21,7 +22,7 @@ const Page = async() => {
                 <h3 className="text-lg">
                     Masuk sebagai : <b>{session.user?.email}</b> 
                 </h3>            
-                <SignOut></SignOut>
+                <SignOut/>
             </main>
             
             <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
