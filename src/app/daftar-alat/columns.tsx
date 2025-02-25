@@ -4,13 +4,13 @@ import { ColumnDef } from "@tanstack/react-table"
 
 
 export type Alat = {
-  id_alat: number
+  id: number
   merk_alat: string
   nama_alat: string
   tipe_alat: string
   layanan: string
-  date: string
-  status: 'pending' | 'tersedia';
+  updatedAt: Date
+  status: string
 }
 
 export const columns: ColumnDef<Alat>[] = [

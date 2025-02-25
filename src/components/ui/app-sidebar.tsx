@@ -1,5 +1,5 @@
 
-import { Calendar, Home, Search,Calculator, FlaskConical, Armchair } from "lucide-react"
+import { Calendar, Home, Search,Calculator, FlaskConical, Pipette,Armchair } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -30,6 +30,11 @@ const items = [
   {
     title: "Daftar Alat",
     url: "/daftar-alat",
+    icon: Pipette,
+  },
+  {
+    title: "Daftar Bahan",
+    url: "/daftar-bahan",
     icon: FlaskConical,
   },
   {
@@ -49,7 +54,7 @@ const items = [
   },
   {
     title: "Cari",
-    url: "#",
+    url: "/cari",
     icon: Search,
   }
   
@@ -57,7 +62,7 @@ const items = [
 export function AppSidebar(){
 
   return (
-    <Sidebar>
+    <Sidebar side="left">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>SI INVENTARIS LAB BIOSCIENCE</SidebarGroupLabel>
@@ -68,9 +73,7 @@ export function AppSidebar(){
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
                 <DropdownMenuItem>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <SignOut></SignOut>
+                    <SignOut/>
                 </DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>

@@ -1,6 +1,12 @@
 import { DataTable } from "@/components/ui/data-table";
-import {columns, Barang} from "@/app/daftar-barang/columns";
-import { barang } from "../lib/test-query/data-barang";
+import {columns} from "@/app/daftar-barang/columns";
+import prisma from "../../lib/prisma";
+import {Barang} from "@prisma/client";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+const barang = await prisma.barang.findMany()
+
 
 async function getData(): Promise<Barang[]> {
     // Fetch data from your API here.
@@ -9,9 +15,12 @@ async function getData(): Promise<Barang[]> {
 
 export default async function DaftarBarang() {
     const data = await getData()
+    const session = await auth();
+    if (!session) redirect ('/sign-in');    
+
     return (
-        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-            <main className="flex flex-col gap-3 row-start-2 items-center sm:items-start">
+        <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+            <main className="flex w-full flex-col gap-3 row-start-2 items-center sm:items-start">
                 <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-5xl sm:tracking-tight">
                 Daftar Barang
                 </h2>          

@@ -4,17 +4,17 @@ import { ColumnDef } from "@tanstack/react-table"
 
 
 export type Bahan = {
-  id_bahan: number
+  id: number
   nama_bahan: string
   tipe_bahan: string
-  date: string
-  status: 'pending' | 'tersedia';
+  updatedAt: Date;
+  status: string;
 }
 
 export const columns: ColumnDef<Bahan>[] = [
  {
-    accessorKey: "id_alat",
-    header: "ID",
+    accessorKey: "id",
+    header: "No",
   },
   {
     accessorKey: "nama_bahan",
@@ -25,7 +25,7 @@ export const columns: ColumnDef<Bahan>[] = [
     header: "Tipe",
   },
   {
-    accessorKey: "date",
+    accessorKey: "updatedAt",
     header: "Tanggal",
   },
   {
