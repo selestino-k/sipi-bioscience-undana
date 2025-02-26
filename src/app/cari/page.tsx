@@ -1,11 +1,16 @@
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { Input} from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+"use client";
 
-const Page = async () => {
-    const session = await auth();
-     if (!session) redirect("/sign-in");
+
+import { useSearchParams } from "next/navigation";
+import SearchInput from "@/components/ui/search-input";
+
+const SearchPage =  () => {
+    const search = useSearchParams();
+    const searchQuery  = search ? search.get("q"): null;
+    const encodedQuery = encodeURI(searchQuery|| "" );
+
+        console.log("search params: ",encodedQuery);
+
     
     return (
         <div className="flex w-full items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -16,10 +21,7 @@ const Page = async () => {
                 <h3 className="text-lg">
                     Silahkan ketik item yang ingin dicari
                 </h3> 
-                <div className="flex w-full max-w-lg items-center space-x-2">
-                    <Input type="email" placeholder="Cari di sini" />
-                    <Button type="submit">Cari</Button>
-                </div>       
+                <SearchInput/>
             </main>
             
             <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
@@ -29,7 +31,7 @@ const Page = async () => {
     );
 };
 
-export default Page;
+export default SearchPage;
 
    
   

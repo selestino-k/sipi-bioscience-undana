@@ -1,18 +1,20 @@
 
 import { signIn } from "@/lib/auth";
-import { Button } from "./ui/button"
+import { Button } from "./ui/button";
+import { User } from "lucide-react"
 
 
 const GoogleSignIn=() =>{
   return (
-    <form
+    <form className="items-center"
       action={async () => {
         "use server";
         await signIn("google");
       }}
     >
-    <Button variant="secondary" >
-      Continue with Google
+    <Button variant="default">
+      <User/>
+      Masuk dengan akun Google
     </Button>
     </form>
   )

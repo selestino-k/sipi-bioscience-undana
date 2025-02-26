@@ -1,7 +1,9 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import Link from "next/link"
 
 export type Alat = {
   id: number
@@ -41,5 +43,19 @@ export const columns: ColumnDef<Alat>[] = [
   {
     accessorKey: "status",
     header: "Status",
+  },
+  {
+    accessorKey: "action",
+    header: "Aksi",
+    id: "actions",
+    cell: () => {
+      return (
+      <Button asChild>
+        <Link href="/">
+          <Plus />
+        </Link>
+      </Button>      )
+    },
+    
   },
 ]

@@ -12,17 +12,16 @@ const Page = async () => {
   if (session) redirect("/");
   
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="w-full max-w-sm mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-center mb-6">Sign In</h1>
-          <GoogleSignIn/>
-        <div className="relative">
+        <h1 className="text-2xl font-bold text-center mb-6">Masuk</h1>
+        <span className="flex flex-col items-center"><GoogleSignIn /></span>        <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-sm">
             <span className="bg-background px-2 text-muted-foreground">
-              Or continue with email
+             Atau masuk dengen Email dan Password
             </span>
           </div>
         </div>
@@ -54,13 +53,13 @@ const Page = async () => {
             autoComplete="current-password"
           />
           <Button className="w-full" type="submit">
-            Sign In
+            Masuk
           </Button>
         </form>
 
         <div className="text-center">
           <Button asChild variant="link">
-            <Link href="/sign-up">Don&apos;t have an account? Sign up</Link>
+            <Link href="/sign-up">Tidak memiliki akun? Daftar di sini</Link>
           </Button>
         </div>
       </main>

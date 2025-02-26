@@ -1,6 +1,9 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { Plus } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 
 export type Bahan = {
@@ -31,5 +34,19 @@ export const columns: ColumnDef<Bahan>[] = [
   {
     accessorKey: "status",
     header: "Status",
+  },
+  {
+    accessorKey: "action",
+    header: "Aksi",
+    id: "actions",
+    cell: () => {
+      return (
+      <Button asChild>
+        <Link href="/">
+          <Plus />
+        </Link>
+      </Button>      )
+    },
+    
   },
 ]
