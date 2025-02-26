@@ -14,7 +14,7 @@ const GoogleSignIn=() =>{
     >
     <Button variant="default">
       <User/>
-      Masuk dengan akun Google
+      Masuk dengan akun Google anda
     </Button>
     </form>
   )
