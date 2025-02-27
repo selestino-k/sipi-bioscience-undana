@@ -2,7 +2,7 @@
 
 
 import { useSearchParams } from "next/navigation";
-import SearchInput from "@/components/ui/search-input";
+import SearchInput from "@/components/search-input";
 
 const SearchPage =  () => {
     const search = useSearchParams();
