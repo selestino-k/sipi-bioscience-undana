@@ -19,7 +19,7 @@ enum Status {
 }
 
 model Instrumen {
-  id                  Int         @id @default(autoincrement())
+  instrument_id       Int         @id @default(autoincrement())
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   nama_instrumen      String      @db.VarChar(255)
@@ -27,10 +27,12 @@ model Instrumen {
   tipe_instrumen      String      @db.VarChar(255)
   layanan             String      @db.VarChar(255)
   status              String      @default("PENDING") // Custom boolean-like field
+  // Add this line to connect to rentals
+  rentals             Rental[]
 }
 
 model Alat {
-  id                  Int         @id @default(autoincrement())
+  alat_id                  Int         @id @default(autoincrement())
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   nama_alat           String      @db.VarChar(255)
@@ -41,7 +43,7 @@ model Alat {
 }
 
 model Barang {
-  id                  Int         @id @default(autoincrement())
+  barang_id                  Int         @id @default(autoincrement())
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   nama_barang         String      @db.VarChar(255)
@@ -50,7 +52,7 @@ model Barang {
 }
 
 model Bahan {
-  id                  Int         @id @default(autoincrement())
+  bahan_id                  Int         @id @default(autoincrement())
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   nama_bahan          String      @db.VarChar(255)
@@ -69,6 +71,7 @@ model User {
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+  rentals       Rental[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -129,4 +132,19 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model Rental {
+  id                Int      @id @default(autoincrement())
+  instrument_id     Int
+  instrument        Instrumen @relation(fields: [instrument_id], references: [instrument_id])
+  user_id           String
+  user              User     @relation(fields: [user_id], references: [id])
+  purpose           String
+  start_date        DateTime
+  end_date          DateTime
+  actual_return_date DateTime?
+  status            String   // "TERSEDIA", "PENDING"
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
 }

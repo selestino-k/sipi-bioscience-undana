@@ -17,7 +17,7 @@ export type Bahan = {
 export const columns: ColumnDef<Bahan>[] = [
  {
     accessorKey: "id",
-    header: "No",
+    header: "ID",
   },
   {
     accessorKey: "nama_bahan",

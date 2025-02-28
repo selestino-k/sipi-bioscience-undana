@@ -17,7 +17,7 @@ export type Alat = {
 
 export const columns: ColumnDef<Alat>[] = [
  {
-    accessorKey: "id_alat",
+    accessorKey: "id",
     header: "ID",
   },
   {
