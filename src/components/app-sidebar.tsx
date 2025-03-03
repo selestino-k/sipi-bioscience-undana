@@ -1,5 +1,5 @@
 
-import { Calendar, Home, Search,Calculator, FlaskConical, Pipette,Armchair } from "lucide-react"
+import { Calendar, Home,Calculator, FlaskConical, Pipette,Armchair, User } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu" 
 // Menu items.
 import { Button } from "@/components/ui/button"
-import { SignOut } from "../sign-out"
+import { SignOut } from "./sign-out"
 
 
 const items = [
@@ -53,10 +53,11 @@ const items = [
     icon: Calendar,
   },
   {
-    title: "Cari",
-    url: "/cari",
-    icon: Search,
+    title: "Admin",
+    url: "/admin",
+    icon: User,
   }
+  
   
 ]
 export function AppSidebar(){

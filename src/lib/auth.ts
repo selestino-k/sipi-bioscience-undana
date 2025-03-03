@@ -57,7 +57,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const createdSession = await adapter?.createSession?.({
           sessionToken: sessionToken,
           userId: params.token.sub,
-          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),//(1 day session -> hours, minutes, seconds, milliseconds)
         });
 
         if (!createdSession) {

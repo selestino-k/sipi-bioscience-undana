@@ -1,5 +1,4 @@
-"use client"
-
+  "use client"
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
@@ -13,23 +12,22 @@ import {
 import Link from "next/link"
 import { useState } from "react"
 import { RentInstrumentDialog } from "./rent-dialog"
-  
+
 // This type is used to define the shape of our data.
 export type Instrumen = {
     instrument_id: number
     merk_instrumen: string
     nama_instrumen: string
     tipe_instrumen: string
-    rental: string
+    rentals: string
     layanan: string
     status: string
-    user: string
     updatedAt: Date
 }
 
 export const columns: ColumnDef<Instrumen>[] = [
  {
-    accessorKey: "id",
+    accessorKey: "instrument_id",
     header: "ID",
   },
   {
@@ -63,8 +61,15 @@ export const columns: ColumnDef<Instrumen>[] = [
     }
   },
   {
-    accessorKey: "user",
+    accessorKey: "rentals",
     header: "Pengguna sekarang",
+    cell: ({ row }) => {
+      const rentals = row.getValue("rentals") as Rental[]
+      const activeRental = Array.isArray(rentals) ? 
+      rentals.find(rental => rental.status === 'ACTIVE' && !rental.end_date) : null
+    
+      return activeRental ? activeRental.user_email : "Tidak ada"
+    }
   },
 
   {
@@ -72,40 +77,50 @@ export const columns: ColumnDef<Instrumen>[] = [
     header: "Aksi",
     cell: ({ row }) => {
       const instrument = row.original
-      const [isRentDialogOpen, setIsRentDialogOpen] = useState(false)
       
-      return (
-        <>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-              <DropdownMenuItem asChild>
-                <Link href={`/daftar-instrumen/${instrument.id}/detail`}>
-                  Lihat Detail
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                disabled={instrument.status !== 'TERSEDIA'}
-                onClick={() => setIsRentDialogOpen(true)}>
-                Gunakan Instrumen
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
-          <RentInstrumentDialog 
-            instrument={instrument} 
-            isOpen={isRentDialogOpen} 
-            onOpenChange={setIsRentDialogOpen} 
-            user={{ id: "1", name: "John Doe", email: "john.doe@example.com" }} // Replace with actual user data
-          />
-        </>
-      )
+      // Create a component to use React hooks
+      function ActionCell() {
+        const [isRentDialogOpen, setIsRentDialogOpen] = useState(false)
+        const user = {
+          id: "cm7o2xkq60000p0y8b9yozq0z",
+          email: "sandikroon23@gmail.com"
+        } // hardcoded user for now
+
+        return (
+          <>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <Link href={`/daftar-instrumen/${instrument.instrument_id}/detail`}>
+                    Lihat Detail
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  disabled={instrument.status !== 'TERSEDIA'}
+                  onClick={() => setIsRentDialogOpen(true)}>
+                  Gunakan Instrumen
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <RentInstrumentDialog 
+              instrument={instrument} 
+              isOpen={isRentDialogOpen} 
+              onOpenChange={setIsRentDialogOpen} 
+              user={user}
+            />
+          </>
+        )
+      }
+
+      return <ActionCell />;
     }
   },
 ]

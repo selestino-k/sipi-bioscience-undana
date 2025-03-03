@@ -18,6 +18,11 @@ enum Status {
   PENDING
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 model Instrumen {
   instrument_id       Int         @id @default(autoincrement())
   createdAt           DateTime    @default(now())
@@ -28,7 +33,7 @@ model Instrumen {
   layanan             String      @db.VarChar(255)
   status              String      @default("PENDING") // Custom boolean-like field
   // Add this line to connect to rentals
-  rentals             Rental[]
+  rentals             Rental[]  
 }
 
 model Alat {
@@ -67,6 +72,7 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
+  role          UserRole        @default(USER) // Using enum
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
@@ -145,6 +151,6 @@ model Rental {
   end_date          DateTime
   actual_return_date DateTime?
   status            String   // "TERSEDIA", "PENDING"
-  created_at        DateTime @default(now())
-  updated_at        DateTime @updatedAt
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

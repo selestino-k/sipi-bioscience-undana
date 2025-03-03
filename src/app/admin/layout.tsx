@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AdminAppSidebar } from "@/components/admin/admin-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -22,7 +22,7 @@ export default async function DashboardLayout({
   return (
 
     <SidebarProvider>
-        <AppSidebar/> 
+        <AdminAppSidebar/> 
         <main className="gap-3 w-full">
             <SidebarTrigger />
             <div className="flex w-full min-h-screen items-center justify-items-center">

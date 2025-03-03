@@ -1,6 +1,6 @@
 
 import {GoogleSignIn} from "@/components/ui/google-signin";
-import { LoginForm } from "@/components/ui/login-form";
+import { LoginForm } from "@/components/login-form";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 

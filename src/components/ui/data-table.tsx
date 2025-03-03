@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search..."
+          placeholder="Cari disini..."
           value={filtering}
           onChange={(e) => setFiltering(e.target.value)}
           className="max-w-sm"
