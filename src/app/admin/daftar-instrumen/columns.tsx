@@ -23,7 +23,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { deleteInstrument } from "@/lib/actions"
+import { deleteInstrument } from "@/lib/actions/admin/instrument-actions"
+import { EditInstrumentDialog } from "./edit-instrument-dialog"
+import { useRouter } from "next/navigation"
 
 // This type is used to define the shape of our data.
 export type Instrumen = {
@@ -93,16 +95,17 @@ export const columns: ColumnDef<Instrumen>[] = [
       // Create a component to use React hooks
       function ActionCell() {
         const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+        const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
         const [isDeleting, setIsDeleting] = useState(false)
+        const router = useRouter();
 
         const handleDelete = async () => {
           try {
             setIsDeleting(true)
-            // Replace with your actual delete function
             await deleteInstrument(instrument.instrument_id)
             toast.success("Instrumen berhasil dihapus")
-            // Refresh the page to update the table
-            window.location.reload()
+            // Use router.refresh() instead of window.location.reload()
+            router.refresh()
           } catch (error) {
             console.error("Failed to delete instrument:", error)
             toast.error("Gagal menghapus instrumen")
@@ -129,11 +132,11 @@ export const columns: ColumnDef<Instrumen>[] = [
                     Detail
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href={`/admin/daftar-instrumen/${instrument.instrument_id}/edit`}>
-                    <Pencil className="h-4 w-4 mr-2" />
-                    Edit
-                  </Link>
+                <DropdownMenuItem 
+                  onClick={() => setIsEditDialogOpen(true)}
+                >
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Edit
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 
@@ -170,6 +173,13 @@ export const columns: ColumnDef<Instrumen>[] = [
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+            
+            {/* Edit Dialog */}
+            <EditInstrumentDialog 
+              instrument={instrument} 
+              isOpen={isEditDialogOpen} 
+              onOpenChange={setIsEditDialogOpen} 
+            />
           </>
         )
       }

@@ -33,22 +33,22 @@ const items = [
     icon: Calendar,
   },
   {
-    title: "Manajemen Daftar Alat",
+    title: " Daftar Alat",
     url: "/admin/daftar-alat",
     icon: Pipette,
   },
   {
-    title: "Manajemen Daftar Bahan",
+    title: " Daftar Bahan",
     url: "/admin/daftar-bahan",
     icon: FlaskConical,
   },
   {
-    title: "Manajemen Daftar Instrumen",
+    title: " Daftar Instrumen",
     url: '/admin/daftar-instrumen',
     icon: Calculator,
   },
   {
-    title: "Manajemen Daftar Barang",
+    title: " Daftar Barang",
     url: "/admin/daftar-barang",
     icon: Armchair,
   },
@@ -66,7 +66,6 @@ export function AdminAppSidebar(){
     <Sidebar side="left">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>PANEL ADMIN</SidebarGroupLabel>
 
           <SidebarGroupContent>
           <DropdownMenu>
@@ -79,6 +78,8 @@ export function AdminAppSidebar(){
                 </DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>
+            <SidebarGroupLabel>PANEL ADMIN</SidebarGroupLabel>
+
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>

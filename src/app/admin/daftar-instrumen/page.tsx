@@ -4,39 +4,40 @@ import prisma from "@/lib/prisma";
 import { Instrumen } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
-
-const instrumen = await prisma.instrumen.findMany()
-
+export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 
 async function getData(): Promise<Instrumen[]> {
-    // Fetch data from your API here.
-    return instrumen
+    // Fetch data from your API here with no caching
+    return await prisma.instrumen.findMany();
 }
 
-export default async function DaftarInstrumen() {
-    const data = await getData()
+export default async function DaftarInstrumen({
+    searchParams
+}: {
+    searchParams: { refresh?: string }
+}) {
+    // The searchParams will force a refetch when it changes
+    const data = await getData();
     const session = await auth();
-    if (!session) redirect ('/sign-in');
-    
-    
+    if (!session) redirect('/sign-in');
     
     return (
         <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
             <main className="flex w-full flex-col gap-3 row-start-2 items-center sm:items-start">
                 <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-5xl sm:tracking-tight">
-                Manajemen Daftar Instrumen
+                    Manajemen Daftar Instrumen
                 </h2>          
                 <div className="container mx-auto py-10">
+                    <Button>Tambah Instrumen</Button>
                     <DataTable columns={columns} data={data} />
                 </div>
             </main>
             <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-
             </footer>
         </div>
     );
 }
-  
-     
-    
+
+
