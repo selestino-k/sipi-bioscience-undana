@@ -34,19 +34,16 @@ export const columns: ColumnDef<Bahan>[] = [
   {
     accessorKey: "status",
     header: "Status",
-  },
-  {
-    accessorKey: "action",
-    header: "Aksi",
-    id: "actions",
-    cell: () => {
+    cell: ({ row }) => {
+      const status = row.getValue("status") as string
       return (
-      <Button asChild>
-        <Link href="/">
-          <Plus />
-        </Link>
-      </Button>      )
-    },
-    
+        <div className={`px-2 py-1 rounded-full text-xs font-medium inline-block
+          ${status === 'TERSEDIA' ? 'bg-green-100 text-green-800' : 
+            status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+          {status}
+        </div>
+      )
+    }
   },
+  
 ]

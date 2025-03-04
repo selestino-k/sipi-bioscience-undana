@@ -53,8 +53,8 @@ const items = [
     icon: Armchair,
   },
   {
-    title: "Tambah Admin",
-    url: "/admin/create-admin",
+    title: "Daftar Pengguna",
+    url: "/admin/daftar-admin",
     icon: User,
   }
   

@@ -15,25 +15,22 @@ import {
 import { approveRental, rejectRental, completeRental } from "@/lib/actions"
 import { useState } from "react"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 // Define the type for the rental data
 type Rental = {
   id: string
   purpose: string
-  start_date: Date
-  end_date: Date
+  start_date: Date | string
+  end_date: Date | string
   status: string
-  createdAt: Date
-  updatedAt: Date
-  instrument: {
-    instrument_id: number
-    nama_instrumen: string
-    merk_instrumen: string
-  }
-  user: {
-    name: string | null
-    email: string
-  }
+  createdAt: Date | string
+  updatedAt: Date | string
+  instrument_id?: number
+  instrument_name?: string  // Add flattened instrument fields
+  instrument_merk?: string
+  user_name?: string        // Add flattened user fields
+  user_email?: string
 }
 
 export const columns: ColumnDef<Rental>[] = [
@@ -43,49 +40,67 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => <span className="font-mono text-xs">{row.getValue("id")}</span>
   },
   {
-    accessorKey: "instrument.nama_instrumen",
+    accessorKey: "instrument_name",
     header: "Instrumen",
     cell: ({ row }) => {
-      const instrumen = row.original.instrumen
+      const instrumentName = row.getValue("instrument_name");
+      const instrumentMerk = row.original.instrument_merk;
+      
       return (
         <div>
-          <div className="font-medium">{instrumen.nama_instrumen}</div>
-          <div className="text-sm text-gray-500">{instrumen.merk_instrumen}</div>
+          <div className="font-medium">{instrumentName || "N/A"}</div>
+          <div className="text-sm text-gray-500">{instrumentMerk || ""}</div>
         </div>
-      )
+      );
     }
   },
   {
-    accessorKey: "user.email",
+    accessorKey: "user_email",
     header: "Peminjam",
     cell: ({ row }) => {
-      const user = row.original.user
+      const userEmail = row.getValue("user_email");
+      const userName = row.original.user_name;
+      
       return (
         <div>
-          <div className="font-medium">{user.name || "N/A"}</div>
-          <div className="text-xs text-gray-500">{user.email}</div>
+          <div className="font-medium">{userName || "N/A"}</div>
+          <div className="text-xs text-gray-500">{userEmail || ""}</div>
         </div>
-      )
+      );
     }
   },
   {
     accessorKey: "purpose",
     header: "Tujuan",
     cell: ({ row }) => (
-      <span className="truncate max-w-[200px] block" title={row.getValue("purpose")}>
-        {row.getValue("purpose")}
+      <span className="truncate max-w-[200px] block" title={String(row.getValue("purpose") || "")}>
+        {row.getValue("purpose") || ""}
       </span>
     )
   },
   {
     accessorKey: "start_date",
     header: "Tanggal Mulai",
-    cell: ({ row }) => format(new Date(row.getValue("start_date")), "dd/MM/yyyy")
+    cell: ({ row }) => {
+      try {
+        const date = row.getValue("start_date");
+        return date ? format(new Date(date), "dd/MM/yyyy") : "N/A";
+      } catch (e) {
+        return "Invalid Date";
+      }
+    }
   },
   {
     accessorKey: "end_date",
     header: "Tanggal Selesai",
-    cell: ({ row }) => format(new Date(row.getValue("end_date")), "dd/MM/yyyy")
+    cell: ({ row }) => {
+      try {
+        const date = row.getValue("end_date");
+        return date ? format(new Date(date), "dd/MM/yyyy") : "N/A";
+      } catch (e) {
+        return "Invalid Date";
+      }
+    }
   },
   {
     accessorKey: "status",
@@ -96,11 +111,11 @@ export const columns: ColumnDef<Rental>[] = [
       return (
         <Badge variant={
           status === "PENDING" ? "outline" :
-          status === "APPROVED" || status === "ACTIVE" ? "default" :
-          status === "REJECTED" ? "destructive" :
-          status === "COMPLETED" ? "secondary" : "outline"
+          status === "DISETUJUI" || status === "AKTIF" ? "default" :
+          status === "DITOLAK" ? "destructive" :
+          status === "SELESAI" ? "secondary" : "outline"
         }>
-          {status}
+          {status || "N/A"}
         </Badge>
       )
     }
@@ -108,7 +123,14 @@ export const columns: ColumnDef<Rental>[] = [
   {
     accessorKey: "createdAt",
     header: "Tanggal Peminjaman",
-    cell: ({ row }) => format(new Date(row.getValue("createdAt")), "dd/MM/yyyy HH:mm")
+    cell: ({ row }) => {
+      try {
+        const date = row.getValue("createdAt");
+        return date ? format(new Date(date), "dd/MM/yyyy HH:mm") : "N/A";
+      } catch (e) {
+        return "Invalid Date";
+      }
+    }
   },
   {
     id: "actions",
@@ -116,6 +138,7 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       const rental = row.original
       const [isLoading, setIsLoading] = useState(false)
+      const router = useRouter()
       
       const handleStatusChange = async (action: 'approve' | 'reject' | 'complete') => {
         setIsLoading(true)
@@ -130,10 +153,9 @@ export const columns: ColumnDef<Rental>[] = [
             await completeRental(rental.id)
             toast.success("Peminjaman berhasil diselesaikan")
           }
-          // Refresh the table
-          window.location.reload()
-        } catch (error) {
-          toast.error(`Gagal mengubah status: ${error.message}`)
+          router.refresh()
+        } catch (error: any) {
+          toast.error(`Gagal mengubah status: ${error.message || "Unknown error"}`)
           console.error(error)
         } finally {
           setIsLoading(false)
@@ -149,7 +171,7 @@ export const columns: ColumnDef<Rental>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
             
             {rental.status === "PENDING" && (
               <>
@@ -168,7 +190,7 @@ export const columns: ColumnDef<Rental>[] = [
               </>
             )}
             
-            {(rental.status === "APPROVED" || rental.status === "ACTIVE") && (
+            {(rental.status === "DISETUJUI" || rental.status === "AKTIF") && (
               <DropdownMenuItem 
                 onClick={() => handleStatusChange('complete')}
                 disabled={isLoading}
@@ -177,7 +199,7 @@ export const columns: ColumnDef<Rental>[] = [
               </DropdownMenuItem>
             )}
             
-            {(rental.status === "COMPLETED" || rental.status === "REJECTED") && (
+            {(rental.status === "SELESAI" || rental.status === "DITOLAK") && (
               <DropdownMenuItem disabled>
                 Tidak ada aksi tersedia
               </DropdownMenuItem>

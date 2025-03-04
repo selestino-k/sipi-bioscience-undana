@@ -5,6 +5,7 @@ import { Instrumen } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 
@@ -14,7 +15,6 @@ async function getData(): Promise<Instrumen[]> {
 }
 
 export default async function DaftarInstrumen({
-    searchParams
 }: {
     searchParams: { refresh?: string }
 }) {
@@ -30,7 +30,9 @@ export default async function DaftarInstrumen({
                     Manajemen Daftar Instrumen
                 </h2>          
                 <div className="container mx-auto py-10">
-                    <Button>Tambah Instrumen</Button>
+                    <Button>
+                        <Link href="/admin/daftar-instrumen/tambah">Tambah Instrumen</Link>
+                    </Button>
                     <DataTable columns={columns} data={data} />
                 </div>
             </main>

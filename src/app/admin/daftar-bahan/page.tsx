@@ -4,15 +4,22 @@ import prisma from "@/lib/prisma";
 import { Bahan } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-const bahan = await prisma.bahan.findMany()
+export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+
 
 async function getData(): Promise<Bahan[]> {
     // Fetch data from your API here.
-    return bahan
+    return await prisma.bahan.findMany();
 }
 
-export default async function DaftarBahan() {
+export default async function DaftarBahan(
+    { }: {
+        searchParams: { refresh?: string }
+    }
+) {
     const data = await getData()
     const session = await auth();
     if (!session) redirect ('/sign-in');    
@@ -24,6 +31,9 @@ export default async function DaftarBahan() {
                Manajemen Daftar Bahan Kimia
                 </h2>          
                 <div className="container mx-auto py-10">
+                <Button>
+                        <Link href="/admin/daftar-bahan/tambah">Tambah Bahan Kimia</Link>
+                    </Button>
                     <DataTable columns={columns} data={data} />
                 </div>
             </main>

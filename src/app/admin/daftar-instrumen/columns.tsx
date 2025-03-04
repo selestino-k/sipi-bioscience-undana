@@ -74,17 +74,6 @@ export const columns: ColumnDef<Instrumen>[] = [
       )
     }
   },
-  {
-    accessorKey: "rentals",
-    header: "Pengguna sekarang",
-    cell: ({ row }) => {
-      const rentals = row.getValue("rentals") as Rental[]
-      const activeRental = Array.isArray(rentals) ? 
-      rentals.find(rental => rental.status === 'ACTIVE' && !rental.end_date) : null
-    
-      return activeRental ? activeRental.user_email : "Tidak ada"
-    }
-  },
 
   {
     id: "actions",

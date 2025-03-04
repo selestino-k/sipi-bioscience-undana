@@ -19,6 +19,8 @@ import {
 // Menu items.
 import { Button } from "@/components/ui/button"
 import { SignOut } from "./sign-out"
+import { auth } from "@/lib/auth"
+
 
 
 const items = [
@@ -52,15 +54,9 @@ const items = [
     url: "/jadwal",
     icon: Calendar,
   },
-  {
-    title: "Admin",
-    url: "/admin",
-    icon: User,
-  }
-  
-  
 ]
-export function AppSidebar(){
+export async function AppSidebar(){
+  const session = await auth();
 
   return (
     <Sidebar side="left">
@@ -70,7 +66,9 @@ export function AppSidebar(){
           <SidebarGroupContent>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline">Akun</Button>
+                <Button variant="outline">
+                <User />{session?.user?.name || 'Akun'}
+                  </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
                 <DropdownMenuItem>

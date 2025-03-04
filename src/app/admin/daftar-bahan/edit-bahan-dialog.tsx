@@ -22,7 +22,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { createInstrument } from "@/lib/actions/admin/instrument-actions"
+import { updateBahan } from "@/lib/actions/admin/bahan-actions"
+import { Bahan } from "./columns"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import {
@@ -34,54 +35,51 @@ import {
 } from "@/components/ui/select"
 
 // Form validation schema
-const instrumentFormSchema = z.object({
-  nama_instrumen: z.string().min(1, { message: "Nama instrumen wajib diisi" }),
-  merk_instrumen: z.string().min(1, { message: "Merk instrumen wajib diisi" }),
-  tipe_instrumen: z.string().min(1, { message: "Tipe instrumen wajib diisi" }),
-  layanan: z.string().min(1, { message: "Layanan wajib diisi" }),
+const bahanFormSchema = z.object({
+  nama_bahan: z.string().min(1, { message: "Nama bahan kimia wajib diisi" }),
+  tipe_bahan: z.string().min(1, { message: "Tipe bahan wajib diisi" }),
   status: z.string().min(1, { message: "Status wajib diisi" }),
 });
 
-type AddFormValues = z.infer<typeof instrumentFormSchema>;
+type EditFormValues = z.infer<typeof bahanFormSchema>;
 
-interface AddInstrumentDialogProps {
+interface EditBahanDialogProps {
+  bahan: Bahan;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function AddInstrumentDialog({
+export function EditBahanDialog({
+  bahan,
   isOpen,
   onOpenChange,
-}: AddInstrumentDialogProps) {
+}: EditBahanDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  // Initialize form with empty values
-  const form = useForm<AddFormValues>({
-    resolver: zodResolver(instrumentFormSchema),
+  // Initialize form with the bahant's current values
+  const form = useForm<EditFormValues>({
+    resolver: zodResolver(bahanFormSchema),
     defaultValues: {
-      nama_instrumen: "",
-      merk_instrumen: "",
-      tipe_instrumen: "",
-      layanan: "",
-      status: "TERSEDIA",
+      nama_bahan: bahan.nama_bahan,
+      tipe_bahan: bahan.tipe_bahan,
+      status: bahan.status,
     },
   });
 
-  async function onSubmit(values: AddFormValues) {
+  async function onSubmit(values: EditFormValues) {
     setIsSubmitting(true);
     
     try {
-      await createInstrument(values);
-      toast.success("Instrumen berhasil ditambahkan");
+      await updateBahan(bahan.bahan_id, values);
+      toast.success("bahan berhasil diperbarui");
       onOpenChange(false);
-      form.reset();
       
       // Use router.refresh() to refresh the server components
       router.refresh();
     } catch (error) {
-      console.error("Failed to add instrument:", error);
-      toast.error("Gagal menambahkan instrumen");
+      console.error("Failed to update bahan:", error);
+      toast.error("Gagal memperbarui bahan");
     } finally {
       setIsSubmitting(false);
     }
@@ -91,18 +89,19 @@ export function AddInstrumentDialog({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Tambah Instrumen Baru</DialogTitle>
+          <DialogTitle>Edit bahan</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Form fields remain the same */}
             <FormField
               control={form.control}
-              name="nama_instrumen"
+              name="nama_bahan"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nama Instrumen</FormLabel>
+                  <FormLabel>Nama bahan</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nama instrumen" {...field} />
+                    <Input placeholder="Nama bahan" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,38 +109,12 @@ export function AddInstrumentDialog({
             />
             <FormField
               control={form.control}
-              name="merk_instrumen"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Merk</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Merk instrumen" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="tipe_instrumen"
+              name="tipe_bahan"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tipe</FormLabel>
                   <FormControl>
-                    <Input placeholder="Tipe instrumen" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="layanan"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Layanan</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Layanan" {...field} />
+                    <Input placeholder="Tipe bahan" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

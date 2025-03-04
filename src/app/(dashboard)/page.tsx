@@ -16,7 +16,7 @@ const Page = async () => {
                 SI Inventaris Lab Bioscience
                 </h2>   
                 <h3 className="text-lg">
-                    Universitas Nusa Cendana
+                    UPT Lab Terpadu Universitas Nusa Cendana
                 </h3> 
                 <h3 className="text-lg">
                     Masuk sebagai : <b>{session.user?.email}</b> 

@@ -66,7 +66,7 @@ export const columns: ColumnDef<Instrumen>[] = [
     cell: ({ row }) => {
       const rentals = row.getValue("rentals") as Rental[]
       const activeRental = Array.isArray(rentals) ? 
-      rentals.find(rental => rental.status === 'ACTIVE' && !rental.end_date) : null
+      rentals.find(rental => rental.status === 'PENDING' && !rental.end_date) : null
     
       return activeRental ? activeRental.user_email : "Tidak ada"
     }
@@ -82,8 +82,8 @@ export const columns: ColumnDef<Instrumen>[] = [
       function ActionCell() {
         const [isRentDialogOpen, setIsRentDialogOpen] = useState(false)
         const user = {
-          id: "cm7o2xkq60000p0y8b9yozq0z",
-          email: "sandikroon23@gmail.com"
+          id: "cm7sfxdkj0000p02068rxuxh6",
+          email: "user@user.com"
         } // hardcoded user for now
 
         return (
@@ -97,11 +97,7 @@ export const columns: ColumnDef<Instrumen>[] = [
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link href={`/daftar-instrumen/${instrument.instrument_id}/detail`}>
-                    Lihat Detail
-                  </Link>
-                </DropdownMenuItem>
+                
                 <DropdownMenuItem 
                   disabled={instrument.status !== 'TERSEDIA'}
                   onClick={() => setIsRentDialogOpen(true)}>

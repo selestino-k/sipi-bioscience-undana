@@ -3,16 +3,23 @@ import {columns} from "./columns";
 import prisma from "@/lib/prisma";
 import { Alat } from "@prisma/client";
 import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";  
+import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";  
 
-const alat = await prisma.alat.findMany()
+
+export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+
 
 async function getData(): Promise<Alat[]> {
     // Fetch data from your API here.
-    return alat
+    return await prisma.alat.findMany();
 }
 
-export default async function DaftarAlat() {
+export default async function DaftarAlat({
+}: {
+    searchParams: { refresh?: string }
+}) {
     const data = await getData()
     const session = await auth();
         if (!session) redirect ('/sign-in');
@@ -24,6 +31,9 @@ export default async function DaftarAlat() {
                Manajemen Daftar Alat Laboratorium
                 </h2>          
                 <div className="container mx-auto py-10">
+                    <Button>
+                        <Link href="/admin/daftar-alat/tambah">Tambah Alat Laboratorium</Link>
+                    </Button>
                     <DataTable columns={columns} data={data} />
                 </div>
             </main>

@@ -54,8 +54,8 @@ export async function rentInstrument(data: {
     });
 
     // 2. Update instrument status
-    await db.instrument.update({
-      where: { id: data.instrument_id },
+    await db.instrumen.update({
+      where: { instrument_id: data.instrument_id },
       data: { status: "PENDING" }
     });
 
@@ -91,11 +91,11 @@ export async function approveRental(rentalId: string) {
     // 2. Update the rental status to APPROVED
     const updatedRental = await db.rental.update({
       where: { id: rentalId },
-      data: { status: "APPROVED" }
+      data: { status: "DISETUJUI" }
     });
 
     // 3. Update the instrument status to DIPINJAM
-    await db.instrument.update({
+    await db.instrumen.update({
       where: { id: rental.instrument_id },
       data: { status: "DIPINJAM" }
     });
@@ -133,11 +133,11 @@ export async function rejectRental(rentalId: string) {
     // 2. Update the rental status to REJECTED
     const updatedRental = await db.rental.update({
       where: { id: rentalId },
-      data: { status: "REJECTED" }
+      data: { status: "DITOLAK" }
     });
 
     // 3. Return the instrument status to TERSEDIA
-    await db.instrument.update({
+    await db.instrumen.update({
       where: { id: rental.instrument_id },
       data: { status: "TERSEDIA" }
     });
@@ -168,7 +168,7 @@ export async function completeRental(rentalId: string) {
       throw new Error("Rental not found");
     }
 
-    if (rental.status !== "APPROVED" && rental.status !== "ACTIVE") {
+    if (rental.status !== "DISETUJUI" && rental.status !== "AKTIF") {
       throw new Error("This rental cannot be completed in its current state");
     }
 
@@ -176,13 +176,13 @@ export async function completeRental(rentalId: string) {
     const updatedRental = await db.rental.update({
       where: { id: rentalId },
       data: { 
-        status: "COMPLETED",
+        status: "SELESAI",
         actual_end_date: new Date() // Record when it was actually returned
       }
     });
 
     // 3. Return the instrument status to TERSEDIA
-    await db.instrument.update({
+    await db.instrumen.update({
       where: { id: rental.instrument_id },
       data: { status: "TERSEDIA" }
     });

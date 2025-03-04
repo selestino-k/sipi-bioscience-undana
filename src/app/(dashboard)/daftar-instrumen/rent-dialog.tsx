@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -58,15 +60,18 @@ export function RentInstrumentDialog({
   isOpen, 
   onOpenChange,
   user
-}: RentInstrumentDialogProps) {
+}: RentInstrumentDialogProps) 
+{
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter();
+  
 
   const form = useForm<RentFormValues>({
     resolver: zodResolver(rentFormSchema),
     defaultValues: {
         purpose: "",
         start_date: new Date(),
-        end_date: new Date(new Date().setDate(new Date().getDate() + 7)),
+        end_date: new Date(new Date().setDate(new Date().getDate() + 1)),
     },
   })
 
@@ -92,15 +97,16 @@ export function RentInstrumentDialog({
       toast.success("Sukses menggunakan instrumen")
       form.reset()
       onOpenChange(false)
-      // Refresh the table data or page
-      window.location.reload()
+      // Use router.refresh() to refresh the server components
+      router.refresh();
     } catch (error) {
-      toast.error("Gagal menggunakan instrumen")
-      console.error(error)
+      console.error("Failed to rent instrument:", error);
+      toast.error("Gagal meminjam instrumen");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
+  
   console.log("User in RentDialog:", user);
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>

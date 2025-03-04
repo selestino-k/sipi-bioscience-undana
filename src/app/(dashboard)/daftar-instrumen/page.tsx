@@ -5,6 +5,7 @@ import { Instrumen } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
+export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 
 const instrumen = await prisma.instrumen.findMany()
 
@@ -14,7 +15,12 @@ async function getData(): Promise<Instrumen[]> {
     return instrumen
 }
 
-export default async function DaftarInstrumen() {
+export default async function DaftarInstrumen(
+    {
+    }: {
+        searchParams: { refresh?: string }
+    }
+) {
     const data = await getData()
     const session = await auth();
     if (!session) redirect ('/sign-in');
