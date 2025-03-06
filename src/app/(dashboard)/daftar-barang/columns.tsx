@@ -9,6 +9,7 @@ export type Barang={
     merk_barang: string
     nama_barang: string
     tipe_barang: string
+    jumlah_barang: number
 }
 
 export const columns: ColumnDef<Barang>[] = [
@@ -28,4 +29,8 @@ export const columns: ColumnDef<Barang>[] = [
     accessorKey: "tipe_barang",
     header: "Tipe",
   },
+  {
+    accessorKey: "jumlah_barang",
+    header: "Jumlah",
+  }
 ]

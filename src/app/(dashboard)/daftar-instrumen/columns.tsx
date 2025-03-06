@@ -1,4 +1,4 @@
-  "use client"
+"use client"
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import Link from "next/link"
+import { useSession } from "next-auth/react";
 import { useState } from "react"
 import { RentInstrumentDialog } from "./rent-dialog"
 
@@ -60,17 +60,7 @@ export const columns: ColumnDef<Instrumen>[] = [
       )
     }
   },
-  {
-    accessorKey: "rentals",
-    header: "Pengguna sekarang",
-    cell: ({ row }) => {
-      const rentals = row.getValue("rentals") as Rental[]
-      const activeRental = Array.isArray(rentals) ? 
-      rentals.find(rental => rental.status === 'PENDING' && !rental.end_date) : null
-    
-      return activeRental ? activeRental.user_email : "Tidak ada"
-    }
-  },
+  
 
   {
     id: "actions",
@@ -81,10 +71,20 @@ export const columns: ColumnDef<Instrumen>[] = [
       // Create a component to use React hooks
       function ActionCell() {
         const [isRentDialogOpen, setIsRentDialogOpen] = useState(false)
-        const user = {
-          id: "cm7sfxdkj0000p02068rxuxh6",
-          email: "user@user.com"
-        } // hardcoded user for now
+        const { data: session } = useSession() // Add this hook
+        console.log("Session in ActionCell:", session);
+
+        // Replace hardcoded user with session data
+        const user = session?.user ? {
+          id: session.user?.id || 
+          session.user?.userId || 
+          session.user?.sub||
+          (session as any)?.userId || 
+          (session as any)?.sub ||
+          session.userId|| 
+          session.id|| "cm7wm4j0q0002p09g8b2qdq9d", //hardcoded www@www.com user id
+          email: session.user.email || ""
+        } : null
 
         return (
           <>
@@ -105,13 +105,14 @@ export const columns: ColumnDef<Instrumen>[] = [
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            
+            {user && (
             <RentInstrumentDialog 
               instrument={instrument} 
               isOpen={isRentDialogOpen} 
               onOpenChange={setIsRentDialogOpen} 
               user={user}
             />
+          )}
           </>
         )
       }

@@ -33,7 +33,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { rentInstrument } from "@/lib/actions"
+import { rentInstrument } from "@/lib/rent-actions"
 import { Instrumen } from "./columns"
 import { toast } from "sonner"
 
@@ -120,16 +120,16 @@ export function RentInstrumentDialog({
 
         {!user ? (
           <div className="text-center py-4">
-            <p className="text-red-500 mb-2">You must be logged in to rent instruments</p>
+            <p className="text-red-500 mb-2">Anda harus login untuk meminjam instrumen</p>
             <Button asChild>
-              <a href="/sign-in">Sign In</a>
+              <a href="/sign-in">Login</a>
             </Button>
           </div>
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className="bg-muted/50 p-4 rounded-lg mb-4">
-                <h3 className="font-medium mb-2">Renting as:</h3>
+                <h3 className="font-medium mb-2">Meminjam sebagai:</h3>
                 <p>{user.email}</p>
 
                 
@@ -140,7 +140,7 @@ export function RentInstrumentDialog({
                 name="purpose"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Purpose</FormLabel>
+                    <FormLabel>Tujuan</FormLabel>
                     <FormControl>
                       <Textarea 
                         placeholder="Isi tujuan penggunaan instrumen" 

@@ -1,6 +1,6 @@
 "use client"
 
-import { signUp } from "@/lib/actions";
+import { signUp } from "@/lib/rent-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { redirect } from "next/navigation";

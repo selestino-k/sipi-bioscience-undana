@@ -25,8 +25,8 @@ const Page = async ({
     }
   }
   
-  // Get error from search params
-  const error = searchParams.error;
+    // Get error from search params - await the property
+    const error = searchParams?.error ? searchParams.error : undefined;
   
   return (
     <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

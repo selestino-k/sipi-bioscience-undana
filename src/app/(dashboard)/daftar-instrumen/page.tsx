@@ -4,15 +4,14 @@ import prisma from "@/lib/prisma";
 import { Instrumen } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { SessionProvider } from "next-auth/react";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
-
-const instrumen = await prisma.instrumen.findMany()
 
 
 async function getData(): Promise<Instrumen[]> {
     // Fetch data from your API here.
-    return instrumen
+    return await prisma.instrumen.findMany()
 }
 
 export default async function DaftarInstrumen(
@@ -34,8 +33,10 @@ export default async function DaftarInstrumen(
                 Daftar Instrumen
                 </h2>          
                 <div className="container mx-auto py-10">
+                    <SessionProvider>
                     <p>Pinjam sebagai : {session.user?.email}</p>
                     <DataTable columns={columns} data={data} />
+                    </SessionProvider>
                 </div>
             </main>
             <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">

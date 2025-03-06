@@ -50,7 +50,7 @@ const items = [
     icon: Armchair,
   },
   {
-    title: "Jadwal",
+    title: "Jadwal Peminjaman",
     url: "/jadwal",
     icon: Calendar,
   },
