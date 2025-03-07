@@ -12,7 +12,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { approveRental, rejectRental, completeRental } from "@/lib/rent-actions"
+import { 
+  approveRental, 
+  rejectRental, 
+  completeRental 
+} from "@/lib/rent-actions"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"

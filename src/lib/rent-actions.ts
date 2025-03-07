@@ -96,7 +96,7 @@ export async function approveRental(rentalId: string) {
 
     // 3. Update the instrument status to DIPINJAM
     await db.instrumen.update({
-      where: { id: rental.instrument_id },
+      where: { instrument_id: rental.instrument_id }, // Change from id to instrument_id
       data: { status: "DIPINJAM" }
     });
 
@@ -130,7 +130,7 @@ export async function rejectRental(rentalId: string) {
       throw new Error("This rental cannot be rejected in its current state");
     }
 
-    // 2. Update the rental status to REJECTED
+    // 2. Update the rental status to DITOLAK
     const updatedRental = await db.rental.update({
       where: { id: rentalId },
       data: { status: "DITOLAK" }
@@ -158,21 +158,26 @@ export async function rejectRental(rentalId: string) {
  * @param rentalId The ID of the rental to complete
  */
 export async function completeRental(rentalId: string) {
+  if (!rentalId) {
+    throw new Error("Missing rental ID");
+  }
+
   try {
     // 1. Get the rental to ensure it exists and find the instrument
     const rental = await db.rental.findUnique({
       where: { id: rentalId },
     });
 
-    if (!rental) {
-      throw new Error("Rental not found");
+    // Add proper null check for instrument_id
+    if (!rental || !rental.instrument_id) {
+    throw new Error("Rental not found or has invalid instrument ID");
     }
 
     if (rental.status !== "DISETUJUI" && rental.status !== "AKTIF") {
       throw new Error("This rental cannot be completed in its current state");
     }
 
-    // 2. Update the rental status to COMPLETED and set actual end_date to now
+    // 2. Update the rental status to SELESAI and set actual end_date to now
     const updatedRental = await db.rental.update({
       where: { id: rentalId },
       data: { 
@@ -180,10 +185,11 @@ export async function completeRental(rentalId: string) {
         actual_end_date: new Date() // Record when it was actually returned
       }
     });
-
+    
+    
     // 3. Return the instrument status to TERSEDIA
     await db.instrumen.update({
-      where: { id: rental.instrument_id },
+      where: { instrument_id: rental.instrument_id }, // Make sure this property name matches your schema
       data: { status: "TERSEDIA" }
     });
 
@@ -194,7 +200,8 @@ export async function completeRental(rentalId: string) {
     return { success: true, rental: updatedRental };
   } catch (error) {
     console.error("Error completing rental:", error);
-    throw error;
+    throw new Error(`Failed to complete rental: ${error.message}`);
+
   }
 }
 
