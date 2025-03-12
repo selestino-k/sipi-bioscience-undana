@@ -1,4 +1,3 @@
-
 import { Calendar, Home,Calculator, FlaskConical, Pipette,Armchair,User } from "lucide-react"
 import {
   Sidebar,
@@ -6,19 +5,17 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu" 
 // Menu items.
-import { Button } from "@/components/ui/button"
-import { SignOut } from "../sign-out"
+import { NavUser } from "../sidebar-user"
+import { auth } from "@/lib/auth"
 
 
 const items = [
@@ -60,26 +57,29 @@ const items = [
   
   
 ]
-export function AdminAppSidebar(){
+
+// Sidebar component.
+export async function AdminAppSidebar(){
+  const session = await auth();
+  // If we have a session with user data
+  if (session?.user) {
+    const userData = {
+      // Use name if available, otherwise fallback to email
+      name: session.user.name || session.user.email?.split('@')[0] || "User",
+      email: session.user.email || ""
+    }
 
   return (
     <Sidebar side="left">
+      <SidebarHeader>
+        <NavUser user={userData}/>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-
           <SidebarGroupContent>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline">Akun</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-                <DropdownMenuItem>
-                    <SignOut/>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
             </DropdownMenu>
             <SidebarGroupLabel>PANEL ADMIN</SidebarGroupLabel>
-
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
@@ -96,5 +96,7 @@ export function AdminAppSidebar(){
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
+    
   )
+}
 }

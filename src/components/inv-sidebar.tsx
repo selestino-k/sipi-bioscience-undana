@@ -1,34 +1,25 @@
 
-import { Calendar, Home,Calculator, FlaskConical, Pipette,Armchair, User } from "lucide-react"
+import { Calendar, Home,Calculator, FlaskConical, Pipette,Armchair } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu" 
+
 // Menu items.
-import { Button } from "@/components/ui/button"
-import { SignOut } from "./sign-out"
 import { auth } from "@/lib/auth"
+import { NavUser } from "./sidebar-user"
 
 
 
 const items = [
-  {
-    title: "Beranda",
-    url: "/",
-    icon: Home,
-  },
+  
   {
     title: "Daftar Alat",
     url: "/daftar-alat",
@@ -57,25 +48,22 @@ const items = [
 ]
 export async function AppSidebar(){
   const session = await auth();
+  // If we have a session with user data
+  if (session?.user) {
+    const userData = {
+      // Use name if available, otherwise fallback to email
+      name: session.user.name || session.user.email?.split('@')[0] || "User",
+      email: session.user.email || ""
+    }
 
   return (
     <Sidebar side="left">
+      <SidebarHeader>
+        <NavUser user={userData}/>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>SI INVENTARIS LAB BIOSCIENCE</SidebarGroupLabel>
           <SidebarGroupContent>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                <User />{session?.user?.name || 'Akun'}
-                  </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-                <DropdownMenuItem>
-                    <SignOut/>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-            </DropdownMenu>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
@@ -93,4 +81,5 @@ export async function AppSidebar(){
       </SidebarContent>
     </Sidebar>
   )
+}
 }
