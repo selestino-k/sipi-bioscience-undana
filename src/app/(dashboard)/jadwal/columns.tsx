@@ -2,20 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { MoreHorizontal } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { approveRental, rejectRental, completeRental } from "@/lib/rent-actions"
-import { useState } from "react"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+
 
 // Define the type for the rental data
 type Rental = {
@@ -121,11 +109,11 @@ export const columns: ColumnDef<Rental>[] = [
     }
   },
   {
-    accessorKey: "createdAt",
-    header: "Tanggal Peminjaman",
+    accessorKey: "updatedAt",
+    header: "Tanggal Pengembalian",
     cell: ({ row }) => {
       try {
-        const date = row.getValue("createdAt");
+        const date = row.getValue("updatedAt");
         return date ? format(new Date(date), "dd/MM/yyyy HH:mm") : "N/A";
       } catch (e) {
         return "Invalid Date";

@@ -125,11 +125,11 @@ export const columns: ColumnDef<Rental>[] = [
     }
   },
   {
-    accessorKey: "createdAt",
-    header: "Tanggal Peminjaman",
+    accessorKey: "updatedAt",
+    header: "Tanggal Pengembalian",
     cell: ({ row }) => {
       try {
-        const date = row.getValue("createdAt");
+        const date = row.getValue("updatedAt");
         return date ? format(new Date(date), "dd/MM/yyyy HH:mm") : "N/A";
       } catch (e) {
         return "Invalid Date";

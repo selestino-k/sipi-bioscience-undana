@@ -77,7 +77,7 @@ export async function approveRental(rentalId: string) {
   try {
     // 1. Get the rental to ensure it exists and find the instrument
     const rental = await db.rental.findUnique({
-      where: { id: rentalId },
+      where: { id: parseInt(rentalId) },
     });
 
     if (!rental) {
@@ -90,7 +90,7 @@ export async function approveRental(rentalId: string) {
 
     // 2. Update the rental status to APPROVED
     const updatedRental = await db.rental.update({
-      where: { id: rentalId },
+      where: { id: parseInt(rentalId) },
       data: { status: "DISETUJUI" }
     });
 
@@ -119,7 +119,7 @@ export async function rejectRental(rentalId: string) {
   try {
     // 1. Get the rental to ensure it exists and find the instrument
     const rental = await db.rental.findUnique({
-      where: { id: rentalId },
+      where: { id:  parseInt(rentalId) },
     });
 
     if (!rental) {
@@ -132,13 +132,13 @@ export async function rejectRental(rentalId: string) {
 
     // 2. Update the rental status to DITOLAK
     const updatedRental = await db.rental.update({
-      where: { id: rentalId },
+      where: { id: parseInt(rentalId) },
       data: { status: "DITOLAK" }
     });
 
     // 3. Return the instrument status to TERSEDIA
     await db.instrumen.update({
-      where: { id: rental.instrument_id },
+      where: { instrument_id: rental.instrument_id },
       data: { status: "TERSEDIA" }
     });
 
@@ -165,7 +165,7 @@ export async function completeRental(rentalId: string) {
   try {
     // 1. Get the rental to ensure it exists and find the instrument
     const rental = await db.rental.findUnique({
-      where: { id: rentalId },
+      where: { id: parseInt(rentalId) },
     });
 
     // Add proper null check for instrument_id
@@ -179,10 +179,10 @@ export async function completeRental(rentalId: string) {
 
     // 2. Update the rental status to SELESAI and set actual end_date to now
     const updatedRental = await db.rental.update({
-      where: { id: rentalId },
+      where: { id: parseInt(rentalId) },
       data: { 
         status: "SELESAI",
-        actual_end_date: new Date() // Record when it was actually returned
+        updatedAt: new Date() // Record when it was actually returned, use updatedtAt as date return
       }
     });
     
@@ -200,7 +200,7 @@ export async function completeRental(rentalId: string) {
     return { success: true, rental: updatedRental };
   } catch (error) {
     console.error("Error completing rental:", error);
-    throw new Error(`Failed to complete rental: ${error.message}`);
+    throw new Error(`Failed to complete rental: {error.message}`);
 
   }
 }

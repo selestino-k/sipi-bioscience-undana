@@ -2,8 +2,8 @@ import { DataTable } from "@/components/ui/data-table";
 import {columns} from "./columns";
 import prisma from "@/lib/prisma";
 import {Barang} from "@prisma/client";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { AppSidebar } from "@/components/inv-sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 const barang = await prisma.barang.findMany()
 
@@ -15,12 +15,14 @@ async function getData(): Promise<Barang[]> {
 
 export default async function DaftarBarang() {
     const data = await getData()
-    const session = await auth();
-    if (!session) redirect ('/sign-in');    
+    
 
     return (
+        <SidebarProvider>
+        <AppSidebar/>
         <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
             <main className="flex w-full flex-col gap-3 row-start-2 items-center sm:items-start">
+                <SidebarTrigger/>
                 <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-5xl sm:tracking-tight">
                 Daftar Barang
                 </h2>          
@@ -28,11 +30,12 @@ export default async function DaftarBarang() {
                     <DataTable columns={columns} data={data} />
                 </div>
             </main>
-            
             <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
 
             </footer>
         </div>
+        </SidebarProvider>
+
     );
 }
   
