@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { User } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar} from "@/components/ui/avatar"
 import { SignOut } from "./sign-out"
 
 export function UserDropdown({
@@ -18,7 +18,6 @@ export function UserDropdown({
     user: {
         name: string
         email: string
-        avatar: string
     }
 }) {
   return (
@@ -27,8 +26,7 @@ export function UserDropdown({
        
         <Button variant="outline">
             <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg"><User/></AvatarFallback>
+               <User/>
             </Avatar>
             {user.name}
         </Button>

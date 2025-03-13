@@ -1,4 +1,4 @@
-import { Calendar, Home,Calculator, FlaskConical, Pipette,Armchair,User } from "lucide-react"
+import { Calendar, Home, Calculator, FlaskConical, Pipette, Armchair, User } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -10,13 +10,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {
-  DropdownMenu,
-} from "@/components/ui/dropdown-menu" 
-// Menu items.
+import { DropdownMenu } from "@/components/ui/dropdown-menu" 
 import { NavUser } from "../sidebar-user"
 import { auth } from "@/lib/auth"
-
 
 const items = [
   {
@@ -54,38 +50,39 @@ const items = [
     url: "/admin/daftar-admin",
     icon: User,
   }
-  
-  
 ]
 
-// Sidebar component.
+// Sidebar component with explicit background styling
 export async function AdminAppSidebar(){
   const session = await auth();
-  // If we have a session with user data
-  if (session?.user) {
-    const userData = {
-      // Use name if available, otherwise fallback to email
-      name: session.user.name || session.user.email?.split('@')[0] || "User",
-      email: session.user.email || ""
-    }
+  
+  if (!session?.user) {
+    return null;
+  }
+  
+  const userData = {
+    name: session.user.name || session.user.email?.split('@')[0] || "User",
+    email: session.user.email || ""
+  }
 
   return (
-    <Sidebar side="left">
-      <SidebarHeader>
+    <Sidebar side="left" className="bg-white dark:bg-gray-950 border-r shadow-sm">
+      <SidebarHeader className="bg-white dark:bg-gray-950">
         <NavUser user={userData}/>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-white dark:bg-gray-950">
         <SidebarGroup>
           <SidebarGroupContent>
           <DropdownMenu>
-            </DropdownMenu>
+          </DropdownMenu>
             <SidebarGroupLabel>PANEL ADMIN</SidebarGroupLabel>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
+                    <a href={item.url} className="flex items-center gap-3 px-3 py-2 rounded-md
+                       hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
@@ -96,7 +93,5 @@ export async function AdminAppSidebar(){
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-    
   )
-}
 }

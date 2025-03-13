@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation"
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog"
@@ -59,7 +58,7 @@ export function EditBarangDialog({
       nama_barang: barang.nama_barang,
       merk_barang : barang.merk_barang,
       tipe_barang: barang.tipe_barang,
-      jumlah_barang: barang.jumlah_barang,  
+      jumlah_barang: barang.jumlah_barang.toString(),  
     },
   });
 
@@ -84,9 +83,7 @@ export function EditBarangDialog({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
           <DialogTitle>Edit bahan</DialogTitle>
-        </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Form fields remain the same */}
@@ -129,7 +126,6 @@ export function EditBarangDialog({
                 </FormItem>
               )}
             />
-            
             <DialogFooter>
               <Button 
                 type="button" 

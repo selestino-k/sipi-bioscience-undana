@@ -22,13 +22,13 @@ export default async function NavBar() {
     return (
       <header className="fixed top-0 z-50 w-full bg-white/80 backdrop-blur-sm shadow-sm dark:bg-gray-950/80">
         <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
-          <Link href="#" className="flex items-center gap-2" prefetch={false}>
+          <Link href="/" className="flex items-center gap-2" prefetch={false}>
             <Microscope/>
             <span className="text-lg font-bold">UPT Lab Terpadu Undana</span>
           </Link>
           <nav className="hidden space-x-20 md:inline-flex">
-            <Link href="/" className="text-sm font-medium hover:text-gray-900 dark:hover:text-gray-50" prefetch={false}>
-              Beranda
+            <Link href="/katalog" className="text-sm font-medium hover:text-gray-900 dark:hover:text-gray-50" prefetch={false}>
+              Katalog
             </Link>
             <Link href="/pinjam" className="text-sm font-medium hover:text-gray-900 dark:hover:text-gray-50" prefetch={false}>
               Pinjam

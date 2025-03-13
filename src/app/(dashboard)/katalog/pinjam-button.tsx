@@ -9,10 +9,10 @@ export function PinjamButton() {
     console.log("Session in ActionCell:", session);
     // Replace hardcoded user with session data
     const user = session?.user ? {
-        id: session.user?.id || "", //hardcoded www@www.com user id
+        id: session.user?.id || "cm7u88hba0000p02of1v28pu4", //hardcoded www@www.com user id
         email: session.user.email || ""
     } : null
-    const nama_instrumen = "Instrumen A"
+    const nama_instrumen = "AAS/SSA"
     return (
         <>
             <Button 
@@ -22,7 +22,7 @@ export function PinjamButton() {
             </Button>
             {user && (
                 <RentInstrumentDialog 
-                    instrument={nama_instrumen} 
+                    instrument={nama_instrumen} // error payload instrument
                     isOpen={isRentDialogOpen} 
                     onOpenChange={setIsRentDialogOpen} 
                     user={user}

@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 export type Alat = {
-  id: number
+  alat_id: number
   nama_alat: string
   jumlah_alat: string
   status: string

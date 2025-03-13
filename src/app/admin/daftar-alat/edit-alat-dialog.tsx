@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation"
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog"
@@ -88,9 +87,7 @@ export function EditAlatDialog({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>Edit alat</DialogTitle>
-        </DialogHeader>
+        <DialogTitle>Edit alat</DialogTitle>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Form fields remain the same */}

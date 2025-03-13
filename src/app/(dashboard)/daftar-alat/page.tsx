@@ -20,7 +20,9 @@ export default async function DaftarAlat() {
         <AppSidebar/>
         <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
             <main className="flex w-full flex-col gap-3 row-start-2 items-center sm:items-start">
-                <SidebarTrigger/>
+                <div className="mb-4 sm:hidden items-start">
+                    <SidebarTrigger/>
+                </div>
                 <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-5xl sm:tracking-tight">
                 Daftar Alat Laboratorium
                 </h2>          
