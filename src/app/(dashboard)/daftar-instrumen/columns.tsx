@@ -8,7 +8,6 @@ export type Instrumen = {
     merk_instrumen: string
     nama_instrumen: string
     tipe_instrumen: string
-    rentals: string
     layanan: string
     status: string
     updatedAt: Date

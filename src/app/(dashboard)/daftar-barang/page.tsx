@@ -2,8 +2,6 @@ import { DataTable } from "@/components/ui/data-table";
 import {columns} from "./columns";
 import prisma from "@/lib/prisma";
 import {Barang} from "@prisma/client";
-import { AppSidebar } from "@/components/inv-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 const barang = await prisma.barang.findMany()
 
@@ -18,11 +16,10 @@ export default async function DaftarBarang() {
     
 
     return (
-        <SidebarProvider>
-        <AppSidebar/>
         <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
             <main className="flex w-full flex-col gap-3 row-start-2 items-center sm:items-start">
-                <SidebarTrigger/>
+                <div className="mb-4 sm:hidden items-start">
+                </div>
                 <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-5xl sm:tracking-tight">
                 Daftar Barang
                 </h2>          
@@ -34,7 +31,6 @@ export default async function DaftarBarang() {
 
             </footer>
         </div>
-        </SidebarProvider>
 
     );
 }

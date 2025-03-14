@@ -18,7 +18,7 @@ export default async function DashboardLayout({
 
         <main className="gap-3 w-full">
         <NavBar/>
-            <div className="flex w-full min-h-screen items-center justify-items-center">
+            <div className="flex w-full min-h-screen items-center justify-center">
                 {children}
             </div>
         </main>

@@ -4,16 +4,13 @@ import * as React from "react"
 import { useRouter } from 'next/navigation'
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 
 export function NavDrawer() {
   const [open, setOpen] = React.useState(false)

@@ -1,5 +1,6 @@
 "use client"
 
+import { useSession } from "next-auth/react"
 import { useState } from "react"
 import Image from "next/image"
 import { Search } from "lucide-react"
@@ -10,10 +11,11 @@ import {
   SelectTrigger, 
   SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { PinjamButton } from "./pinjam-button"
+import { Button } from "@/components/ui/button"
+import { RentInstrumentDialog } from "./rent-dialog"
 
 // Product type definition
-interface Katalog {
+export type Katalog ={
   instrument_id: number
   merk_instrumen: string
   nama_instrumen: string
@@ -27,11 +29,11 @@ interface Katalog {
 const defaultCatalog: Katalog[] = [
   {
     instrument_id: 1,
-    merk_instrumen: "Merk A",
-    nama_instrumen: "Instrumen A",  
-    tipe_instrumen: "Tipe A",
-    layanan: "Layanan A",
-    status: "TERSEDIA",
+    merk_instrumen: "Null",
+    nama_instrumen: "Null",  
+    tipe_instrumen: "Null",
+    layanan: "Null",
+    status: "NULL",
     image: "/placeholder.svg",
   }
 ]
@@ -44,8 +46,6 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
   const [catalogue] = useState<Katalog[]>(initialData)
   const [searchQuery, setSearchQuery] = useState("")
   const [sortOption, setSortOption] = useState("name")
-
-
 
   // Filter products based on search query
   const filteredCatalogue = catalogue.filter((item) => 
@@ -122,12 +122,10 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
                       'bg-red-100 text-red-800'}`}>
                       {item.status}
                     </span>
-                    {/* <Button 
-                      variant="default"
-                      disabled={item.status !== 'TERSEDIA'}>
-                      Pinjam
-                    </Button> */}
-                    <PinjamButton />
+                    <PinjamButton 
+                      instrument={item} 
+                      disabled={item.status !== 'TERSEDIA'} 
+                    />
                   </div>
                 </div>
               </div>
@@ -138,3 +136,42 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
     </div>
   )
 }
+
+// Updated PinjamButton component that accepts instrument data
+function PinjamButton({ 
+  instrument, 
+  disabled = false 
+}: { 
+  instrument: Katalog, 
+  disabled?: boolean 
+}) {
+  const [isRentDialogOpen, setIsRentDialogOpen] = useState(false)
+  const { data: session } = useSession()
+  
+  // Remove console log for better performance
+  // Replace hardcoded user with session data
+  const user = session?.user ? {
+      id: session.user?.id || "cm7u88hba0000p02of1v28pu4", 
+      email: session.user.email || ""
+  } : null
+
+  return (
+    <>
+      <Button 
+        variant="default" 
+        disabled={disabled}
+        onClick={() => setIsRentDialogOpen(true)}>
+        Pinjam
+      </Button>
+      {user && (
+        <RentInstrumentDialog 
+          instrument={instrument}
+          isOpen={isRentDialogOpen} 
+          onOpenChange={setIsRentDialogOpen} 
+          user={user}
+        />
+      )}
+    </>
+  )
+}
+

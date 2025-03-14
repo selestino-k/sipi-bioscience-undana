@@ -10,8 +10,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-import { auth } from "@/lib/auth"
-import { NavUser } from "./sidebar-user"
 
 const items = [
   {
@@ -36,24 +34,11 @@ const items = [
   },
 ]
 
-export async function AppSidebar() {
-  const session = await auth();
-  
-  // Early return if no session
-  if (!session?.user) {
-    return null;
-  }
-  
-  const userData = {
-    // Use name if available, otherwise fallback to email
-    name: session.user.name || session.user.email?.split('@')[0] || "User",
-    email: session.user.email || ""
-  }
+export  function AppSidebar() {
 
   return (
     <Sidebar side="left" className="bg-white dark:bg-gray-950 border-r shadow-sm">
       <SidebarHeader className="bg-white dark:bg-gray-950">
-        <NavUser user={userData}/>
       </SidebarHeader>
       <SidebarContent className="bg-white dark:bg-gray-950">
         <SidebarGroup>

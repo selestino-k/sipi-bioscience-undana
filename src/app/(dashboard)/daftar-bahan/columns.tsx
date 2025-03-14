@@ -1,13 +1,10 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Plus } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
 
 
 export type Bahan = {
-  id: number
+  bahan_id: number
   nama_bahan: string
   tipe_bahan: string
   updatedAt: Date;
