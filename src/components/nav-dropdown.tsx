@@ -7,12 +7,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {Calculator, FlaskConical, Pipette, Armchair } from "lucide-react"
+import {Calculator, FlaskConical, Pipette, Armchair, Box } from "lucide-react"
 import Link from "next/link"
 
 export function NavDropdown(){
   return (
-    <DropdownMenu>
+    <DropdownMenu><Box/>
       <DropdownMenuTrigger>
         Inventaris
       </DropdownMenuTrigger>

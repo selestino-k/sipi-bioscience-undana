@@ -4,7 +4,8 @@ import {
   EllipsisVertical,
   User,
 } from "lucide-react"
-
+import Link from "next/link"
+import { useState } from "react"
 import {Avatar} from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -31,11 +32,17 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const [open, setOpen] = useState(false)
+   // Prevent closing when clicking inside items by stopping event propagation
+   const handleItemClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Don't call setOpen(false) here to keep the dropdown open
+  }
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <DropdownMenu>
+        <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
@@ -56,19 +63,24 @@ export function NavUser({
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
+            onCloseAutoFocus={(e) => e.preventDefault()}
           >            
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <User />
-                Profil
+          <Link href="/admin/profil" passHref>
+            <div onClick={handleItemClick} className="w-full">
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                Pengaturan Akun
               </DropdownMenuItem>
-
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <SignOut/>
-            </DropdownMenuItem>
+            </div>
+          </Link>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <div onClick={handleItemClick} className="w-full">
+          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+            <SignOut />
+          </DropdownMenuItem>
+        </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

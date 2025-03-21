@@ -7,13 +7,21 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AlertCircle } from "lucide-react"; // Import AlertCircle icon
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"; // Import Alert components
+import "next-auth";
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: { error?: string };
-}) => {
+declare module "next-auth" {
+  interface User {
+    role?: string;
+  }
+  
+  interface Session {
+    user?: User;
+  }
+}
+
+const Page = async ({ searchParams }: { searchParams: { error?: string } }) => {
   const session = await auth();
+  const error = searchParams.error;
   
   // Check if user is authenticated
   if (session) {
@@ -25,8 +33,6 @@ const Page = async ({
     }
   }
   
-    // Get error from search params - await the property
-    const error = searchParams?.error ? searchParams.error : undefined;
   
   return (
     <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

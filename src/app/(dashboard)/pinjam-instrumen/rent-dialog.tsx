@@ -34,7 +34,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { rentInstrument } from "@/lib/rent-actions"
-import { Katalog} from "./katalog-lab"
+import { Instrumen } from "./columns"
 import { toast } from "sonner"
 
 const rentFormSchema = z.object({
@@ -46,7 +46,7 @@ const rentFormSchema = z.object({
 type RentFormValues = z.infer<typeof rentFormSchema>
 
 interface RentInstrumentDialogProps {
-  instrument: Katalog
+  instrument: Instrumen
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   user: {
@@ -131,6 +131,8 @@ export function RentInstrumentDialog({
               <div className="bg-muted/50 p-4 rounded-lg mb-4">
                 <h3 className="font-medium mb-2">Meminjam sebagai:</h3>
                 <p>{user.email}</p>
+
+                
               </div>
               
               <FormField

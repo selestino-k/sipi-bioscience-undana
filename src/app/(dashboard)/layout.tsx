@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import NavBar from "@/components/navbar";
 import { SessionProvider } from "next-auth/react";
+import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Sistem Peminjaman Lab Bioscience",
@@ -24,6 +25,7 @@ export default async function DashboardLayout({
                 {children}
             </div>
         </SessionProvider>
+        <Footer/>
         </main>
 
     

@@ -1,32 +1,58 @@
-import { isRedirectError } from "next/dist/client/components/redirect-error";
+"use server"
 
-type Options<T> = {
-    actionFn: () => Promise<T>;
-    successMessage?:string;
-    errorMessage?:string;
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
+
+type ActionResponse<T> = {
+  success: boolean;
+  data?: T;
+  error?: string;
 };
 
-const executeAction = async <T>({ 
-    actionFn, 
-    successMessage = "Action successful",
-    errorMessage = "Action error occured",
- }: Options<T>):  Promise<{ success: boolean; message: string }> => {
-    try {
-        await actionFn();
-
-        return {
-            success: true,
-            message: successMessage,
-        };
-    } catch (error) {
-        if (isRedirectError(error)) {
-            throw error;
-        }
-
-        return {
-            success: false,
-            message:errorMessage,
-        };
+export async function executeAction<TInput, TOutput>({
+  schema,
+  action,
+  data,
+  revalidate,
+}: {
+  schema?: z.ZodType<TInput>;
+  action: (data: TInput) => Promise<TOutput>;
+  data: TInput;
+  revalidate?: string[];
+}): Promise<ActionResponse<TOutput>> {
+  try {
+    // Validate input if schema is provided
+    const validatedData = schema ? schema.parse(data) : data;
+    
+    // Execute the action
+    const result = await action(validatedData);
+    
+    // Revalidate any paths if needed
+    if (revalidate && revalidate.length > 0) {
+      revalidate.forEach(path => revalidatePath(path));
     }
+    
+    // Return success response
+    return {
+      success: true,
+      data: result,
+    };
+  } catch (error) {
+    // Handle different error types
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: "Validation error: " + error.errors.map(e => e.message).join(", "),
+      };
+    }
+    
+    // Log the error for debugging
+    console.error("Action execution failed:", error);
+    
+    // Return error response
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unknown error occurred",
+    };
+  }
 }
-export {executeAction};

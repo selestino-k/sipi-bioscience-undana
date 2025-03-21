@@ -1,6 +1,7 @@
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { v4 as uuid } from "uuid";
 import { encode as defaultEncode } from "next-auth/jwt";
+import bcrypt from  "bcryptjs"
 
 import db from "@/lib/db/db";
 import NextAuth from "next-auth";
@@ -22,15 +23,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorize: async (credentials) => {
         const validatedCredentials = schema.parse(credentials);
 
-        const user = await db.user.findFirst({
+        const user = await db.user.findUnique({
           where: {
             email: validatedCredentials.email,
-            password: validatedCredentials.password,
           },
         });
 
         if (!user) {
-          throw new Error("Invalid credentials.");
+          throw new Error("No user found with this email address");
+        }
+
+        // Check if user has a password (might not if they used OAuth)
+        if (!user.password) {
+          throw new Error("This account doesn't use password authentication");
+        }
+
+        // Compare the provided password with the stored hash
+        const passwordMatch = await bcrypt.compare(
+          validatedCredentials.password,
+          user.password
+        );
+
+        if (!passwordMatch) {
+          throw new Error("Invalid password");
         }
 
         return user;
@@ -38,12 +53,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account, user }) {
+      // Add role to token if available from user
+      if (user) {
+        token.role = user.role;
+        token.id = user.id;
+      }
+      
       if (account?.provider === "credentials") {
         token.credentials = true;
       }
       return token;
     },
+    async session({ session, token }) {
+      // Add role and id to session user
+      if (session.user) {
+        session.user.role = token.role as string;
+        session.user.id = token.id as string;
+      }
+      return session;
+    }
   },
   jwt: {
     encode: async function (params) {
@@ -57,7 +86,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const createdSession = await adapter?.createSession?.({
           sessionToken: sessionToken,
           userId: params.token.sub,
-          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),//(1 day session -> hours, minutes, seconds, milliseconds)
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day session
         });
 
         if (!createdSession) {
@@ -69,4 +98,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return defaultEncode(params);
     },
   },
+  pages: {
+    signIn: '/sign-in',
+    error: '/sign-in',
+  },
+  session: {
+    strategy: "jwt",
+  },
 });
+

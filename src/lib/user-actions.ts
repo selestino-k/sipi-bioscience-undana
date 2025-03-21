@@ -1,24 +1,121 @@
 "use server"
 
-import { schema } from "@/lib/schema";
 import db from "@/lib/db/db";
-import { executeAction } from "@/lib/executeAction";
+import bcrypt from "bcryptjs";
+import { z } from "zod";
+import { executeAction } from "./executeAction";
 
-const signUp = async (formData: FormData) => {
-  return executeAction({
-    actionFn: async () => {
-      const email = formData.get("email");
-      const password = formData.get("password");
-      const validatedData = schema.parse({ email, password });
-      await db.user.create({
-        data: {
-          email: validatedData.email.toLocaleLowerCase(),
-          password: validatedData.password,
-        },
-      });
-    },
-    successMessage: "Signed up successfully",
+// Validation schemas
+const createUserSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  name: z.string().optional(),
+  role: z.enum(["USER", "ADMIN"]),
+});
+
+const updatePasswordSchema = z.object({
+  userId: z.string().min(1, "User ID is required"),
+  newPassword: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+// Base implementation functions
+async function _createUserWithHashedPassword(userData: z.infer<typeof createUserSchema>) {
+ 
+  // Check if user with this email already exists
+  const existingUser = await db.user.findUnique({
+    where: { email: userData.email },
   });
-};
+  
+  if (existingUser) {
+    throw new Error("User with this email already exists");
+  }
+  
+  // Hash the password with bcrypt (10 rounds of salt)
+  const hashedPassword = await bcrypt.hash(userData.password, 10);
+  console.log("Password hashed successfully");
 
-export { signUp };
+  
+  // Create the user with the hashed password
+  const user = await db.user.create({
+    data: {
+        email: userData.email,
+        password: hashedPassword,
+        name: userData.name || userData.email.split('@')[0], // Use part of email as name if not provided
+        role: "USER", // Sign Up always creates a USER role
+    },
+  });
+  
+  return user;
+}
+
+async function _updateUserPassword(data: z.infer<typeof updatePasswordSchema>) {
+  const hashedPassword = await bcrypt.hash(data.newPassword, 10);
+  
+  const updatedUser = await db.user.update({
+    where: { id: data.userId },
+    data: { password: hashedPassword },
+  });
+  
+  return updatedUser;
+}
+
+// Wrapped functions with error handling
+export async function createUserWithHashedPassword(userData: z.infer<typeof createUserSchema>) {
+  return executeAction({
+    schema: createUserSchema,
+    action: _createUserWithHashedPassword,
+    data: userData,
+    revalidate: ['/admin/daftar-admin'],
+  });
+}
+
+export async function updateUserPassword(userId: string, newPassword: string) {
+  return executeAction({
+    schema: updatePasswordSchema,
+    action: _updateUserPassword,
+    data: { userId, newPassword },
+    revalidate: ['/admin/daftar-admin', '/profil'],
+  });
+}
+
+// Add a new function for updating user details
+const updateUserSchema = z.object({
+  id: z.string().min(1, "User ID is required"),
+  name: z.string().optional(),
+  email: z.string().email("Invalid email address").optional(),
+  password: z.string().min(8, "Password must be at least 8 characters").optional(),
+  role: z.enum(["USER", "ADMIN"]).optional(),
+});
+
+async function _updateUser(data: z.infer<typeof updateUserSchema>) {
+  const updateData: any = {};
+  
+  if (data.name !== undefined) updateData.name = data.name;
+  if (data.email !== undefined) updateData.email = data.email;
+  if (data.role !== undefined) updateData.role = data.role;
+  
+  // If password is provided, hash it
+  if (data.password) {
+    updateData.password = await bcrypt.hash(data.password, 10);
+  }
+  
+  if (Object.keys(updateData).length === 0) {
+    throw new Error("No data to update");
+  }
+  
+  const updatedUser = await db.user.update({
+    where: { id: data.id },
+    data: updateData,
+  });
+  
+  return updatedUser;
+}
+
+export async function updateUser(data: z.infer<typeof updateUserSchema>) {
+  return executeAction({
+    schema: updateUserSchema,
+    action: _updateUser,
+    data,
+    revalidate: ['/admin/daftar-admin', '/profil'],
+  });
+}

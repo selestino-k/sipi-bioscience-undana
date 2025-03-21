@@ -1,6 +1,6 @@
 "use client"
 
-import { signUp } from "@/lib/user-actions";
+import { createUserWithHashedPassword } from "@/lib/user-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -13,13 +13,43 @@ import { CheckCircle } from "lucide-react";
 const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSignUp = async (formData: FormData) => {
     setIsSubmitting(true);
+    setError(null);
     
     try {
-      const res = await signUp(formData);
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+      
+      // Validate inputs client-side first
+      if (!email || !password) {
+        setError("Email and password are required");
+        toast.error("Email and password are required");
+        setIsSubmitting(false);
+        return;
+      }
+      
+      if (password.length < 8) {
+        setError("Password must be at least 8 characters");
+        toast.error("Password must be at least 8 characters");
+        setIsSubmitting(false);
+        return;
+      }
+      
+      console.log("Submitting sign-up form with email:", email);
+      
+      const userData = {
+        email,
+        password,
+        name: email.split('@')[0], // Use part of email as name
+        role: "USER"
+      };
+      
+      const res = await createUserWithHashedPassword(userData);
+      console.log("Sign-up response:", res);
       
       if (res.success) {
         setShowSuccess(true);
@@ -30,11 +60,13 @@ const Page = () => {
           router.push("/sign-in");
         }, 2000);
       } else {
-        toast.error(res.message || "Gagal mendaftar. Silakan coba lagi.");
+        setError(res.error || "Gagal mendaftar. Silakan coba lagi.");
+        toast.error(res.error || "Gagal mendaftar. Silakan coba lagi.");
       }
     } catch (error) {
+      console.error("Sign-up error:", error);
+      setError("Terjadi kesalahan. Silakan coba lagi.");
       toast.error("Terjadi kesalahan. Silakan coba lagi.");
-      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -50,6 +82,14 @@ const Page = () => {
             <CheckCircle className="h-4 w-4 text-green-600" />
             <AlertDescription className="text-green-800">
               Pendaftaran berhasil! Kembali ke halaman login...
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        {error && (
+          <Alert variant="destructive">
+            <AlertDescription>
+              {error}
             </AlertDescription>
           </Alert>
         )}
@@ -71,14 +111,6 @@ const Page = () => {
           action={handleSignUp}
         >
           <Input
-            name="nama"
-            placeholder="Nama Lengkap"
-            type="name"
-            required
-            autoComplete="name"
-            disabled={isSubmitting || showSuccess}
-          />
-          <Input
             name="email"
             placeholder="Email"
             type="email"
@@ -91,6 +123,7 @@ const Page = () => {
             placeholder="Password"
             type="password"
             required
+            minLength={8}
             autoComplete="new-password"
             disabled={isSubmitting || showSuccess}
           />

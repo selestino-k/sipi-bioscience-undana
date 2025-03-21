@@ -41,13 +41,13 @@ export function SignOut() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+          <AlertDialogTitle>Apakah anda yakin untuk Log Out?</AlertDialogTitle>
           <AlertDialogDescription>
-            You will need to log in again to access your account.
+            Anda perlu Log In lagi nanti untuk mengakses sistem.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoggingOut}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoggingOut}>Batal</AlertDialogCancel>
           <Button 
             variant="destructive" 
             onClick={handleSignOut}
