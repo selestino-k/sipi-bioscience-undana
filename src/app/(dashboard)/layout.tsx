@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import NavBar from "@/components/navbar";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Sistem Peminjaman Lab Bioscience",
@@ -18,9 +19,11 @@ export default async function DashboardLayout({
 
         <main className="gap-3 w-full">
         <NavBar/>
+        <SessionProvider>
             <div className="flex w-full min-h-screen items-center justify-center">
                 {children}
             </div>
+        </SessionProvider>
         </main>
 
     

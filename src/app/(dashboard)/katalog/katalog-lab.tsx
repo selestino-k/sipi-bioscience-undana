@@ -151,7 +151,7 @@ function PinjamButton({
   // Remove console log for better performance
   // Replace hardcoded user with session data
   const user = session?.user ? {
-      id: session.user?.id || "cm7u88hba0000p02of1v28pu4", 
+      id: session.user.id || "", 
       email: session.user.email || ""
   } : null
 

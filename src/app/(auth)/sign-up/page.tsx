@@ -1,9 +1,8 @@
 "use client"
 
-import { signUp } from "@/lib/rent-actions";
+import { signUp } from "@/lib/user-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -31,7 +30,7 @@ const Page = () => {
           router.push("/sign-in");
         }, 2000);
       } else {
-        toast.error(res.error || "Gagal mendaftar. Silakan coba lagi.");
+        toast.error(res.message || "Gagal mendaftar. Silakan coba lagi.");
       }
     } catch (error) {
       toast.error("Terjadi kesalahan. Silakan coba lagi.");
@@ -71,6 +70,14 @@ const Page = () => {
           className="space-y-4"
           action={handleSignUp}
         >
+          <Input
+            name="nama"
+            placeholder="Nama Lengkap"
+            type="name"
+            required
+            autoComplete="name"
+            disabled={isSubmitting || showSuccess}
+          />
           <Input
             name="email"
             placeholder="Email"

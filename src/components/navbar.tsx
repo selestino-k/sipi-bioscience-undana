@@ -8,7 +8,7 @@ import { Microscope } from "lucide-react"
 import { auth } from "@/lib/auth";
 import { UserDropdown } from "./user-dropdown";
 import { NavDrawer} from "./navbar-drawer";
-import { NavDropdown } from "./nav-inv-dropdown";
+import { NavDropdown } from "./nav-dropdown";
 
 
 export default async function NavBar() {
