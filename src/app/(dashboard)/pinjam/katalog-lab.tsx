@@ -95,7 +95,7 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
 
         {sortedCatalogue.length === 0 ? (
           <div className="text-center py-10">
-            <p className="text-lg text-gray-500">No instruments found matching your search.</p>
+            <p className="text-lg text-gray-500">Tidak ada instrumen atau alat yang ditemukan.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

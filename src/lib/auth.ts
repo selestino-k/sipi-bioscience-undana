@@ -7,6 +7,8 @@ import db from "@/lib/db/db";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from 'next-auth/providers/google';
+import EmailProvider from "next-auth/providers/nodemailer";
+
 import { schema } from "@/lib/schema";
 
 const adapter = PrismaAdapter(db);
@@ -50,6 +52,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         return user;
       },
+    }),
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
     }),
   ],
   callbacks: {

@@ -1,51 +1,80 @@
 "use server";
 
-import { PrismaClient } from '@prisma/client'
+import { z } from "zod";
+import bcrypt from "bcryptjs";
+import db from "@/lib/db/db";
+import { executeAction } from "@/lib/executeAction";
 
-import { auth } from "@/lib/auth";
-import { hash } from "bcryptjs";
-import { revalidatePath } from "next/cache";
+// Validation schema
+const adminSchema = z.object({
+  name: z.string().min(1, "Nama wajib diisi"),
+  email: z.string()
+    .min(1, "Email wajib diisi")
+    .email("Format email tidak valid")
+    .refine(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), {
+      message: "Format email tidak valid"
+    }),
+  password: z.string()
+    .min(8, "Password minimal 8 karakter")
+    .refine(password => /[A-Z]/.test(password), {
+      message: "Password harus memiliki minimal 1 huruf kapital"
+    })
+    .refine(password => /[0-9]/.test(password), {
+      message: "Password harus memiliki minimal 1 angka"
+    }),
+  role: z.enum(["ADMIN", "USER"], {
+    required_error: "Role wajib dipilih",
+  }),
+});
 
-const prisma = new PrismaClient()
+type AdminInput = z.infer<typeof adminSchema>;
 
-
-export async function createAdmin({ 
-  email, 
-  name, 
-  password 
-}: { 
-  email: string; 
-  name: string; 
-  password: string;
-}) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    throw new Error("Unauthorized");
-  }
-  
-  // Check if the current user is an admin
-  const currentUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
+async function _createAdmin(data: AdminInput) {
+  console.log("Creating admin with data:", {
+    name: data.name,
+    email: data.email,
+    role: data.role
   });
   
-  if (currentUser?.role !== "ADMIN") {
-    throw new Error("Only admins can create other admins");
-  }
-  
-  // Hash the password
-  const hashedPassword = await hash(password, 10);
-  
-  // Create the admin user
-  await prisma.user.create({
-    data: {
-      email,
-      name,
-      password: hashedPassword,
-      role: "ADMIN",
-      userId: `local_${Date.now()}`,
-    },
+  // Check if user with this email already exists
+  const existingUser = await db.user.findUnique({
+    where: { email: data.email },
   });
   
-  revalidatePath("/admin/create-admin");
+  if (existingUser) {
+    console.log("User already exists with email:", data.email);
+    throw new Error("User dengan email ini sudah terdaftar");
+  }
+  
+  // Hash the password with bcrypt
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(data.password, salt);
+  console.log("Password hashed successfully");
+  
+  try {
+    // Create user with hashed password
+    const user = await db.user.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: hashedPassword,
+        role: data.role,
+      },
+    });
+    
+    console.log("Admin created successfully:", user.id);
+    return user;
+  } catch (error) {
+    console.error("Database error creating user:", error);
+    throw error;
+  }
+}
+
+export async function createAdmin(data: AdminInput) {
+  return executeAction({
+    schema: adminSchema,
+    action: _createAdmin,
+    data,
+    revalidate: ['/admin/daftar-admin'],
+  });
 }

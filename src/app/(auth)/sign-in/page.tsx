@@ -118,6 +118,9 @@ const Page = async ({ searchParams }: { searchParams: { error?: string } }) => {
           <Button asChild variant="link">
             <Link href="/sign-up">Tidak memiliki akun? Daftar di sini</Link>
           </Button>
+          <Button asChild variant="link">
+            <Link href="forgot-password">Lupa Password?</Link>
+          </Button>
         </div>
       </main>
     </div>

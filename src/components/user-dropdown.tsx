@@ -35,7 +35,7 @@ export function UserDropdown({
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="secondary">
-            <Avatar className="h-8 w-8 rounded-lg mr-2">
+            <Avatar className="h-8 w-4 rounded-lg mr-2">
                 <AvatarFallback className="rounded-lg"><User/></AvatarFallback>
             </Avatar>
             {user.name}

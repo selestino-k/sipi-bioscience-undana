@@ -32,9 +32,18 @@ const Page = () => {
         return;
       }
       
+      // Email regex validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setError("Format email tidak valid");
+        toast.error("Format email tidak valid");
+        setIsSubmitting(false);
+        return;
+      }
+      
       if (password.length < 8) {
-        setError("Password must be at least 8 characters");
-        toast.error("Password must be at least 8 characters");
+        setError("Password harus minimal 8 karakter");
+        toast.error("Password harus minimal 8 karakter");
         setIsSubmitting(false);
         return;
       }
@@ -110,23 +119,39 @@ const Page = () => {
           className="space-y-4"
           action={handleSignUp}
         >
-          <Input
-            name="email"
-            placeholder="Email"
-            type="email"
-            required
-            autoComplete="email"
-            disabled={isSubmitting || showSuccess}
-          />
-          <Input
-            name="password"
-            placeholder="Password"
-            type="password"
-            required
-            minLength={8}
-            autoComplete="new-password"
-            disabled={isSubmitting || showSuccess}
-          />
+          <div className="space-y-1">
+            <Input
+              name="email"
+              placeholder="Email"
+              type="email"
+              required
+              autoComplete="email"
+              disabled={isSubmitting || showSuccess}
+              className="cursor-text"
+              style={{ caretColor: 'auto' }}
+              pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+              title="Please enter a valid email address"
+            />
+            <p className="text-xs text-muted-foreground">
+              Gunakan email aktif untuk proses verifikasi
+            </p>
+          </div>
+          <div className="space-y-1">
+            <Input
+              name="password"
+              placeholder="Password"
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              disabled={isSubmitting || showSuccess}
+              className="cursor-text"
+              style={{ caretColor: 'auto' }}
+            />
+            <p className="text-xs text-muted-foreground">
+              Password minimal 8 karakter
+            </p>
+          </div>
           <Button 
             className="w-full" 
             type="submit" 

@@ -10,7 +10,6 @@ import { UserDropdown } from "./user-dropdown";
 import { NavDrawer} from "./navbar-drawer";
 import { NavDropdown } from "./nav-dropdown";
 
-
 export default async function NavBar() {
   const session = await auth();
     // If we have a session with user data
@@ -52,7 +51,7 @@ export default async function NavBar() {
           
           {/* Mobile menu button and user dropdown */}
           <div className="flex md:hidden items-center gap-2">
-            <NavDrawer />
+            <NavDrawer user={userData}/>
           </div>
         </div>
       </header>

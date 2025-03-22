@@ -74,6 +74,13 @@ export function NavUser({
               </DropdownMenuItem>
             </div>
           </Link>
+          <Link href="/" passHref>
+            <div onClick={handleItemClick} className="w-full">
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                Pergi ke Web SI Peminjaman
+              </DropdownMenuItem>
+            </div>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <div onClick={handleItemClick} className="w-full">

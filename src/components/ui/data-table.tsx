@@ -95,8 +95,8 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results found.
+                <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
+                 Tidak ada hasil ditemukan.
                 </TableCell>
               </TableRow>
             )}

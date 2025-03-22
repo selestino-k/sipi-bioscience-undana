@@ -11,10 +11,17 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
-import { Armchair, Calculator, Ellipsis, FlaskConical, Pipette, Plus, Home } from "lucide-react"
+import { Armchair, Calculator, Ellipsis, FlaskConical, Pipette, Plus, Home, User,Settings } from "lucide-react"
 import { SignOut } from "./sign-out"
 
-export function NavDrawer() {
+export function NavDrawer({
+  user,
+}: {
+  user: {
+    name: string
+    email: string
+  }
+}) {
   const [open, setOpen] = React.useState(false)
   const router = useRouter()
 
@@ -77,6 +84,22 @@ return (
             onClick={() => handleNavigation("/daftar-barang")}
           >
             <Armchair/>Daftar Barang
+          </Button>
+          <DrawerHeader className="text-left">
+          <DrawerTitle className="text-black">Profil</DrawerTitle>
+        </DrawerHeader>
+          <Button 
+            variant="outline" 
+            className="w-full justify-start mb-2"
+          >
+            <User/>{user.name} ({user.email})
+          </Button>
+          <Button 
+            variant="outline" 
+            className="w-full justify-start mb-2"
+            onClick={() => handleNavigation("/profil")}
+          >
+            <Settings/>Pengaturan Profil
           </Button>
       <DrawerFooter className="pt-2">
         <SignOut/>
