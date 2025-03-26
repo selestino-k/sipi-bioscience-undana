@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { updateInstrument } from "@/lib/actions/admin/instrument-actions"
+import { updateInstrumen } from "@/lib/actions/admin/instrument-actions"
 import { Instrumen } from "./columns"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
@@ -44,17 +44,17 @@ const instrumentFormSchema = z.object({
 
 type EditFormValues = z.infer<typeof instrumentFormSchema>;
 
-interface EditInstrumentDialogProps {
-  instrument: Instrumen;
+interface EditInstrumenDialogProps {
+  instrumen: Instrumen;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function EditInstrumentDialog({
-  instrument,
+export function EditInstrumenDialog({
+  instrumen,
   isOpen,
   onOpenChange,
-}: EditInstrumentDialogProps) {
+}: EditInstrumenDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -62,11 +62,11 @@ export function EditInstrumentDialog({
   const form = useForm<EditFormValues>({
     resolver: zodResolver(instrumentFormSchema),
     defaultValues: {
-      nama_instrumen: instrument.nama_instrumen,
-      merk_instrumen: instrument.merk_instrumen,
-      tipe_instrumen: instrument.tipe_instrumen,
-      layanan: instrument.layanan,
-      status: instrument.status,
+      nama_instrumen: instrumen.nama_instrumen,
+      merk_instrumen: instrumen.merk_instrumen,
+      tipe_instrumen: instrumen.tipe_instrumen,
+      layanan: instrumen.layanan,
+      status: instrumen.status,
     },
   });
 
@@ -74,7 +74,7 @@ export function EditInstrumentDialog({
     setIsSubmitting(true);
     
     try {
-      await updateInstrument(instrument.instrument_id, values);
+      await updateInstrumen(instrumen.instrumen_id, values);
       toast.success("Instrumen berhasil diperbarui");
       onOpenChange(false);
       

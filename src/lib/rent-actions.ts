@@ -4,8 +4,8 @@ import db from "@/lib/db/db";
 import { revalidatePath } from "next/cache";
 
 
-export async function rentInstrument(data: {
-  instrument_id: number
+export async function rentInstrumen(data: {
+  instrumen_id: number
   user_id: string
   purpose: string
   start_date: Date

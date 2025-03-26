@@ -12,29 +12,29 @@ import {
   SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { RentInstrumentDialog } from "./rent-dialog"
+import { RentInstrumenDialog } from "./rent-dialog"
 
 // Product type definition
 export type Katalog ={
-  instrument_id: number
+  instrumen_id: number
   merk_instrumen: string
   nama_instrumen: string
   tipe_instrumen: string
   layanan: string
   status: string
-  image: string
+  image_url: string
 }
 
 // Default catalog in case data isn't passed
 const defaultCatalog: Katalog[] = [
   {
-    instrument_id: 1,
+    instrumen_id: 1,
     merk_instrumen: "Null",
     nama_instrumen: "Null",  
     tipe_instrumen: "Null",
     layanan: "Null",
     status: "NULL",
-    image: "/placeholder.svg",
+    image_url: "Null",
   }
 ]
 
@@ -100,10 +100,10 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {sortedCatalogue.map((item) => (
-              <div key={item.instrument_id} className="bg-background rounded-lg overflow-hidden border">
+              <div key={item.instrumen_id} className="bg-background rounded-lg overflow-hidden border">
                 <div className="aspect-square relative">
                   <Image 
-                    src={item.image} 
+                    src={item.image_url || "/placeholder.svg"} 
                     alt={item.nama_instrumen} 
                     fill 
                     className="object-cover"
@@ -123,7 +123,7 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
                       {item.status}
                     </span>
                     <PinjamButton 
-                      instrument={item} 
+                      instrumen={item} 
                       disabled={item.status !== 'TERSEDIA'} 
                     />
                   </div>
@@ -139,10 +139,10 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
 
 // Updated PinjamButton component that accepts instrument data
 function PinjamButton({ 
-  instrument, 
+  instrumen, 
   disabled = false 
 }: { 
-  instrument: Katalog, 
+  instrumen: Katalog, 
   disabled?: boolean 
 }) {
   const [isRentDialogOpen, setIsRentDialogOpen] = useState(false)
@@ -164,8 +164,8 @@ function PinjamButton({
         Pinjam
       </Button>
       {user && (
-        <RentInstrumentDialog 
-          instrument={instrument}
+        <RentInstrumenDialog 
+          instrumen={instrumen}
           isOpen={isRentDialogOpen} 
           onOpenChange={setIsRentDialogOpen} 
           user={user}

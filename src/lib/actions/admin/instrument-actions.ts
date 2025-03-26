@@ -5,13 +5,13 @@ import { revalidatePath } from "next/cache";
 
 /**
  /* Deletes an instrument
- * @param instrumentId The ID of the instrument to delete
+ * @param instrumenId The ID of the instrument to delete
  */
-export async function deleteInstrument(instrumentId: number) {
+export async function deleteInstrumen(instrumenId: number) {
   try {
     // Check if the instrument has any active rentals
-    const instrument = await db.instrumen.findUnique({
-      where: { instrument_id: instrumentId },
+    const instrumen = await db.instrumen.findUnique({
+      where: { instrumen_id: instrumenId },
       include: {
         rentals: {
           where: {
@@ -23,18 +23,18 @@ export async function deleteInstrument(instrumentId: number) {
       }
     });
 
-    if (!instrument) {
+    if (!instrumen) {
       throw new Error("Instrument not found");
     }
 
     // Don't allow deletion if instrument has active rentals
-    if (instrument.rentals.length > 0) {
+    if (instrumen.rentals.length > 0) {
       throw new Error("Cannot delete instrument with active rentals");
     }
 
     // Delete the instrument
     await db.instrumen.delete({
-      where: { instrument_id: instrumentId }
+      where: { instrumen_id: instrumenId }
     });
 
     // Revalidate paths to update UI
@@ -47,7 +47,7 @@ export async function deleteInstrument(instrumentId: number) {
   }
 }
 
-export async function updateInstrument(instrumentId: number, data: {
+export async function updateInstrumen(instrumenId: number, data: {
   nama_instrumen?: string;
   merk_instrumen?: string;
   tipe_instrumen?: string;
@@ -56,8 +56,8 @@ export async function updateInstrument(instrumentId: number, data: {
 }) {
   try {
     // Directly update the instrument using Prisma
-    const updatedInstrument = await db.instrumen.update({
-      where: { instrument_id: instrumentId },
+    const updatedInstrumen = await db.instrumen.update({
+      where: { instrumen_id: instrumenId },
       data: {
         nama_instrumen: data.nama_instrumen,
         merk_instrumen: data.merk_instrumen,
@@ -70,14 +70,14 @@ export async function updateInstrument(instrumentId: number, data: {
     // Revalidate paths to update UI
     revalidatePath("/admin/daftar-instrumen");
     
-    return { success: true, instrument: updatedInstrument };
+    return { success: true, instrumen: updatedInstrumen };
   } catch (error) {
     console.error("Error updating instrument:", error);
     throw error;
   }
 }
 
-export async function createInstrument(data: {
+export async function createInstrumen(data: {
   nama_instrumen: string;
   merk_instrumen: string;
   tipe_instrumen: string;
@@ -86,7 +86,7 @@ export async function createInstrument(data: {
 }) {
   try {
     // Create a new instrument using Prisma
-    const newInstrument = await db.instrumen.create({
+    const newInstrumen = await db.instrumen.create({
       data: {
         nama_instrumen: data.nama_instrumen,
         merk_instrumen: data.merk_instrumen,
@@ -99,7 +99,7 @@ export async function createInstrument(data: {
     // Revalidate paths to update UI
     revalidatePath("/admin/daftar-instrumen");
     
-    return { success: true, instrument: newInstrument };
+    return { success: true, instrumen: newInstrumen };
   } catch (error) {
     console.error("Error creating instrument:", error);
     throw error;

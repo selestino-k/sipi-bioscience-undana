@@ -24,7 +24,7 @@ enum UserRole {
 }
 
 model Instrumen {
-  instrument_id       Int         @id @default(autoincrement())
+  instrumen_id        Int         @id @default(autoincrement())
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   nama_instrumen      String      @db.VarChar(255)
@@ -32,6 +32,8 @@ model Instrumen {
   tipe_instrumen      String      @db.VarChar(255)
   layanan             String      @db.VarChar(255)
   status              String      @default("PENDING") // Custom boolean-like field
+  image_url           String?   // Add this field for storing image URLs
+
   // Add this line to connect to rentals
   rentals             Rental[]  
 }
@@ -141,8 +143,8 @@ model Authenticator {
 
 model Rental {
   id                Int      @id @default(autoincrement())
-  instrument_id     Int
-  instrument        Instrumen @relation(fields: [instrument_id], references: [instrument_id])
+  instrumen_id     Int
+  instrumen         Instrumen @relation(fields: [instrumen_id], references: [instrumen_id])
   user_id           String
   user              User     @relation(fields: [user_id], references: [id])
   purpose           String

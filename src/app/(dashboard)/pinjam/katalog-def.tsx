@@ -8,20 +8,21 @@ export async function getCatalogue() {
     // Fetch instruments data from Prisma DB
     const instruments = await db.instrumen.findMany({
       select: {
-        instrument_id: true,
+        instrumen_id: true,
         merk_instrumen: true,
         nama_instrumen: true,
         tipe_instrumen: true,
         layanan: true,
         status: true,
+        image_url: true,
       },
       // Optional: Add any filters you need
       // where: { ... }
     });
     
     // Map to the expected format
-    return instruments.map(instrument => ({
-      ...instrument,
+    return instruments.map(instrumen => ({
+      ...instrumen,
       // Handle missing image field
       image:  "/placeholder.svg"
     }));

@@ -33,7 +33,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { rentInstrument } from "@/lib/rent-actions"
+import { rentInstrumen } from "@/lib/rent-actions"
 import { Katalog} from "./katalog-lab"
 import { toast } from "sonner"
 
@@ -45,8 +45,8 @@ const rentFormSchema = z.object({
 
 type RentFormValues = z.infer<typeof rentFormSchema>
 
-interface RentInstrumentDialogProps {
-  instrument: Katalog
+interface RentInstrumenDialogProps {
+  instrumen: Katalog
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   user: {
@@ -55,12 +55,12 @@ interface RentInstrumentDialogProps {
   } | null;
 }
 
-export function RentInstrumentDialog({ 
-  instrument, 
+export function RentInstrumenDialog({ 
+  instrumen, 
   isOpen, 
   onOpenChange,
   user
-}: RentInstrumentDialogProps) 
+}: RentInstrumenDialogProps) 
 {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter();
@@ -87,8 +87,8 @@ export function RentInstrumentDialog({
     }
     
     try {
-      await rentInstrument({
-        instrument_id: instrument.instrument_id,
+      await rentInstrumen({
+        instrumen_id: instrumen.instrumen_id,
         purpose: values.purpose,
         start_date: values.start_date,
         end_date: values.end_date,
@@ -114,7 +114,7 @@ export function RentInstrumentDialog({
         <DialogHeader>
           <DialogTitle>Gunakan Instrumen</DialogTitle>
           <DialogDescription>
-            Isi detail berikut untuk menggunakan instrumen {instrument.nama_instrumen} ({instrument.merk_instrumen})
+            Isi detail berikut untuk menggunakan instrumen {instrumen.nama_instrumen} ({instrumen.merk_instrumen})
           </DialogDescription>
         </DialogHeader>
 

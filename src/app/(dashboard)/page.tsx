@@ -1,6 +1,9 @@
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import {Button} from "@/components/ui/button";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 const Page = async () => {const session = await auth();
     if (!session) redirect("/sign-in");
@@ -24,9 +27,14 @@ const Page = async () => {const session = await auth();
                 <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight">
                 Sistem Peminjaman Alat Laboratorium
                 </h2>   
-                <h3 className="text-lg">
+                <h3 className="text-lg mb-6">
                     UPT Lab Terpadu Universitas Nusa Cendana
                 </h3>            
+                <Button asChild className="primary sm:w-1/2 h-12 text-lg">
+                    <Link href="/pinjam">
+                     <Plus/>Mulai Pinjam
+                    </Link>
+                </Button>
             </main>
             
             <footer className="relative z-10 row-start-3 flex gap-6 flex-wrap items-center justify-center">

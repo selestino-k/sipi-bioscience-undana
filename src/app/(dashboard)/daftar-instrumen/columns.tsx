@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 
 // This type is used to define the shape of our data.
 export type Instrumen = {
-    instrument_id: number
+    instrumen_id: number
     merk_instrumen: string
     nama_instrumen: string
     tipe_instrumen: string
@@ -15,7 +15,7 @@ export type Instrumen = {
 
 export const columns: ColumnDef<Instrumen>[] = [
  {
-    accessorKey: "instrument_id",
+    accessorKey: "instrumen_id",
     header: "ID",
   },
   {

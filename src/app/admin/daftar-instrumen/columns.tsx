@@ -23,13 +23,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { deleteInstrument } from "@/lib/actions/admin/instrument-actions"
-import { EditInstrumentDialog } from "./edit-instrument-dialog"
+import { deleteInstrumen } from "@/lib/actions/admin/instrument-actions"
+import { EditInstrumenDialog } from "./edit-instrument-dialog"
 import { useRouter } from "next/navigation"
 
 // This type is used to define the shape of our data.
 export type Instrumen = {
-    instrument_id: number
+    instrumen_id: number
     merk_instrumen: string
     nama_instrumen: string
     tipe_instrumen: string
@@ -41,7 +41,7 @@ export type Instrumen = {
 
 export const columns: ColumnDef<Instrumen>[] = [
  {
-    accessorKey: "instrument_id",
+    accessorKey: "instrumen_id",
     header: "ID",
   },
   {
@@ -79,7 +79,7 @@ export const columns: ColumnDef<Instrumen>[] = [
     id: "actions",
     header: "Aksi",
     cell: ({ row }) => {
-      const instrument = row.original
+      const instrumen = row.original
       
       // Create a component to use React hooks
       function ActionCell() {
@@ -91,7 +91,7 @@ export const columns: ColumnDef<Instrumen>[] = [
         const handleDelete = async () => {
           try {
             setIsDeleting(true)
-            await deleteInstrument(instrument.instrument_id)
+            await deleteInstrumen(instrumen.instrumen_id)
             toast.success("Instrumen berhasil dihapus")
             // Use router.refresh() instead of window.location.reload()
             router.refresh()
@@ -116,7 +116,7 @@ export const columns: ColumnDef<Instrumen>[] = [
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
-                  <Link href={`/admin/daftar-instrumen/${instrument.instrument_id}/detail`}>
+                  <Link href={`/admin/daftar-instrumen/${instrumen.instrumen_id}/detail`}>
                     <Eye className="h-4 w-4 mr-2" />
                     Detail
                   </Link>
@@ -144,7 +144,7 @@ export const columns: ColumnDef<Instrumen>[] = [
                 <AlertDialogHeader>
                   <AlertDialogTitle>Apakah Anda yakin?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Tindakan ini akan menghapus instrumen "{instrument.nama_instrumen}" secara permanen dan tidak dapat dibatalkan.
+                    Tindakan ini akan menghapus instrumen &quot;{instrumen.nama_instrumen}&quot; secara permanen dan tidak dapat dibatalkan.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -164,8 +164,8 @@ export const columns: ColumnDef<Instrumen>[] = [
             </AlertDialog>
             
             {/* Edit Dialog */}
-            <EditInstrumentDialog 
-              instrument={instrument} 
+            <EditInstrumenDialog 
+              instrumen={instrumen} 
               isOpen={isEditDialogOpen} 
               onOpenChange={setIsEditDialogOpen} 
             />
