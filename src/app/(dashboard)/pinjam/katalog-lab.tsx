@@ -103,7 +103,7 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
               <div key={item.instrument_id} className="bg-background rounded-lg overflow-hidden border">
                 <div className="aspect-square relative">
                   <Image 
-                    src={item.image || "/placeholder.svg"} 
+                    src={item.image} 
                     alt={item.nama_instrumen} 
                     fill 
                     className="object-cover"

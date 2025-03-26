@@ -46,9 +46,8 @@ async function _createAdmin(data: AdminInput) {
     throw new Error("User dengan email ini sudah terdaftar");
   }
   
-  // Hash the password with bcrypt
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(data.password, salt);
+  // Hash the password with bcrypt, 10 round of salt
+  const hashedPassword = await bcrypt.hash(data.password, 10);
   console.log("Password hashed successfully");
   
   try {

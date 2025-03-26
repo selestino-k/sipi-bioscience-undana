@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/lib/prisma-query/data-instrumen-db.js", "src/app/api/auth/[...nextauth].js", "src/scripts/create-admin.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/lib/prisma-db-seeder-query/data-instrumen-db-seeder.js", "src/app/api/auth/[...nextauth].js", "src/scripts/create-admin.js"],
   "exclude": ["node_modules"]
 }
