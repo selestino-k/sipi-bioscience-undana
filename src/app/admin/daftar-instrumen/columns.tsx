@@ -1,7 +1,7 @@
 "use client"
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Pencil, Trash2, Eye } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash2, ImagePlay } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import Link from "next/link"
 import { useState } from "react"
 import { toast } from "sonner"
 import {
@@ -26,6 +25,8 @@ import {
 import { deleteInstrumen } from "@/lib/actions/admin/instrument-actions"
 import { EditInstrumenDialog } from "./edit-instrument-dialog"
 import { useRouter } from "next/navigation"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import Image from "next/image"
 
 // This type is used to define the shape of our data.
 export type Instrumen = {
@@ -37,6 +38,7 @@ export type Instrumen = {
     layanan: string
     status: string
     updatedAt: Date
+    image_url: string | null
 }
 
 export const columns: ColumnDef<Instrumen>[] = [
@@ -45,12 +47,12 @@ export const columns: ColumnDef<Instrumen>[] = [
     header: "ID",
   },
   {
-    accessorKey: "merk_instrumen",
-    header: "Merk",
-  },
-  {
     accessorKey: "nama_instrumen",
     header: "Nama",
+  },
+  {
+    accessorKey: "merk_instrumen",
+    header: "Merk",
   },
   {
     accessorKey: "tipe_instrumen",
@@ -84,6 +86,7 @@ export const columns: ColumnDef<Instrumen>[] = [
       // Create a component to use React hooks
       function ActionCell() {
         const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+        const [showImagePreview, setShowImagePreview] = useState(false);
         const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
         const [isDeleting, setIsDeleting] = useState(false)
         const router = useRouter();
@@ -115,12 +118,12 @@ export const columns: ColumnDef<Instrumen>[] = [
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link href={`/admin/daftar-instrumen/${instrumen.instrumen_id}/detail`}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Detail
-                  </Link>
-                </DropdownMenuItem>
+                {instrumen.image_url && (
+                  <DropdownMenuItem onClick={() => setShowImagePreview(true)}>
+                    <ImagePlay className="h-4 w-4 mr-2" />
+                  Lihat Gambar
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem 
                   onClick={() => setIsEditDialogOpen(true)}
                 >
@@ -169,6 +172,26 @@ export const columns: ColumnDef<Instrumen>[] = [
               isOpen={isEditDialogOpen} 
               onOpenChange={setIsEditDialogOpen} 
             />
+            {/* Simple Image Preview Dialog */}
+            {instrumen.image_url && (
+              <Dialog open={showImagePreview} onOpenChange={setShowImagePreview}>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>{instrumen.nama_instrumen}</DialogTitle>
+                  </DialogHeader>
+                  <div className="relative aspect-square w-full">
+                    <Image
+                      src={instrumen.image_url}
+                      alt={instrumen.nama_instrumen}
+                      fill
+                      style={{ objectFit: "contain" }}
+                      sizes="(max-width: 768px) 100vw, 500px"
+                      className="bg-gray-50"
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
+            )}
           </>
         )
       }

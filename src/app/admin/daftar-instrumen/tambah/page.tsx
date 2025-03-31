@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { createInstrument } from "@/lib/actions/admin/instrument-actions"
+import { createInstrumen } from "@/lib/actions/admin/instrument-actions"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import {
@@ -25,6 +25,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ImageUpload } from "@/components/admin/image-upload";
+
 
 // Form validation schema
 const instrumentFormSchema = z.object({
@@ -33,6 +35,7 @@ const instrumentFormSchema = z.object({
   tipe_instrumen: z.string().min(1, { message: "Tipe instrumen wajib diisi" }),
   layanan: z.string().min(1, { message: "Layanan wajib diisi" }),
   status: z.string().min(1, { message: "Status wajib diisi" }),
+  image_url: z.string().optional(),
 });
 
 type AddFormValues = z.infer<typeof instrumentFormSchema>;
@@ -50,14 +53,18 @@ export default function TambahInstrumenPage() {
       tipe_instrumen: "",
       layanan: "",
       status: "TERSEDIA",
+      image_url: "",
     },
   });
+
+  
+  
 
   async function onSubmit(values: AddFormValues) {
     setIsSubmitting(true);
     
     try {
-      await createInstrument(values);
+      await createInstrumen(values);
       toast.success("Instrumen berhasil ditambahkan");
       
       // Navigate back to the instrument list
@@ -91,7 +98,12 @@ export default function TambahInstrumenPage() {
                     <FormItem>
                       <FormLabel>Nama Instrumen</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nama instrumen" {...field} />
+                        <Input 
+                          placeholder="Nama instrumen" 
+                          {...field} 
+                          className="cursor-text"
+                          style={{ caretColor: 'auto' }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -104,7 +116,12 @@ export default function TambahInstrumenPage() {
                     <FormItem>
                       <FormLabel>Merk</FormLabel>
                       <FormControl>
-                        <Input placeholder="Merk instrumen" {...field} />
+                        <Input 
+                          placeholder="Merk instrumen" 
+                          {...field} 
+                          className="cursor-text"
+                          style={{ caretColor: 'auto' }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -117,7 +134,12 @@ export default function TambahInstrumenPage() {
                     <FormItem>
                       <FormLabel>Tipe</FormLabel>
                       <FormControl>
-                        <Input placeholder="Tipe instrumen" {...field} />
+                        <Input 
+                          placeholder="Tipe instrumen" 
+                          {...field} 
+                          className="cursor-text"
+                          style={{ caretColor: 'auto' }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -130,7 +152,12 @@ export default function TambahInstrumenPage() {
                     <FormItem>
                       <FormLabel>Layanan</FormLabel>
                       <FormControl>
-                        <Input placeholder="Layanan" {...field} />
+                        <Input 
+                          placeholder="Layanan" 
+                          {...field} 
+                          className="cursor-text"
+                          style={{ caretColor: 'auto' }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -158,6 +185,25 @@ export default function TambahInstrumenPage() {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="image_url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gambar Instrumen</FormLabel>
+                      <FormControl>
+                        <ImageUpload
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                          resourceType="instrumen"
+                          description="Upload gambar instrumen untuk ditampilkan di halaman katalog"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
                 <div className="flex justify-end space-x-4 pt-4">
                   <Button 
                     type="button" 

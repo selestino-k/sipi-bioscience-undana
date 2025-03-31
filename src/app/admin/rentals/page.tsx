@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'; // This ensures the page is not statical
 async function fetchRentals(): Promise<Rental[]> {
   return prisma.rental.findMany({
     include: {
-      instrument: true,
+      instrumen: true,
       user: true,
     },
   });
@@ -38,8 +38,8 @@ export default async function RentalsPage({
   const transformedRentals = rentals.map(rental => ({
     ...rental,
     // Add flattened instrument fields
-    instrument_name: rental.instrument?.nama_instrumen || null,
-    instrument_merk: rental.instrument?.merk_instrumen || null,
+    instrument_name: rental.instrumen?.nama_instrumen || null,
+    instrument_merk: rental.instrumen?.merk_instrumen || null,
     // Add flattened user fields
     user_name: rental.user?.name || null,
     user_email: rental.user?.email || null,

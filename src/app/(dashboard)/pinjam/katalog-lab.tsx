@@ -80,13 +80,13 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
             />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm">Sort by:</span>
+            <span className="text-sm">Urutkan:</span>
             <Select value={sortOption} onValueChange={setSortOption}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Featured" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="name">Nama</SelectItem>
                 <SelectItem value="status">Status</SelectItem>
               </SelectContent>
             </Select>

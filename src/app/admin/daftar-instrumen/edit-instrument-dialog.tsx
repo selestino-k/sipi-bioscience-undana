@@ -32,7 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
+import { ImageUpload } from "@/components/admin/image-upload"
 // Form validation schema
 const instrumentFormSchema = z.object({
   nama_instrumen: z.string().min(1, { message: "Nama instrumen wajib diisi" }),
@@ -40,6 +40,7 @@ const instrumentFormSchema = z.object({
   tipe_instrumen: z.string().min(1, { message: "Tipe instrumen wajib diisi" }),
   layanan: z.string().min(1, { message: "Layanan wajib diisi" }),
   status: z.string().min(1, { message: "Status wajib diisi" }),
+  image_url: z.string().optional(),
 });
 
 type EditFormValues = z.infer<typeof instrumentFormSchema>;
@@ -67,6 +68,7 @@ export function EditInstrumenDialog({
       tipe_instrumen: instrumen.tipe_instrumen,
       layanan: instrumen.layanan,
       status: instrumen.status,
+      image_url: instrumen.image_url || "", // Ensure this is a string
     },
   });
 
@@ -142,6 +144,24 @@ export function EditInstrumenDialog({
                   <FormLabel>Layanan</FormLabel>
                   <FormControl>
                     <Input placeholder="Layanan" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="image_url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gambar Instrumen</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                      resourceType="instrumen"
+                      description="Upload gambar instrumen untuk ditampilkan di halaman katalog"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

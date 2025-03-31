@@ -53,6 +53,7 @@ export async function updateInstrumen(instrumenId: number, data: {
   tipe_instrumen?: string;
   layanan?: string;
   status?: string;
+  image_url?: string; // Optional image URL
 }) {
   try {
     // Directly update the instrument using Prisma
@@ -63,7 +64,8 @@ export async function updateInstrumen(instrumenId: number, data: {
         merk_instrumen: data.merk_instrumen,
         tipe_instrumen: data.tipe_instrumen,
         layanan: data.layanan,
-        status: data.status
+        status: data.status,
+        image_url: data.image_url || null // Store the processed image URL
       }
     });
 
@@ -77,13 +79,17 @@ export async function updateInstrumen(instrumenId: number, data: {
   }
 }
 
+
 export async function createInstrumen(data: {
   nama_instrumen: string;
   merk_instrumen: string;
   tipe_instrumen: string;
   layanan: string;
   status: string;
+  image?: File; // Optional image file
+  image_url?: string; // Optional image URL
 }) {
+
   try {
     // Create a new instrument using Prisma
     const newInstrumen = await db.instrumen.create({
@@ -92,12 +98,15 @@ export async function createInstrumen(data: {
         merk_instrumen: data.merk_instrumen,
         tipe_instrumen: data.tipe_instrumen,
         layanan: data.layanan,
-        status: data.status
+        status: data.status,
+        image_url: data.image_url || null  // Store the processed image URL
       }
     });
 
     // Revalidate paths to update UI
     revalidatePath("/admin/daftar-instrumen");
+    revalidatePath("/katalog");
+
     
     return { success: true, instrumen: newInstrumen };
   } catch (error) {

@@ -53,7 +53,7 @@ export const columns: ColumnDef<Bahan>[] = [
   },
   {
     accessorKey: "updatedAt",
-    header: "Tanggal",
+    header: "Tanggal Pembaruan",
   },
   {
     accessorKey: "status",
