@@ -1,7 +1,5 @@
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { v4 as uuid } from "uuid";
-import { encode as defaultEncode } from "next-auth/jwt";
-import bcrypt from  "bcryptjs"
+import bcrypt from "bcryptjs";
 
 import db from "@/lib/db/db";
 import NextAuth from "next-auth";
@@ -59,15 +57,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, account, user }) {
+    async jwt({ token, user }) {
       // Add role to token if available from user
       if (user) {
         token.role = user.role;
         token.id = user.id;
-      }
-      
-      if (account?.provider === "credentials") {
-        token.credentials = true;
       }
       return token;
     },
@@ -80,36 +74,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     }
   },
-  jwt: {
-    encode: async function (params) {
-      if (params.token?.credentials) {
-        const sessionToken = uuid();
-
-        if (!params.token.sub) {
-          throw new Error("No user ID found in token");
-        }
-
-        const createdSession = await adapter?.createSession?.({
-          sessionToken: sessionToken,
-          userId: params.token.sub,
-          expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day session
-        });
-
-        if (!createdSession) {
-          throw new Error("Failed to create session");
-        }
-
-        return sessionToken;
-      }
-      return defaultEncode(params);
-    },
-  },
   pages: {
     signIn: '/sign-in',
     error: '/sign-in',
   },
   session: {
     strategy: "jwt",
+    maxAge: 24 * 60 * 60, // 24 hours in seconds
   },
+  secret: process.env.AUTH_SECRET,
 });
 

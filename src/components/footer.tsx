@@ -39,8 +39,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/pinjam" className="hover:text-primary hover:underline cursor-pointer">
-                  Pinjam Alat
+                <Link href="/daftar-alat" className="hover:text-primary hover:underline cursor-pointer">
+                  Inventaris Lab
                 </Link>
               </li>
               <li>

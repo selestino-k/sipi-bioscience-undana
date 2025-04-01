@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Sistem Peminjaman Lab Bioscience",
+  title: "Sistem Peminjaman dan Inventaris Lab Bioscience",
   description: "UPT Laboratorium Terpadu Universitas Nusa Cendana",
 };
 

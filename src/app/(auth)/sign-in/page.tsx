@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AlertCircle } from "lucide-react"; // Import AlertCircle icon
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"; // Import Alert components
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import "next-auth";
 
 declare module "next-auth" {
@@ -19,9 +19,17 @@ declare module "next-auth" {
   }
 }
 
-const Page = async ({ searchParams }: { searchParams: { error?: string } }) => {
+// Change to use a proper type for searchParams
+interface PageProps {
+  searchParams: {
+    error?: string;
+  };
+}
+
+const Page = async ({ searchParams }: PageProps) => {
   const session = await auth();
-  const error = searchParams.error;
+  // Use optional chaining to safely access the error property
+  const errorMessage = searchParams?.error;
   
   // Check if user is authenticated
   if (session) {
@@ -32,7 +40,6 @@ const Page = async ({ searchParams }: { searchParams: { error?: string } }) => {
       redirect("/"); // Regular users go to home page
     }
   }
-  
   
   return (
     <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -52,13 +59,13 @@ const Page = async ({ searchParams }: { searchParams: { error?: string } }) => {
           </div>
         </div>
 
-        {/* Display error message if exists */}
-        {error && (
+        {/* Display error message if exists - use errorMessage instead of error */}
+        {errorMessage && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Gagal Masuk</AlertTitle>
             <AlertDescription>
-              {error === "CredentialsSignin" 
+              {errorMessage === "CredentialsSignin" 
                 ? "Email atau password salah. Silakan coba lagi." 
                 : "Terjadi kesalahan saat login. Silakan coba lagi."}
             </AlertDescription>
