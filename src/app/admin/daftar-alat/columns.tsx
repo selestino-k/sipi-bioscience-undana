@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Pencil, Trash2, ImagePlay } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,16 +26,13 @@ import {
 import { deleteAlat } from "@/lib/actions/admin/alat-actions"
 import { EditAlatDialog } from "./edit-alat-dialog"
 import { useRouter } from "next/navigation"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import Image from "next/image"
 
 export type Alat = {
   alat_id: number
   nama_alat: string
   jumlah_alat: string
-  updatedAt: string
+  updatedAt: Date
   status: string
-  image_url: string | null
 }
 
 export const columns: ColumnDef<Alat>[] = [
@@ -78,7 +75,6 @@ export const columns: ColumnDef<Alat>[] = [
       // Create a component to use React hooks
       function ActionCell() {
         const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-        const [showImagePreview, setShowImagePreview] = useState(false);
         const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
         const [isDeleting, setIsDeleting] = useState(false)
         const router = useRouter();
@@ -110,12 +106,6 @@ export const columns: ColumnDef<Alat>[] = [
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                {alat.image_url && (
-                  <DropdownMenuItem onClick={() => setShowImagePreview(true)}>
-                    <ImagePlay className="h-4 w-4 mr-2" />
-                  Lihat Gambar
-                  </DropdownMenuItem>
-                )}
                 <DropdownMenuItem 
                   onClick={() => setIsEditDialogOpen(true)}
                 >
@@ -164,26 +154,6 @@ export const columns: ColumnDef<Alat>[] = [
               isOpen={isEditDialogOpen} 
               onOpenChange={setIsEditDialogOpen} 
             />
-            {/* Simple Image Preview Dialog */}
-            {alat.image_url && (
-              <Dialog open={showImagePreview} onOpenChange={setShowImagePreview}>
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>{alat.nama_alat}</DialogTitle>
-                  </DialogHeader>
-                  <div className="relative aspect-square w-full">
-                    <Image
-                      src={alat.image_url}
-                      alt={alat.nama_alat}
-                      fill
-                      style={{ objectFit: "contain" }}
-                      sizes="(max-width: 768px) 100vw, 500px"
-                      className="bg-gray-50"
-                    />
-                  </div>
-                </DialogContent>
-              </Dialog>
-            )}
           </>
         )
       }

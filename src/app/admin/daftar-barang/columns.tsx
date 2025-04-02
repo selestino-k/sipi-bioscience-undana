@@ -35,7 +35,7 @@ export type Barang={
     merk_barang: string
     nama_barang: string
     tipe_barang: string
-    jumlah_barang: number
+    jumlah_barang: string
 }
 
 export const columns: ColumnDef<Barang>[] = [

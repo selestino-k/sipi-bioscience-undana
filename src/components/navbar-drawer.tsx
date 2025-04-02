@@ -37,7 +37,7 @@ return (
     </DrawerTrigger>
     <DrawerContent className="pt-2">
       <DrawerHeader className="text-left">
-        <DrawerTitle className="text-black">Menu</DrawerTitle>
+        <DrawerTitle>Menu</DrawerTitle>
       </DrawerHeader>
       {/* Replace Link components with Buttons that handle navigation */}
         <Button 
@@ -55,7 +55,7 @@ return (
             <Plus/>Pinjam
           </Button>
         <DrawerHeader className="text-left">
-          <DrawerTitle className="text-black">Inventaris</DrawerTitle>
+          <DrawerTitle>Inventaris</DrawerTitle>
         </DrawerHeader>
           <Button 
             variant="outline" 
@@ -86,7 +86,7 @@ return (
             <Armchair/>Daftar Barang
           </Button>
           <DrawerHeader className="text-left">
-          <DrawerTitle className="text-black">Profil</DrawerTitle>
+          <DrawerTitle>Profil</DrawerTitle>
         </DrawerHeader>
           <Button 
             variant="outline" 

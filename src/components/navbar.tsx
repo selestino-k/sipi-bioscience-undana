@@ -9,6 +9,7 @@ import { auth } from "@/lib/auth";
 import { UserDropdown } from "./user-dropdown";
 import { NavDrawer} from "./navbar-drawer";
 import { NavDropdown } from "./nav-dropdown";
+import { ModeToggle } from "./dark-switch";
 
 export default async function NavBar() {
   const session = await auth();
@@ -43,9 +44,12 @@ export default async function NavBar() {
               <div className="flex items-center">
                 <NavDropdown />
               </div>
-              <div className="flex items-center">
+              <div className="flex items-center gap-x-4">
                 <UserDropdown user={userData} />
+                <ModeToggle />
+
               </div>
+              
             </nav>
           </div>
           

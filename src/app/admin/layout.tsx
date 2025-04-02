@@ -4,6 +4,9 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ModeToggle } from "@/components/dark-switch";
+
 export const metadata: Metadata = {
   title: "SI Inventaris Lab Bioscience",
   description: "Sistem Informasi Inventaris Lab Bioscience - UPT Laboratorium Terpadu Universitas Nusa Cendana",
@@ -21,18 +24,26 @@ export default async function AdminLayout({
   
   return (
     <SessionProvider>
-    <SidebarProvider>
-        <AdminAppSidebar/> 
-        <main className="gap-3 w-full">
-            <SidebarTrigger />
-            <div className="flex w-full min-h-screen items-center justify-items-center">
-                {children}
-            </div>
-        </main>
-    </SidebarProvider>
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+      >
+        <SidebarProvider>
+            <AdminAppSidebar/> 
+            <main className="gap-3 w-full">
+                <div className="flex items-center content-center justify-between p-4 bg-white dark:bg-gray-950 border-b shadow-sm">
+                <SidebarTrigger/>
+                <ModeToggle/>
+                </div>
+                <div className="flex w-full min-h-screen items-center justify-items-center">
+                  {children}
+                </div>
+            </main>
+        </SidebarProvider>
+      </ThemeProvider>
     </SessionProvider>
-    
-
   );
 }
 
