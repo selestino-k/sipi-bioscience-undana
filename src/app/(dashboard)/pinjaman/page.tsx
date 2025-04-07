@@ -60,6 +60,8 @@ export default async function RentalsPage({
     end_date: rental.end_date ? rental.end_date.toISOString() : null,
     createdAt: rental.createdAt ? rental.createdAt.toISOString() : null,
     updatedAt: rental.updatedAt ? rental.updatedAt.toISOString() : null,
+    // Access the image URL through the relation
+    image_url: rental.instrumen?.image_url || null,
   }));
 
   return (
@@ -71,7 +73,7 @@ export default async function RentalsPage({
               Pinjaman Saya
             </h2>
             <Button asChild>
-              <Link href="/katalog">
+              <Link href="/pinjam">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 Pinjam Instrumen
               </Link>
@@ -82,7 +84,7 @@ export default async function RentalsPage({
             <div className="text-center py-10 border rounded-lg">
               <p className="text-gray-500 mb-4">Anda belum memiliki peminjaman</p>
               <Button asChild>
-                <Link href="/katalog">Lihat Katalog Instrumen</Link>
+                <Link href="/pinjam">Lihat Katalog Instrumen</Link>
               </Button>
             </div>
           ) : (

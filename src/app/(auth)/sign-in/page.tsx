@@ -42,19 +42,25 @@ const Page = async ({ searchParams }: PageProps) => {
   }
   
   return (
-    <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="w-full max-w-sm mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-center mb-2">Selamat Datang</h1>
-        <h4 className="text-2sm text-center mb-2">Silahkan masuk untuk melanjutkan</h4>
+    <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-center min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
+      <main className="w-full max-w-md mx-auto space-y-6 row-start-2 p-8 rounded-xl shadow-lg border border-gray-50">
+        <div className="space-y-2 text-center">
+          <h1 className="text-2xl font-bold mb-1">Selamat Datang</h1>
+          <h2 className="text-lg">SI Peminjaman dan Inventaris</h2>
+          <p className="text-sm text-muted-foreground mt-2">Untuk melanjutkan, silakan masuk ke akun Anda.</p>
+        </div>
 
-        <span className="flex flex-col items-center"><GoogleSignIn /></span>
-        <div className="relative">
+        <div className="flex justify-center">
+          <GoogleSignIn />
+        </div>
+        
+        <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-background px-2 text-muted-foreground">
-             Atau masuk dengan Email dan Password
+            <span className="px-3 text-muted-foreground">
+              Atau masuk dengan Email dan Password
             </span>
           </div>
         </div>

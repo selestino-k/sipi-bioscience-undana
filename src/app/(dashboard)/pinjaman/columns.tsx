@@ -20,7 +20,7 @@ type Rental = {
   // Optional image_url field for the image preview
   createdAt: Date | string
   updatedAt: Date | string
-  instrument_id?: number
+  instrument_id?: string
   instrument_name?: string  // Add flattened instrument fields
   instrument_merk?: string
   user_name?: string        // Add flattened user fields
