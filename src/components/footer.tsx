@@ -12,11 +12,13 @@ export function Footer() {
             <div className="space-y-3 text-sm text-muted-foreground">
               <div className="flex items-start">
                 <MapPin className="mr-2 h-5 w-5 shrink-0 text-primary" />
+                <Link href="https://maps.app.goo.gl/arv4yaMvVRDdXUs27" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline cursor-pointer">
                 <span>
                   Jl. Adisucipto, Penfui
                   <br />
                   Kupang, NTT 85361
                 </span>
+                </Link>
               </div>
               <div className="flex items-center">
                 <Phone className="mr-2 h-5 w-5 text-primary" />

@@ -12,7 +12,7 @@ const Page = async () => {const session = await auth();
         <div>
             <div className="absolute inset-0 z-0">
                 <Image 
-                    src="/biosains.jpg" // Replace with your image path
+                    src="/background.jpg" // Replace with your image path
                     alt="Background"
                     fill
                     className="object-cover opacity-95" // 45% opacity

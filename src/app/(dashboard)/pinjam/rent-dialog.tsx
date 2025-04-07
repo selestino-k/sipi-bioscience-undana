@@ -51,7 +51,8 @@ interface RentInstrumenDialogProps {
   onOpenChange: (open: boolean) => void
   user: {
     id: string;
-    email?: string | null;
+    email: string;
+    name: string;
   } | null;
 }
 
