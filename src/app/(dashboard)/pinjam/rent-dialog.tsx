@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -51,8 +52,7 @@ interface RentInstrumenDialogProps {
   onOpenChange: (open: boolean) => void
   user: {
     id: string;
-    email: string;
-    name: string;
+    email?: string | null;
   } | null;
 }
 
@@ -76,8 +76,6 @@ export function RentInstrumenDialog({
     },
   })
 
-  
-
   async function onSubmit(values: RentFormValues) {
     setIsSubmitting(true)
     
@@ -94,6 +92,7 @@ export function RentInstrumenDialog({
         start_date: values.start_date,
         end_date: values.end_date,
         user_id: user.id,
+        image_url: instrumen.image_url || "", // Ensure image_url is passed correctly
       })
       toast.success("Sukses menggunakan instrumen")
       form.reset()
@@ -108,7 +107,6 @@ export function RentInstrumenDialog({
     }
   }
   
-  console.log("User in RentDialog:", user);
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
@@ -118,6 +116,49 @@ export function RentInstrumenDialog({
             Isi detail berikut untuk menggunakan instrumen {instrumen.nama_instrumen} ({instrumen.merk_instrumen})
           </DialogDescription>
         </DialogHeader>
+
+        {/* Instrument Image and Details Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          {/* Instrument Image */}
+          <div className="relative rounded-md overflow-hidden border h-[160px]">
+            {instrumen.image_url ? (
+              <Image
+                src={instrumen.image_url}
+                alt={instrumen.nama_instrumen}
+                fill
+                style={{ objectFit: "contain" }}
+                sizes="(max-width: 768px) 100vw, 250px"
+                className="bg-gray-50 p-2"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                <span className="text-gray-400 text-sm">No image available</span>
+              </div>
+            )}
+          </div>
+          
+          {/* Instrument Details */}
+          <div className="space-y-2">
+            <h3 className="font-medium text-base">{instrumen.nama_instrumen}</h3>
+            <div className="space-y-1 text-sm">
+              <p><span className="text-gray-500">Merk:</span> {instrumen.merk_instrumen}</p>
+              <p><span className="text-gray-500">Tipe:</span> {instrumen.tipe_instrumen}</p>
+              <p><span className="text-gray-500">Layanan:</span> {instrumen.layanan}</p>
+              <p>
+                <span className="text-gray-500">Status:</span>
+                <span className={`ml-1 px-2 py-0.5 rounded-full text-xs font-medium
+                  ${instrumen.status === 'TERSEDIA' ? 'bg-green-100 text-green-800' : 
+                  instrumen.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : 
+                  'bg-red-100 text-red-800'}`}>
+                  {instrumen.status}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t my-4"></div>
 
         {!user ? (
           <div className="text-center py-4">

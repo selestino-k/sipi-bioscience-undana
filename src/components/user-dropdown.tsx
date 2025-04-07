@@ -46,7 +46,14 @@ export function UserDropdown({
         <DropdownMenuItem disabled>{user.email}</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href="/profil" passHref>
+        <Link href="/pinjaman" passHref>
+            <div onClick={handleItemClick} className="w-full">
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                Pinjaman Saya
+              </DropdownMenuItem>
+            </div>
+          </Link>
+          <Link href="/pengaturan-akun" passHref>
             <div onClick={handleItemClick} className="w-full">
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                 Pengaturan Akun

@@ -2,26 +2,12 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { MoreHorizontal } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
-import { 
-  approveRental, 
-  rejectRental, 
-  completeRental 
-} from "@/lib/rent-actions"
 import { useState } from "react"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
 import Image from "next/image"
+
+
 
 // Define the type for the rental data
 type Rental = {
@@ -29,9 +15,9 @@ type Rental = {
   purpose: string
   start_date: Date | string
   end_date: Date | string
+  status: string
   image_url?: string
   // Optional image_url field for the image preview
-  status: string
   createdAt: Date | string
   updatedAt: Date | string
   instrument_id?: number
@@ -197,81 +183,5 @@ export const columns: ColumnDef<Rental>[] = [
       }
     }
   },
-  {
-    id: "actions",
-    header: "Aksi",
-    cell: ({ row }) => {
-      const rental = row.original
-      const [isLoading, setIsLoading] = useState(false)
-      const router = useRouter()
-      
-      const handleStatusChange = async (action: 'approve' | 'reject' | 'complete') => {
-        setIsLoading(true)
-        try {
-          if (action === 'approve') {
-            await approveRental(rental.id)
-            toast.success("Peminjaman berhasil disetujui")
-          } else if (action === 'reject') {
-            await rejectRental(rental.id)
-            toast.success("Peminjaman berhasil ditolak")
-          } else if (action === 'complete') {
-            await completeRental(rental.id)
-            toast.success("Peminjaman berhasil diselesaikan")
-          }
-          router.refresh()
-        } catch (error: any) {
-          toast.error(`Gagal mengubah status: ${error.message || "Unknown error"}`)
-          console.error(error)
-        } finally {
-          setIsLoading(false)
-        }
-      }
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild disabled={isLoading}>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-            
-            {rental.status === "PENDING" && (
-              <>
-                <DropdownMenuItem 
-                  onClick={() => handleStatusChange('approve')}
-                  disabled={isLoading}
-                >
-                  Setujui
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => handleStatusChange('reject')}
-                  disabled={isLoading}
-                >
-                  Tolak
-                </DropdownMenuItem>
-              </>
-            )}
-            
-            {(rental.status === "DISETUJUI" || rental.status === "AKTIF") && (
-              <DropdownMenuItem 
-                onClick={() => handleStatusChange('complete')}
-                disabled={isLoading}
-              >
-                Selesaikan
-              </DropdownMenuItem>
-            )}
-            
-            {(rental.status === "SELESAI" || rental.status === "DITOLAK") && (
-              <DropdownMenuItem disabled>
-                Tidak ada aksi tersedia
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    }
-  }
+  
 ]

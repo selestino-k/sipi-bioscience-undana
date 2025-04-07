@@ -10,6 +10,7 @@ export async function rentInstrumen(data: {
   purpose: string
   start_date: Date
   end_date: Date
+  image_url: string
 }) {
   try {
     // Fetch user details
@@ -24,18 +25,20 @@ export async function rentInstrumen(data: {
     // 1. Create rental record
     const rental = await db.rental.create({
       data: {
-        instrument_id: data.instrument_id,
+        instrumen_id: data.instrumen_id,
         user_id: data.user_id,
         purpose: data.purpose,
         start_date: data.start_date,
         end_date: data.end_date,
         status: "PENDING" // Set as PENDING for admin approval
+
+
       }
     });
 
     // 2. Update instrument status
     await db.instrumen.update({
-      where: { instrument_id: data.instrument_id },
+      where: { instrumen_id: data.instrumen_id },
       data: { status: "PENDING" }
     });
 
@@ -76,7 +79,7 @@ export async function approveRental(rentalId: string) {
 
     // 3. Update the instrument status to DIPINJAM
     await db.instrumen.update({
-      where: { instrument_id: rental.instrument_id }, // Change from id to instrument_id
+      where: { instrumen_id: rental.instrumen_id }, // Change from id to instrumen_id
       data: { status: "DIPINJAM" }
     });
 
@@ -118,7 +121,7 @@ export async function rejectRental(rentalId: string) {
 
     // 3. Return the instrument status to TERSEDIA
     await db.instrumen.update({
-      where: { instrument_id: rental.instrument_id },
+      where: { instrumen_id: rental.instrumen_id },
       data: { status: "TERSEDIA" }
     });
 
@@ -149,7 +152,7 @@ export async function completeRental(rentalId: string) {
     });
 
     // Add proper null check for instrument_id
-    if (!rental || !rental.instrument_id) {
+    if (!rental || !rental.instrumen_id) {
     throw new Error("Rental not found or has invalid instrument ID");
     }
 
@@ -169,7 +172,7 @@ export async function completeRental(rentalId: string) {
     
     // 3. Return the instrument status to TERSEDIA
     await db.instrumen.update({
-      where: { instrument_id: rental.instrument_id }, // Make sure this property name matches your schema
+      where: { instrumen_id: rental.instrumen_id }, // Make sure this property name matches your schema
       data: { status: "TERSEDIA" }
     });
 

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { ModeToggle } from "@/components/dark-switch";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "SI Inventaris Lab Bioscience",
@@ -39,6 +40,8 @@ export default async function AdminLayout({
                 </div>
                 <div className="flex w-full min-h-screen items-center justify-items-center">
                   {children}
+                  <Toaster position="top-right" />
+
                 </div>
             </main>
         </SidebarProvider>

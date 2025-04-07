@@ -4,6 +4,7 @@ import NavBar from "@/components/navbar";
 import { SessionProvider } from "next-auth/react";
 import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Sistem Peminjaman dan Inventaris Lab Bioscience",
@@ -19,21 +20,22 @@ export default async function DashboardLayout({
   
   return (
     <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
           >
         <main className="gap-3 w-full">
         <NavBar/>
         <SessionProvider>
             <div className="flex w-full min-h-screen items-center justify-center">
                 {children}
+                <Toaster position="bottom-right" />
             </div>
         </SessionProvider>
         <Footer/>
         </main>
-      </ThemeProvider>
+    </ThemeProvider>
 
     
 
