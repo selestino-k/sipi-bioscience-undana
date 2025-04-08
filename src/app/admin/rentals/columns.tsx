@@ -154,7 +154,7 @@ export const columns: ColumnDef<Rental>[] = [
           return format(new Date(date), "dd/MM/yyyy");
         }
         return "N/A";
-      } catch (e) {
+      } catch {
         return "Invalid Date";
       }
     }
