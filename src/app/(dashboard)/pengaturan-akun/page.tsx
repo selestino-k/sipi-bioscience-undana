@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { updateUser } from "@/lib/actions/admin/user-actions"
+import { updateUser } from "@/lib/user-actions"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 

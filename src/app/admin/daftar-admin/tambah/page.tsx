@@ -18,7 +18,7 @@ import {
   FormMessage,
   FormDescription
 } from "@/components/ui/form"
-import { createAdmin } from "@/lib/actions/admin/add-admin-actions"
+import { createAdmin } from "@/lib/actions/admin/admin-actions"
 import { 
   Select,
   SelectContent,
