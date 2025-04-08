@@ -149,7 +149,11 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       try {
         const date = row.getValue("start_date");
-        return date ? format(new Date(date), "dd/MM/yyyy") : "N/A";
+        // Check if date is a valid value that can be converted to a Date
+        if (date && (typeof date === 'string' || typeof date === 'number' || date instanceof Date)) {
+          return format(new Date(date), "dd/MM/yyyy");
+        }
+        return "N/A";
       } catch (e) {
         return "Invalid Date";
       }
@@ -161,8 +165,12 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       try {
         const date = row.getValue("end_date");
-        return date ? format(new Date(date), "dd/MM/yyyy") : "N/A";
-      } catch (e) {
+        // Check if date is a valid value that can be converted to a Date
+        if (date && (typeof date === 'string' || typeof date === 'number' || date instanceof Date)) {
+          return format(new Date(date), "dd/MM/yyyy");
+        }
+        return "N/A";
+      } catch {
         return "Invalid Date";
       }
     }
@@ -191,8 +199,12 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       try {
         const date = row.getValue("updatedAt");
-        return date ? format(new Date(date), "dd/MM/yyyy HH:mm") : "N/A";
-      } catch (e) {
+        // Check if date is a valid value that can be converted to a Date
+        if (date && (typeof date === 'string' || typeof date === 'number' || date instanceof Date)) {
+          return format(new Date(date), "dd/MM/yyyy HH:mm");
+        }
+        return "N/A";
+      } catch {
         return "Invalid Date";
       }
     }
