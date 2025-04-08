@@ -10,7 +10,7 @@ const createUserSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   name: z.string().optional(),
-  role: z.enum(["USER", "ADMIN"]),
+  role: z.string(),
 });
 
 const updatePasswordSchema = z.object({
@@ -74,7 +74,7 @@ export async function updateUserPassword(userId: string, newPassword: string) {
     schema: updatePasswordSchema,
     action: _updateUserPassword,
     data: { userId, newPassword },
-    revalidate: ['/admin/daftar-admin', '/profil'],
+    revalidate: ['/admin/daftar-admin', '/pengaturan-akun'],
   });
 }
 
@@ -88,11 +88,14 @@ const updateUserSchema = z.object({
 });
 
 async function _updateUser(data: z.infer<typeof updateUserSchema>) {
-  const updateData: any = {};
+  const updateData: Partial<{
+    name: string;
+    email: string;
+    password: string;
+  }> = {};
   
   if (data.name !== undefined) updateData.name = data.name;
   if (data.email !== undefined) updateData.email = data.email;
-  if (data.role !== undefined) updateData.role = data.role;
   
   // If password is provided, hash it
   if (data.password) {
@@ -116,6 +119,6 @@ export async function updateUser(data: z.infer<typeof updateUserSchema>) {
     schema: updateUserSchema,
     action: _updateUser,
     data,
-    revalidate: ['/admin/daftar-admin', '/profil'],
+    revalidate: ['/admin/daftar-admin', '/pengaturan-akun'],
   });
 }

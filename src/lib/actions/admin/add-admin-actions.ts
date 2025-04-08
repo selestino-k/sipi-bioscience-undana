@@ -2,6 +2,7 @@
 
 import db from "@/lib/db/db";
 import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
 
 export async function createAdmin(data: {
   name: string;
@@ -10,12 +11,16 @@ export async function createAdmin(data: {
   role: string;
 }) {
   try {
-    // Create a new admin using Prisma
+    // Hash the password with bcrypt
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(data.password, salt);
+
+    // Create a new admin using Prisma with hashed password
     const newAdmin = await db.user.create({
       data: {
         name: data.name,
-        email: data.email, // Changed field name to match Prisma schema
-        password: data.password,
+        email: data.email,
+        password: hashedPassword, // Store the hashed password
         role: "ADMIN"
       }
     });

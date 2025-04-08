@@ -1,7 +1,6 @@
 
 import { signIn } from "@/lib/auth";
 import { Button } from "./ui/button";
-import { User } from "lucide-react"
 
 
 const GoogleSignIn=() =>{

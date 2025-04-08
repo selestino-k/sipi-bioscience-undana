@@ -80,7 +80,7 @@ export default function CreateAdminPage() {
         router.push("/admin/daftar-admin");
         router.refresh();
       } else {
-        toast.error(result.error || "Gagal menambahkan admin");
+        toast.error("Gagal menambahkan admin");
       }
     } catch (error) {
       console.error("Failed to add admin:", error);

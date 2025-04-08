@@ -28,8 +28,7 @@ interface PageProps {
 
 const Page = async ({ searchParams }: PageProps) => {
   const session = await auth();
-  // Use optional chaining to safely access the error property
-  const errorMessage = searchParams?.error;
+  const errorMessage = searchParams.error; // Use errorMessage instead of error
   
   // Check if user is authenticated
   if (session) {
@@ -85,7 +84,7 @@ const Page = async ({ searchParams }: PageProps) => {
             "use server";
             
             try {
-              const result = await signIn("credentials", {
+              await signIn("credentials", {
                 email: formData.get("email") as string,
                 password: formData.get("password") as string,
                 redirect: false,

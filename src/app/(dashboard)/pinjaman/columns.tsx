@@ -135,8 +135,11 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       try {
         const date = row.getValue("start_date");
-        return date ? format(new Date(date), "dd/MM/yyyy") : "N/A";
-      } catch (e) {
+        // Check if date is a valid value that can be passed to Date constructor
+        return date && (typeof date === 'string' || typeof date === 'number' || date instanceof Date) 
+          ? format(new Date(date as string | number | Date), "dd/MM/yyyy") 
+          : "N/A";
+      } catch {
         return "Invalid Date";
       }
     }
@@ -147,11 +150,16 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       try {
         const date = row.getValue("end_date");
-        return date ? format(new Date(date), "dd/MM/yyyy") : "N/A";
-      } catch (e) {
+        // Check if date is a valid value that can be passed to Date constructor
+        return date && (typeof date === 'string' || typeof date === 'number' || date instanceof Date) 
+          ? format(new Date(date as string | number | Date), "dd/MM/yyyy") 
+          : "N/A";
+      } catch {
         return "Invalid Date";
       }
     }
+      
+    
   },
   {
     accessorKey: "status",
@@ -177,8 +185,11 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       try {
         const date = row.getValue("updatedAt");
-        return date ? format(new Date(date), "dd/MM/yyyy HH:mm") : "N/A";
-      } catch (e) {
+        // Check if date is a valid value that can be passed to Date constructor
+        return date && (typeof date === 'string' || typeof date === 'number' || date instanceof Date) 
+          ? format(new Date(date), "dd/MM/yyyy HH:mm") 
+          : "N/A";
+      } catch {
         return "Invalid Date";
       }
     }

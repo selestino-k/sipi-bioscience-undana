@@ -202,6 +202,10 @@ export const columns: ColumnDef<Rental>[] = [
     header: "Aksi",
     cell: ({ row }) => {
       const rental = row.original
+
+      // Create a component to use React hooks
+      // to handle the dropdown menu actions
+      function RentalActions() {
       const [isLoading, setIsLoading] = useState(false)
       const router = useRouter()
       
@@ -219,8 +223,9 @@ export const columns: ColumnDef<Rental>[] = [
             toast.success("Peminjaman berhasil diselesaikan")
           }
           router.refresh()
-        } catch (error: any) {
-          toast.error(`Gagal mengubah status: ${error.message || "Unknown error"}`)
+        } catch (error: Error | unknown) {
+          const errorMessage = error instanceof Error ? error.message : "Unknown error";
+          toast.error(`Gagal mengubah status: ${errorMessage}`)
           console.error(error)
         } finally {
           setIsLoading(false)
@@ -273,5 +278,7 @@ export const columns: ColumnDef<Rental>[] = [
         </DropdownMenu>
       )
     }
+    return <RentalActions />
+  }
   }
 ]

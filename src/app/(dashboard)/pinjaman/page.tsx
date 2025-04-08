@@ -26,11 +26,7 @@ async function fetchRentals(userId: string): Promise<Rental[]> {
   });
 }
 
-export default async function RentalsPage({
-  searchParams,
-}: {
-  searchParams: { refresh?: string }
-}) {
+export default async function RentalsPage() {
   const session = await auth();
   if (!session) redirect("/sign-in");
   

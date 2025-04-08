@@ -36,9 +36,6 @@ export default async function DashboardLayout({
         <Footer/>
         </main>
     </ThemeProvider>
-
-    
-
   );
 }
 

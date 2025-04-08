@@ -34,7 +34,7 @@ const defaultCatalog: Katalog[] = [
     tipe_instrumen: "Null",
     layanan: "Null",
     status: "NULL",
-    image_url: "Null",
+    image_url: "/placeholder.svg",
   }
 ]
 
@@ -103,7 +103,7 @@ export default function ProductCatalog({ initialData = defaultCatalog }: Product
               <div key={item.instrumen_id} className="bg-background rounded-lg overflow-hidden border">
                 <div className="aspect-square relative">
                   <Image 
-                    src={item.image_url || "/placeholder.svg"} 
+                    src={item.image_url} 
                     alt={item.nama_instrumen} 
                     fill 
                     className="object-cover"
