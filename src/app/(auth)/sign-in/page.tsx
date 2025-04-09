@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { signIn } from "@/lib/auth";
 import { GoogleSignIn } from "@/components/google-signin";
@@ -20,11 +21,16 @@ declare module "next-auth" {
   }
 }
 
-// Use Next.js generated types for page props
-export default async function Page({
+export const metadata: Metadata = {
+  title: "Masuk",
+  description: "Silahkan masuk ke akun Anda untuk melanjutkan.",
+};
+
+// Use the correct Next.js App Router type definition
+export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Record<string, string | string[] | undefined>;
 }) {
   const session = await auth();
   const errorMessage = searchParams.error as string | undefined;
