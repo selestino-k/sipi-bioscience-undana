@@ -9,6 +9,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import "next-auth";
 
+// Extend Next-Auth types
 declare module "next-auth" {
   interface User {
     role?: string;
@@ -19,16 +20,14 @@ declare module "next-auth" {
   }
 }
 
-// Change to use a proper type for searchParams
-interface PageProps {
-  searchParams: {
-    error?: string;
-  };
-}
-
-const Page = async ({ searchParams }: PageProps) => {
+// Use Next.js generated types for page props
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const session = await auth();
-  const errorMessage = searchParams.error; // Use errorMessage instead of error
+  const errorMessage = searchParams.error as string | undefined;
   
   // Check if user is authenticated
   if (session) {
@@ -137,6 +136,4 @@ const Page = async ({ searchParams }: PageProps) => {
       </main>
     </div>
   );
-};
-
-export default Page;
+}
