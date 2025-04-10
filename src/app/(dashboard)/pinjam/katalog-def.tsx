@@ -16,8 +16,6 @@ export async function getCatalogue() {
         status: true,
         image_url: true,
       },
-      // Optional: Add any filters you need
-      // where: { ... }
     });
     
     // Map to the expected format

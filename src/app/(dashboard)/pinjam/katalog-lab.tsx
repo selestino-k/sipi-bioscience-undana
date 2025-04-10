@@ -22,7 +22,7 @@ export type Katalog ={
   tipe_instrumen: string
   layanan: string
   status: string
-  image_url: string
+  image_url: string 
 }
 
 // Default catalog in case data isn't passed
