@@ -7,8 +7,16 @@ import { Rental } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
+import { Metadata } from "next";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+export const revalidate = 0; // Disable static generation for this page
+
+export const metadata: Metadata = {
+  title: "Pinjaman Saya",
+  description: "Daftar semua peminjaman saya.",
+};
+
 
 // Update the fetchRentals function to accept a userId parameter
 async function fetchRentals(userId: string): Promise<Rental[]> {

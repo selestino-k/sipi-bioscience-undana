@@ -4,8 +4,14 @@ import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
 import { redirect } from "next/navigation";
 import { Rental } from "@prisma/client";
+import { Metadata } from "next";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+export const revalidate = 0; // Disable static generation for this page
+export const metadata: Metadata = {
+  title: "Daftar Peminjaman",
+  description: "Daftar semua peminjaman yang tersedia.",
+};
 
 async function fetchRentals(): Promise<Rental[]> {
   return prisma.rental.findMany({
@@ -19,10 +25,7 @@ async function fetchRentals(): Promise<Rental[]> {
   });
 }
 
-export default async function RentalsPage({
-}: {
-    searchParams: { refresh?: string }
-}) {
+export default async function RentalsPage() {
   const rentals = await fetchRentals();
   const session = await auth();
   if (!session) redirect("/sign-in");

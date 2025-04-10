@@ -6,10 +6,9 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 
-
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
-
 export const revalidate = 0; // Disable static generation for this page
+
 export const metadata: Metadata = {
     title: "Daftar Barang",
     description: "Daftar semua barang yang tersedia.",

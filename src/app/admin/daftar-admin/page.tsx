@@ -6,6 +6,13 @@ import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Daftar Pengguna",
+    description: "Daftar semua admin dan pengguna yang tersedia.",
+};
+
 
 const prisma = new PrismaClient();
 

@@ -6,18 +6,22 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+export const revalidate = 0; // Disable static generation for this page
+
+export const metadata: Metadata = {
+    title: "Daftar Instrumen",
+    description: "Daftar semua instrumen yang tersedia.",
+};
 
 async function getData(): Promise<Instrumen[]> {
     // Fetch data from your API here with no caching
     return await prisma.instrumen.findMany();
 }
 
-export default async function DaftarInstrumen({
-}: {
-    searchParams: { refresh?: string }
-}) {
+export default async function DaftarInstrumen() {
     // The searchParams will force a refetch when it changes
     const data = await getData();
     const session = await auth();

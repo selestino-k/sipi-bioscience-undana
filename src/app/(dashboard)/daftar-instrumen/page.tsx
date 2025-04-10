@@ -28,8 +28,6 @@ export default async function DaftarInstrumen() {
     const session = await auth()
     if (!session) redirect('/sign-in')
 
-
-
     const data = await getData()
   
     return (

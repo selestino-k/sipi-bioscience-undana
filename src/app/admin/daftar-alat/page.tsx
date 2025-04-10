@@ -6,9 +6,15 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";  
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+    title: "Daftar Alat",
+    description: "Daftar semua alat yang tersedia.",
+};
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+export const revalidate = 0; // Disable static generation for this page
 
 
 async function getData(): Promise<Alat[]> {
@@ -16,10 +22,7 @@ async function getData(): Promise<Alat[]> {
     return await prisma.alat.findMany();
 }
 
-export default async function DaftarAlat({
-}: {
-    searchParams: { refresh?: string }
-}) {
+export default async function DaftarAlat() {
     const data = await getData()
     const session = await auth();
         if (!session) redirect ('/sign-in');

@@ -6,20 +6,22 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+export const revalidate = 0; // Disable static generation for this page
 
+export const metadata: Metadata = {
+    title: "Daftar Bahan Kimia",
+    description: "Daftar semua bahan kimia yang tersedia.",
+};
 
 async function getData(): Promise<Bahan[]> {
     // Fetch data from your API here.
     return await prisma.bahan.findMany();
 }
 
-export default async function DaftarBahan(
-    { }: {
-        searchParams: { refresh?: string }
-    }
-) {
+export default async function DaftarBahan() {
     const data = await getData()
     const session = await auth();
     if (!session) redirect ('/sign-in');    

@@ -1,15 +1,19 @@
 import KatalogPage from "./katalog-def";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { Metadata } from "next";
+
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+export const revalidate = 0; // Disable static generation for this page
+export const metadata: Metadata = {
+    title: "Katalog",  
+    description: "Katalog semua instrumen dan alat laboratorium.",
+};
 
-export default async function Katalog(
-    {
-    }: {
-        searchParams: { refresh?: string }
-    }
-) {
+
+
+export default async function Katalog() {
     const session = await auth();
     if (!session) redirect ('/sign-in');
     
