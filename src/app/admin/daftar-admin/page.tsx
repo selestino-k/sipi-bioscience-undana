@@ -29,6 +29,8 @@ export default async function DaftarAdmin() {
   if (!session) redirect("/sign-in");
   
   // Check if user is admin
+  if (!session.user) redirect("/sign-in");
+  
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: { role: true },

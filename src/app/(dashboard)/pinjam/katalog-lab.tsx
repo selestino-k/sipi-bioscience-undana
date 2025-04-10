@@ -34,7 +34,7 @@ const defaultCatalog: Katalog[] = [
     tipe_instrumen: "Null",
     layanan: "Null",
     status: "NULL",
-    image_url: "/placeholder.svg",
+    image_url: "",
   }
 ]
 

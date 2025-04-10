@@ -2,8 +2,21 @@ import { Suspense } from "react"
 import ProductCatalog from "./katalog-lab"
 import db from "@/lib/db/db"
 
+// Define the proper interface that matches your data
+interface Katalog {
+  instrumen_id: number;
+  nama_instrumen: string;
+  merk_instrumen: string;
+  tipe_instrumen: string;
+  layanan: string;
+  status: string;
+  image_url: string; // Now non-nullable
+  image: string;
+}
+
 // Fetch function
-export async function getCatalogue() {
+export async function getCatalogue(): Promise<Katalog[]> {
+  // Fetch instruments data from Prisma DB
   try {
     // Fetch instruments data from Prisma DB
     const instruments = await db.instrumen.findMany({
@@ -22,7 +35,8 @@ export async function getCatalogue() {
     return instruments.map(instrumen => ({
       ...instrumen,
       // Handle missing image field
-      image:  "/placeholder.svg"
+      image_url: instrumen.image_url || "/placeholder.svg", // Default to empty string if null
+      image: instrumen.image_url || "/placeholder.svg", // Default to empty string if null
     }));
   } catch (error) {
     console.error("Failed to fetch instruments:", error);

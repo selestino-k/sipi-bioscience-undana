@@ -27,18 +27,17 @@ import Image from "next/image"
 type Rental = {
   id: string
   purpose: string
-  start_date: Date | string
-  end_date: Date | string
-  image_url?: string
-  // Optional image_url field for the image preview
+  start_date?: string | Date | null
+  end_date?: string | Date | null
+  image_url?: string | null // Optional image_url field for the image preview
   status: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt: Date | string | null
+  updatedAt: Date | string | null
   instrument_id?: number
-  instrument_name?: string  // Add flattened instrument fields
-  instrument_merk?: string
-  user_name?: string        // Add flattened user fields
-  user_email?: string
+  instrument_name?: string  | null  // Add flattened instrument fields
+  instrument_merk?: string | null
+  user_name?: string| null    // Add flattened user fields
+  user_email?: string | null
 }
 
 // Add this component for image preview
@@ -108,12 +107,12 @@ export const columns: ColumnDef<Rental>[] = [
     accessorKey: "instrument_name",
     header: "Instrumen",
     cell: ({ row }) => {
-      const instrumentName = row.getValue("instrument_name");
+      const instrumentName = row.getValue("instrument_name") as string;
       const instrumentMerk = row.original.instrument_merk;
       
       return (
         <div>
-          <div className="font-medium">{instrumentName || "N/A"}</div>
+          <div className="font-medium">{String(instrumentName || "N/A")}</div>
           <div className="text-sm text-gray-500">{instrumentMerk || ""}</div>
         </div>
       );
@@ -123,7 +122,7 @@ export const columns: ColumnDef<Rental>[] = [
     accessorKey: "user_email",
     header: "Peminjam",
     cell: ({ row }) => {
-      const userEmail = row.getValue("user_email");
+      const userEmail = row.getValue("user_email") as string;
       const userName = row.original.user_name;
       
       return (
