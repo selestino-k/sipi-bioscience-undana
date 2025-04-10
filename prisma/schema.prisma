@@ -39,7 +39,7 @@ model Instrumen {
 }
 
 model Alat {
-  alat_id                  Int         @id @default(autoincrement())
+  alat_id             Int         @id @default(autoincrement())
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   nama_alat           String      @db.VarChar(255)
@@ -48,7 +48,7 @@ model Alat {
 }
 
 model Barang {
-  barang_id                  Int         @id @default(autoincrement())
+  barang_id           Int         @id @default(autoincrement())
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   nama_barang         String      @db.VarChar(255)
