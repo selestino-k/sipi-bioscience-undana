@@ -2,17 +2,29 @@ import { DataTable } from "@/components/ui/data-table";
 import {columns} from "./columns";
 import prisma from "@/lib/prisma";
 import {Barang} from "@prisma/client";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
-const barang = await prisma.barang.findMany()
 
+export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+
+export const revalidate = 0; // Disable static generation for this page
+export const metadata: Metadata = {
+    title: "Daftar Barang",
+    description: "Daftar semua barang yang tersedia.",
+};
 
 async function getData(): Promise<Barang[]> {
-    // Fetch data from your API here.
-    return barang
+    // Fetch data from your API here. 
+    return await prisma.barang.findMany()
 }
 
 export default async function DaftarBarang() {
     const data = await getData()
+    const session = await auth()
+    if (!session) redirect('/sign-in')
+
     
 
     return (

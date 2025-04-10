@@ -2,9 +2,20 @@ import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
 import prisma from "@/lib/prisma";
 import { Instrumen } from "@prisma/client";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
+
 
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+export const revalidate = 0; // Disable static generation for this page
+
+export const metadata: Metadata = {
+    title: "Daftar Instrumen",
+    description: "Daftar semua instrumen yang tersedia.",
+};
 
 
 async function getData(): Promise<Instrumen[]> {
@@ -12,12 +23,13 @@ async function getData(): Promise<Instrumen[]> {
     return await prisma.instrumen.findMany()
 }
 
-export default async function DaftarInstrumen(
-    {
-    }: {
-        searchParams: { refresh?: string }
-    }
-) {
+export default async function DaftarInstrumen() {
+    // The searchParams will force a refetch when it changes
+    const session = await auth()
+    if (!session) redirect('/sign-in')
+
+
+
     const data = await getData()
   
     return (
