@@ -7,7 +7,7 @@ import { Metadata } from "next";
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 export const revalidate = 0; // Disable static generation for this page
 export const metadata: Metadata = {
-    title: "Katalog",  
+    title: "Katalog Instrumen",  
     description: "Katalog semua instrumen dan alat laboratorium.",
 };
 

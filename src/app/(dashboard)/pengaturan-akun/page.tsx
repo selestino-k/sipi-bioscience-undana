@@ -26,7 +26,10 @@ const userFormSchema = z.object({
   name: z.string().min(1, { message: "Nama wajib diisi" }),
   email: z.string().email({ message: "Email tidak valid" }),
   password: z.string().optional(), // Make password optional for updates
-  role: z.string(),
+  role: z.enum(["USER", "ADMIN"], {
+    errorMap: () => ({ message: "Role tidak valid" }),
+  }),
+  // Add other fields as necessary
 });
 
 type UpdateFormValues = z.infer<typeof userFormSchema>;
@@ -43,6 +46,7 @@ export default function UpdateUserPage() {
       name: "",
       email: "",
       password: "",
+      role: "USER", // Default role, can be changed based on your logic
       
     },
   });
@@ -74,7 +78,8 @@ export default function UpdateUserPage() {
         : { 
             id: updatedValues.id,
             name: updatedValues.name,
-            email: updatedValues.email
+            email: updatedValues.email,
+            role: updatedValues.role,
           };
       
       await updateUser(dataToUpdate);
