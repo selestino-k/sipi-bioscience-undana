@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 const Page = async () => {
     const session = await auth();
-     if (!session) redirect("/sign-in");
+     if (!session || !session.user) redirect("/sign-in");
 
      // Check if user is admin
     const user = await prisma.user.findUnique({

@@ -5,7 +5,8 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 
-const Page = async () => {const session = await auth();
+const Page = async () => {
+    const session = await auth();
     if (!session) redirect("/sign-in");
 
     return (
