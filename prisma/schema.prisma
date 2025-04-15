@@ -1,157 +1,145 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-enum Status {
-  TERSEDIA
-  PENDING
-}
-
-enum UserRole {
-  USER
-  ADMIN
-}
-
-model Instrumen {
-  instrumen_id        Int         @id @default(autoincrement())
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
-  nama_instrumen      String      @db.VarChar(255)
-  merk_instrumen      String      @db.VarChar(255)
-  tipe_instrumen      String      @db.VarChar(255)
-  layanan             String      @db.VarChar(255)
-  status              String      @default("PENDING") // Custom boolean-like field
-  image_url           String?   // Add this field for storing image URLs
-
-  // Add this line to connect to rentals
-  rentals             Rental[]  
-}
-
-model Alat {
-  alat_id             Int         @id @default(autoincrement())
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
-  nama_alat           String      @db.VarChar(255)
-  jumlah_alat         String      @db.VarChar(255)
-  status              String      @default("PENDING") // Custom boolean-like field
-}
-
-model Barang {
-  barang_id           Int         @id @default(autoincrement())
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
-  nama_barang         String      @db.VarChar(255)
-  merk_barang         String      @db.VarChar(255)
-  tipe_barang         String      @db.VarChar(255)
-  jumlah_barang       String      @db.VarChar(255)
-}
-
-model Bahan {
-  bahan_id            Int         @id @default(autoincrement())
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
-  nama_bahan          String      @db.VarChar(255)
-  tipe_bahan          String      @db.VarChar(255)
-  status              String      @default("PENDING") // Custom boolean-like field
-}
-
-model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String?         @unique
-  password      String?
-  emailVerified DateTime?
-  image         String?
-  role          UserRole       @default(USER) // Using enum
-  accounts      Account[]
-  sessions      Session[]
-  // Optional for WebAuthn support
-  Authenticator Authenticator[]
-  rentals       Rental[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Account {
-  id                String      @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String 
-  refresh_token     String?     @db.Text
-  access_token      String?     @db.Text
+model account {
+  id                String   @id @db.VarChar(191)
+  userId            String   @db.VarChar(191)
+  type              String   @db.VarChar(191)
+  provider          String   @db.VarChar(191)
+  providerAccountId String   @db.VarChar(191)
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?     @db.Text
-  session_state     String?
+  token_type        String?  @db.VarChar(191)
+  scope             String?  @db.VarChar(191)
+  id_token          String?
+  session_state     String?  @db.VarChar(191)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime
+  user              user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "account_userId_fkey")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
+  @@unique([provider, providerAccountId], map: "account_provider_providerAccountId_key")
+  @@index([userId], map: "account_userId_idx")
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model alat {
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  nama_alat   String   @db.VarChar(255)
+  status      String   @default("PENDING") @db.VarChar(191)
+  alat_id     Int      @id @default(autoincrement())
+  jumlah_alat String   @db.VarChar(255)
 }
 
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-// Optional for WebAuthn support
-model Authenticator {
-  credentialID         String  @unique
-  userId               String
-  providerAccountId    String
-  credentialPublicKey  String
+model authenticator {
+  credentialID         String  @unique(map: "authenticator_credentialID_key") @db.VarChar(191)
+  userId               String  @db.VarChar(191)
+  providerAccountId    String  @db.VarChar(191)
+  credentialPublicKey  String  @db.VarChar(191)
   counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  credentialDeviceType String  @db.VarChar(191)
+  credentialBackedUp   Int     @db.SmallInt
+  transports           String? @db.VarChar(191)
+  user                 user    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "authenticator_userId_fkey")
 
   @@id([userId, credentialID])
 }
 
-model Rental {
-  id                  Int      @id @default(autoincrement())
-  instrumen_id        Int
-  instrumen           Instrumen @relation(fields: [instrumen_id], references: [instrumen_id])
-  user_id             String
-  user                User     @relation(fields: [user_id], references: [id])
-  purpose             String
-  start_date          DateTime
-  end_date            DateTime
-  actual_return_date  DateTime?
-  status              String   // "TERSEDIA", "PENDING"
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-} 
+model bahan {
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+  nama_bahan String   @db.VarChar(255)
+  tipe_bahan String   @db.VarChar(255)
+  status     String   @default("PENDING") @db.VarChar(191)
+  bahan_id   Int      @id @default(autoincrement())
+}
+
+model barang {
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime
+  nama_barang   String   @db.VarChar(255)
+  merk_barang   String   @db.VarChar(255)
+  tipe_barang   String   @db.VarChar(255)
+  barang_id     Int      @id @default(autoincrement())
+  jumlah_barang String   @db.VarChar(255)
+}
+
+model instrumen {
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+  nama_instrumen String   @db.VarChar(255)
+  merk_instrumen String   @db.VarChar(255)
+  tipe_instrumen String   @db.VarChar(255)
+  layanan        String   @db.VarChar(255)
+  status         String   @default("PENDING") @db.VarChar(191)
+  image_url      String?  @db.VarChar(191)
+  instrumen_id   Int      @id @default(autoincrement())
+  rental         rental[]
+}
+
+model rental {
+  id                 Int       @id @default(autoincrement())
+  status             String    @db.VarChar(191)
+  purpose            String    @db.VarChar(191)
+  actual_return_date DateTime?
+  end_date           DateTime
+  start_date         DateTime
+  user_id            String    @db.VarChar(191)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime
+  instrumen_id       Int
+  instrumen          instrumen @relation(fields: [instrumen_id], references: [instrumen_id], onDelete: NoAction, map: "rental_instrumen_id_fkey")
+  user               user      @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "rental_user_id_fkey")
+
+  @@index([instrumen_id], map: "rental_instrumen_id_idx")
+  @@index([user_id], map: "rental_user_id_idx")
+}
+
+model session {
+  id           String   @id @db.VarChar(191)
+  sessionToken String   @db.VarChar(191)
+  userId       String   @db.VarChar(191)
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "session_userId_fkey")
+
+  @@unique([userId, sessionToken], map: "session_userId_sessionToken_key")
+  @@index([userId], map: "session_userId_idx")
+}
+
+model user {
+  email         String?         @unique(map: "user_email_key") @db.VarChar(191)
+  name          String?         @db.VarChar(191)
+  createdAt     DateTime        @default(now())
+  emailVerified DateTime?
+  image         String?         @db.VarChar(191)
+  password      String?         @db.VarChar(191)
+  updatedAt     DateTime
+  id            String          @id @db.VarChar(191)
+  role          user_role       @default(USER)
+  account       account[]
+  authenticator authenticator[]
+  rental        rental[]
+  session       session[]
+}
+
+model verificationtoken {
+  identifier String   @db.VarChar(191)
+  token      String   @db.VarChar(191)
+  expires    DateTime
+
+  @@unique([identifier, expires], map: "verificationtoken_identifier_expires_key")
+}
+
+enum user_role {
+  USER
+  ADMIN
+}
