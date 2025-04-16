@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import {columns} from "./columns";
 import prisma from "@/lib/prisma";
-import {Barang} from "@prisma/client";
+import {barang} from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Daftar semua barang yang tersedia.",
 };
 
-async function getData(): Promise<Barang[]> {
+async function getData(): Promise<barang[]> {
     // Fetch data from your API here. 
     return await prisma.barang.findMany()
 }

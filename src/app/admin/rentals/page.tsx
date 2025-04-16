@@ -41,7 +41,7 @@ export default async function RentalsPage() {
     redirect("/");
   }
   
-  type RentalWithRelations = Prisma.RentalGetPayload<{
+  type RentalWithRelations = Prisma.rentalGetPayload<{
     include: {
       instrumen: true;
       user: true;

@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
 import prisma from "@/lib/prisma";
-import { Instrumen } from "@prisma/client";
+import { instrumen } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 
-async function getData(): Promise<Instrumen[]> {
+async function getData(): Promise<instrumen[]> {
     // Fetch data from your API here.
     return await prisma.instrumen.findMany()
 }

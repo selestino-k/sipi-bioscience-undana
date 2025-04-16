@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
 import prisma from "@/lib/prisma";
-import { Instrumen } from "@prisma/client";
+import { instrumen } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description: "Daftar semua instrumen yang tersedia.",
 };
 
-async function getData(): Promise<Instrumen[]> {
+async function getData(): Promise<instrumen[]> {
     // Fetch data from your API here with no caching
     return await prisma.instrumen.findMany();
 }

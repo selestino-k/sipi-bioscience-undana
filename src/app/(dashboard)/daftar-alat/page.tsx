@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import {columns} from "./columns";
 import prisma from "@/lib/prisma";
-import { Alat } from "@prisma/client";
+import { alat } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 export const revalidate = 0; // Disable static generation for this page
 
-async function getData(): Promise<Alat[]> {
+async function getData(): Promise<alat[]> {
     // Fetch data from your API here.
     return await prisma.alat.findMany();
 }
