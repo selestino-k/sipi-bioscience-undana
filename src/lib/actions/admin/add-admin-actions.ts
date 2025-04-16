@@ -3,6 +3,7 @@
 import db from "@/lib/db/db";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 export async function createAdmin(data: {
   id: string;

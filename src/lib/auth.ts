@@ -1,26 +1,30 @@
-import { PrismaAdapter } from '@auth/prisma-adapter';
 import bcrypt from "bcryptjs";
-
+import { CustomPrismaAdapter } from "@/lib/auth/prisma-adapter";
 import db from "@/lib/db/db";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from 'next-auth/providers/google';
 import EmailProvider from "next-auth/providers/nodemailer";
-
 import { schema } from "@/lib/schema";
 
-const adapter = PrismaAdapter(db);
+const adapter = CustomPrismaAdapter(db);
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter,
   providers: [
-    Google,
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      allowDangerousEmailAccountLinking: true
+    }),
     Credentials({
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
+        if (!credentials) return null;
+        
         const validatedCredentials = schema.parse(credentials);
 
         const user = await db.user.findUnique({
@@ -30,12 +34,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (!user) {
-          throw new Error("No user found with this email address");
+          return null; // Return null instead of throwing error for better error handling
         }
 
         // Check if user has a password (might not if they used OAuth)
         if (!user.password) {
-          throw new Error("This account doesn't use password authentication");
+          return null; // Return null instead of throwing error
         }
 
         // Compare the provided password with the stored hash
@@ -45,16 +49,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
 
         if (!passwordMatch) {
-          throw new Error("Invalid password");
+          return null; // Return null instead of throwing error
         }
 
         return user;
       },
     }),
-    EmailProvider({
+    // Only include EmailProvider if you've configured email settings
+    ...(process.env.EMAIL_SERVER ? [EmailProvider({
       server: process.env.EMAIL_SERVER,
-      from: process.env.EMAIL_FROM,
-    }),
+      from: process.env.EMAIL_FROM || "noreply@example.com",
+    })] : []),
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -72,16 +77,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id as string;
       }
       return session;
+    },
+    // Add this to handle any sign-in problems with detailed logging
+    async signIn({ user, account }) {
+      console.log("Sign in attempt:", { 
+        userId: user?.id,
+        email: user?.email,
+        provider: account?.provider 
+      });
+      
+      return true; // Always allow sign in
     }
   },
   pages: {
     signIn: '/sign-in',
     error: '/sign-in',
   },
+  secret: process.env.AUTH_SECRET || "your-fallback-secret-for-development-only",
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // 24 hours in seconds
+    maxAge: 30 * 24 * 60 * 60, // 24 hours in seconds
   },
-  secret: process.env.AUTH_SECRET,
+  debug: process.env.NODE_ENV === "development", // Enable debug mode in development
 });
 

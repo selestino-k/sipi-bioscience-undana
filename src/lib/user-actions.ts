@@ -2,6 +2,7 @@
 
 import db from "@/lib/db/db";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { z } from "zod";
 import { executeAction } from "./executeAction";
 

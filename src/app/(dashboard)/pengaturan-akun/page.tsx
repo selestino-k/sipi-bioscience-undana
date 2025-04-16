@@ -54,6 +54,7 @@ export default function UpdateUserPage() {
   // Populate form with user data when session is loaded
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
+      console.log("Session user:", session.user); // Debug session data
       form.reset({
         name: session.user.name || "",
         email: session.user.email || "",
@@ -63,6 +64,8 @@ export default function UpdateUserPage() {
   }, [session, status, form]);
 
   async function onSubmit(values: UpdateFormValues) {
+    console.log("Form submitted with values:", values); // Debug form values
+
     setIsSubmitting(true);
     
     try {
@@ -71,9 +74,10 @@ export default function UpdateUserPage() {
         ...values,
         id: session?.user?.id || "", // Include user ID for the update
       };
-      
+      console.log("Sending update request with:", updatedValues); // Debug update payload
+
       // Only include password if it was provided
-      const dataToUpdate = values.password 
+      const dataToUpdate = values.password?.trim()
         ? updatedValues 
         : { 
             id: updatedValues.id,
@@ -89,7 +93,7 @@ export default function UpdateUserPage() {
       router.refresh();
     } catch (error) {
       console.error("Failed to update user:", error);
-      toast.error("Gagal memperbarui profil");
+      toast.error(`Gagal memperbarui profil: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsSubmitting(false);
     }
