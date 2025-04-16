@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { GoogleSignIn } from "@/components/google-signin";
 import { LoginForm } from "@/components/auth/login-form";
-
+import { Suspense } from "react";
 // Extend Next-Auth types
 declare module "next-auth" {
   interface User {
@@ -22,6 +22,16 @@ export const metadata: Metadata = {
 
 export default async function SignInPage() {
   const session = await auth();
+
+   // Debug: Log session information
+   console.log("Session in sign-in page:", 
+    session ? {
+      user: {
+        id: session.user?.id,
+        role: session.user?.role,
+        email: session.user?.email
+      }
+    } : "No session");
   
   // Check if user is authenticated
   if (session) {
@@ -56,7 +66,9 @@ export default async function SignInPage() {
             </span>
           </div>
         </div>
+        <Suspense fallback={<p className="text-center text-muted-foreground mb-6">Loading...</p>}>
         <LoginForm />
+        </Suspense>
       </main>
     </div>
   );

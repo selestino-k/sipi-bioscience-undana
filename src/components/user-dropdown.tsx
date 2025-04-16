@@ -8,8 +8,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+
 } from "@/components/ui/dropdown-menu"
-import { User } from "lucide-react"
+import { User,Shield, Settings, List } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Link from "next/link"
 import { SignOut } from "./sign-out"
@@ -21,9 +22,12 @@ export function UserDropdown({
     user: {
         name: string
         email: string
+        role?: string
     }
 }) {
   const [open, setOpen] = useState(false)
+  const isAdmin = user.role === "ADMIN"
+
   
   // Prevent closing when clicking inside items by stopping event propagation
   const handleItemClick = (e: React.MouseEvent) => {
@@ -44,11 +48,31 @@ export function UserDropdown({
       <DropdownMenuContent className="w-56" onCloseAutoFocus={(e) => e.preventDefault()}>
         <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
         <DropdownMenuItem disabled>{user.email}</DropdownMenuItem>
+        {isAdmin && (
+          <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+            Admin
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {/* Admin dashboard link - only visible for admins */}
+          {isAdmin && (
+            <Link href="/admin" passHref>
+              <div onClick={handleItemClick} className="w-full">
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  <Shield className="mr-2 h-4 w-4" />
+                  Dashboard Admin
+                </DropdownMenuItem>
+              </div>
+            </Link>
+          )}
+          <DropdownMenuGroup/>
+          {/* User dashboard link - visible for all users */}
+        <DropdownMenuSeparator />
         <Link href="/pinjaman" passHref>
             <div onClick={handleItemClick} className="w-full">
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              <List className="mr-2 h-4 w-4" />
                 Pinjaman Saya
               </DropdownMenuItem>
             </div>
@@ -56,6 +80,7 @@ export function UserDropdown({
           <Link href="/pengaturan-akun" passHref>
             <div onClick={handleItemClick} className="w-full">
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              <Settings className="mr-2 h-4 w-4" />
                 Pengaturan Akun
               </DropdownMenuItem>
             </div>

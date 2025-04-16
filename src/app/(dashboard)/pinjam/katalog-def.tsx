@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 import ProductCatalog from "./katalog-lab"
 import db from "@/lib/db/db"
+import { CircleLoader } from "@/components/ui/circle-loader"
 
 // Define the proper interface that matches your data
 interface Katalog {
@@ -49,7 +50,11 @@ export default async function KatalogPage() {
   const catalogueData = await getCatalogue();
   
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={
+      <div className="flex justify-center items-center h-96">
+        <CircleLoader className="h-12 w-12" />
+      </div>
+    }>
       <ProductCatalog initialData={catalogueData} />
     </Suspense>
   );

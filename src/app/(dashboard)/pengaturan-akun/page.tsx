@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button"
 import { updateUser } from "@/lib/user-actions"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
+import { CircleLoader } from "@/components/ui/circle-loader"
 
 
 // Form validation schema
@@ -102,8 +103,8 @@ export default function UpdateUserPage() {
   // Show loading state while session is loading
   if (status === "loading") {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="flex justify-center items-center h-96">
+              <CircleLoader className="h-12 w-12" />
       </div>
     );
   }

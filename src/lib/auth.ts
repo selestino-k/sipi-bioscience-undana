@@ -76,28 +76,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.role = token.role as string;
         session.user.id = token.id as string;
       }
+       // Add console log for debugging
+       console.log("Session user role:", session.user.role);
       return session;
     },
-    // Add this to handle any sign-in problems with detailed logging
-    async signIn({ user, account }) {
-      console.log("Sign in attempt:", { 
-        userId: user?.id,
-        email: user?.email,
-        provider: account?.provider 
-      });
-      
-      return true; // Always allow sign in
-    }
+    
   },
   pages: {
     signIn: '/sign-in',
     error: '/sign-in',
   },
-  secret: process.env.AUTH_SECRET || "your-fallback-secret-for-development-only",
+  secret: process.env.AUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 24 hours in seconds
   },
-  debug: process.env.NODE_ENV === "development", // Enable debug mode in development
 });
 
