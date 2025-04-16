@@ -50,7 +50,7 @@ export default async function RentalsPage() {
   // Fetch only rentals for this user
   const rentals = await fetchRentals(userId);
 
-  type Rental = Prisma.RentalGetPayload<{
+  type Rental = Prisma.rentalGetPayload<{
     include: {
       instrumen: true;
       user: true;
