@@ -1,6 +1,6 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
-import { Adapter } from "next-auth/adapters";
+import { PrismaClient } from "@prisma/client"; // Add Prisma namespace import
+import { Adapter, AdapterUser, AdapterAccount } from "next-auth/adapters";
 import crypto from "crypto";
 
 export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
@@ -11,72 +11,85 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
   return {
     ...baseAdapter,
     createUser: async (data) => {
-      // Generate a UUID for the user if not provided
+      // Generate a UUID for the user
       const userId = crypto.randomUUID();
       
       console.log("Creating user with adapter:", { ...data, id: userId });
       
       try {
+        // Create user with required fields
         const user = await prisma.user.create({
           data: {
-            ...data,
-            id: userId, // Explicitly set the ID
-            emailVerified: data.emailVerified || null, // Handle emailVerified
-            role: "USER", // Default role if not provided
-            updatedAt: new Date(), // Add the required updatedAt field
+            id: userId,
+            name: data.name,
+            email: data.email,
+            emailVerified: data.emailVerified,
+            image: data.image,
+            role: "USER", // Default role
+            updatedAt: new Date(), // Prisma handles Date objects for direct fields
           },
         });
         
         console.log("User created successfully:", user.id);
-        return user;
+        return user as AdapterUser;
       } catch (error) {
         console.error("Error creating user in adapter:", error);
         throw error;
       }
     },
     
-    // Add custom linkAccount function to ensure id is set
-    linkAccount: async (account) => {
+    linkAccount:  async (account) => {
       try {
         console.log("Linking account:", account);
         
-         // Create the account with all required fields
-         const linkedAccount = await prisma.account.create({
+        // Remove createdAt and updatedAt from explicit type definition
+        // and create base required fields
+        const linkedAccount = await prisma.account.create({
           data: {
             id: crypto.randomUUID(),
             userId: account.userId,
             type: account.type,
-            provider: account.provider, 
+            provider: account.provider,
             providerAccountId: account.providerAccountId,
-            refresh_token: account.refresh_token,
-            access_token: account.access_token,
-            expires_at: account.expires_at,
-            token_type: account.token_type,
-            scope: account.scope,
-            id_token: account.id_token,
-            createdAt: new Date(),
+            refresh_token: account.refresh_token ?? null,
+            access_token: account.access_token ?? null,
+            expires_at: account.expires_at ?? null,
+            token_type: account.token_type ?? null,
+            scope: account.scope ?? null,
+            id_token: account.id_token ?? null,
+            session_state: account.session_state ? String(account.session_state) : null,
+            // Let Prisma handle the dates
             updatedAt: new Date(),
-          },
+          }
         });
         
         console.log("Account linked successfully");
-        return linkedAccount;
+        // Convert date objects to strings to make it compatible with AdapterAccount
+        const accountWithoutDateObjects = {
+          ...linkedAccount,
+          createdAt: linkedAccount.createdAt.toISOString(),
+          updatedAt: linkedAccount.updatedAt.toISOString()
+        };
+        return accountWithoutDateObjects as unknown as AdapterAccount;
       } catch (error) {
         console.error("Error linking account:", error);
         throw error;
       }
     },
     
-    // Add a custom createSession function to ensure updatedAt is set
+    // Similar fixes for other methods...
     createSession: async (data) => {
       try {
         console.log("Creating session:", data);
         
         const session = await prisma.session.create({
           data: {
-            ...data,
-            id: crypto.randomUUID(), // Add required ID field
-            updatedAt: new Date(), // Add the required updatedAt field
+            id: data.sessionToken,
+            sessionToken: data.sessionToken,
+            userId: data.userId,
+            expires: data.expires,
+            // Let Prisma handle createdAt with default(now())
+            updatedAt: new Date(),
           },
         });
         
@@ -87,7 +100,6 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
       }
     },
     
-    // Add a custom createVerificationToken function
     createVerificationToken: async (data) => {
       try {
         console.log("Creating verification token:", {
