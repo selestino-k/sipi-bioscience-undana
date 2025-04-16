@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { User } from "@prisma/client";
+import { user } from "@prisma/client";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import Link from "next/link";
@@ -18,7 +18,7 @@ const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 
-async function getData(): Promise<User[]> {
+async function getData(): Promise<user[]> {
     // Fetch data from your API here with no caching
     return await prisma.user.findMany();
 }
