@@ -71,7 +71,8 @@ export async function createBahan(data: {
       data: {
         nama_bahan: data.nama_bahan,
         tipe_bahan: data.tipe_bahan,
-        status: data.status
+        status: data.status,
+        updatedAt: new Date(), // Set the updatedAt field to the current date
       }
     });
 

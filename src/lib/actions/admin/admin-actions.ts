@@ -54,10 +54,12 @@ async function _createAdmin(data: AdminInput) {
     // Create user with hashed password
     const user = await db.user.create({
       data: {
+        id: crypto.randomUUID(),
         name: data.name,
         email: data.email,
         password: hashedPassword,
         role: data.role,
+        updatedAt: new Date(),
       },
     });
     
