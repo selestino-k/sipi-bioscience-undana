@@ -12,10 +12,7 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
     ...baseAdapter,
     createUser: async (data) => {
       // Generate a UUID for the user
-      const userId = crypto.randomUUID();
-      
-      console.log("Creating user with adapter:", { ...data, id: userId });
-      
+      const userId = crypto.randomUUID();      
       try {
         // Create user with required fields
         const user = await prisma.user.create({
@@ -30,17 +27,14 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
           },
         });
         
-        console.log("User created successfully:", user.id);
         return user as AdapterUser;
       } catch (error) {
-        console.error("Error creating user in adapter:", error);
         throw error;
       }
     },
     
     linkAccount:  async (account) => {
       try {
-        console.log("Linking account:", account);
         
         // Remove createdAt and updatedAt from explicit type definition
         // and create base required fields
@@ -63,7 +57,6 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
           }
         });
         
-        console.log("Account linked successfully");
         // Convert date objects to strings to make it compatible with AdapterAccount
         const accountWithoutDateObjects = {
           ...linkedAccount,
@@ -72,16 +65,13 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
         };
         return accountWithoutDateObjects as unknown as AdapterAccount;
       } catch (error) {
-        console.error("Error linking account:", error);
         throw error;
       }
     },
     
     // Similar fixes for other methods...
     createSession: async (data) => {
-      try {
-        console.log("Creating session:", data);
-        
+      try {        
         const session = await prisma.session.create({
           data: {
             id: data.sessionToken,
@@ -95,18 +85,12 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
         
         return session;
       } catch (error) {
-        console.error("Error creating session:", error);
         throw error;
       }
     },
     
     createVerificationToken: async (data) => {
       try {
-        console.log("Creating verification token:", {
-          identifier: data.identifier,
-          expires: data.expires,
-        });
-        
         const verificationToken = await prisma.verificationtoken.create({
           data: {
             identifier: data.identifier,
@@ -117,7 +101,6 @@ export function CustomPrismaAdapter(prisma: PrismaClient): Adapter {
         
         return verificationToken;
       } catch (error) {
-        console.error("Error creating verification token:", error);
         throw error;
       }
     },

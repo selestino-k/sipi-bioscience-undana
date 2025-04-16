@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { GoogleSignIn } from "@/components/google-signin";
 import { LoginForm } from "@/components/auth/login-form";
 import { Suspense } from "react";
+import { CircleLoader } from "@/components/ui/circle-loader";
 // Extend Next-Auth types
 declare module "next-auth" {
   interface User {
@@ -23,16 +24,6 @@ export const metadata: Metadata = {
 export default async function SignInPage() {
   const session = await auth();
 
-   // Debug: Log session information
-   console.log("Session in sign-in page:", 
-    session ? {
-      user: {
-        id: session.user?.id,
-        role: session.user?.role,
-        email: session.user?.email
-      }
-    } : "No session");
-  
   // Check if user is authenticated
   if (session) {
     // Check user role and redirect accordingly
@@ -66,7 +57,11 @@ export default async function SignInPage() {
             </span>
           </div>
         </div>
-        <Suspense fallback={<p className="text-center text-muted-foreground mb-6">Loading...</p>}>
+        <Suspense fallback={
+          <div className="flex justify-center items-center h-96">
+            <CircleLoader className="h-12 w-12" />
+          </div>
+          }>
         <LoginForm />
         </Suspense>
       </main>

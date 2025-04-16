@@ -57,7 +57,6 @@ export  function ResetPasswordForm() {
         return;
       }
       
-      console.log("Submitting new password for userId:", userId);
       
       // Call API to update password
       // Note: This should also validate the token

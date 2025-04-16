@@ -36,8 +36,8 @@ export function Footer() {
             <h3 className="text-lg font-semibold">Tautan Cepat</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link href="/katalog" className="hover:text-primary hover:underline cursor-pointer">
-                  Katalog Alat
+                <Link href="/pinjam" className="hover:text-primary hover:underline cursor-pointer">
+                  Pinjam Alat
                 </Link>
               </li>
               <li>

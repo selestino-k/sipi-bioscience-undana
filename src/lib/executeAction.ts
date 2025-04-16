@@ -46,8 +46,6 @@ export async function executeAction<TInput, TOutput>({
       };
     }
     
-    // Log the error for debugging
-    console.error("Action execution failed:", error);
     
     // Return error response
     return {
