@@ -145,3 +145,15 @@ enum user_role {
   USER
   ADMIN
 }
+
+
+model fileasset {
+  id        String   @id @default(cuid())
+  filename  String
+  mimeType  String
+  size      Int
+  data      Bytes
+  category  String   // instrumen, barang, alat, etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

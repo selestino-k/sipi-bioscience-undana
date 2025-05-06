@@ -1,30 +1,20 @@
-import { writeFile } from 'fs/promises';
 import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
-import fs from 'fs';
+import { PrismaClient } from '@prisma/client';
 
-// Validate resource type to prevent directory traversal attacks
+const prisma = new PrismaClient();
+
+// Validate resource type to prevent issues
 const validateResourceType = (type: string) => {
   const allowedTypes = ['instrumen', 'barang', 'alat'];
   return allowedTypes.includes(type) ? type : 'general';
-};
-
-// Make sure the directory exists
-const ensureDirectory = (resourceType: string) => {
-  const validatedType = validateResourceType(resourceType);
-  const dirPath = path.join(process.cwd(), 'public', 'images', validatedType);
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-  return dirPath;
 };
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const file = formData.get('file') as File;
   
-  // Get resource type from the request, default to "general" if not provided
   const resourceType = ((formData.get('resourceType') as string) || '').trim() || 'general';
+  const validatedType = validateResourceType(resourceType);
 
   if (!file) {
     return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
@@ -43,30 +33,32 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // Ensure the directory exists
-    const dirPath = ensureDirectory(resourceType);
-
     // Create a unique filename
     const timestamp = Date.now();
     const originalName = file.name.replace(/\s+/g, '-').toLowerCase();
     const filename = `${timestamp}-${originalName}`;
     
-    // Set the file path
-    const filePath = path.join(dirPath, filename);
-    
     // Convert the file to a Buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     
-    // Write the file to the public directory
-    await writeFile(filePath, buffer);
+    // Store the file in the database
+    const fileAsset = await prisma.fileasset.create({
+      data: {
+        filename: filename,
+        mimeType: file.type,
+        size: file.size,
+        data: buffer,
+        category: validatedType
+      }
+    });
     
-    // Return the path that will be accessible from the frontend
-    const imageUrl = `/images/${resourceType}/${filename}`;
-    
+    // Return the ID that can be used to retrieve the file
     return NextResponse.json({ 
       success: true, 
-      imageUrl 
+      fileId: fileAsset.id,
+      // You'll access this file via an API endpoint, not directly
+      imageUrl: `/api/images/${fileAsset.id}` 
     });
   } catch (error) {
     console.error('Error saving file:', error);
