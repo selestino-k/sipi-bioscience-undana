@@ -3,11 +3,24 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
-  // If you're having issues with image domains
+  // Updated to use remotePatterns instead of domains
   images: {
-    domains: [
-      'lh3.googleusercontent.com', // For Google profile images
-      // Add any other domains you need for images
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'si-inv-bioscience-image-bucket.s3.amazonaws.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'si-inv-bioscience-image-bucket.s3.ap-southeast-2.amazonaws.com',
+        pathname: '/**',
+      }
     ],
   },
 };

@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { uploadFileToS3 } from '@/utils/s3';
 
 // Validate resource type to prevent issues
 const validateResourceType = (type: string) => {
@@ -36,29 +34,19 @@ export async function POST(request: NextRequest) {
     // Create a unique filename
     const timestamp = Date.now();
     const originalName = file.name.replace(/\s+/g, '-').toLowerCase();
-    const filename = `${timestamp}-${originalName}`;
+    const filename = `${validatedType}/${timestamp}-${originalName}`;
     
     // Convert the file to a Buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     
-    // Store the file in the database
-    const fileAsset = await prisma.fileasset.create({
-      data: {
-        filename: filename,
-        mimeType: file.type,
-        size: file.size,
-        data: buffer,
-        category: validatedType
-      }
-    });
+    // Upload to S3
+    const imageUrl = await uploadFileToS3(buffer, filename, file.type);
     
-    // Return the ID that can be used to retrieve the file
+    // Return the direct S3 URL that can be stored in the Instrumen table
     return NextResponse.json({ 
-      success: true, 
-      fileId: fileAsset.id,
-      // You'll access this file via an API endpoint, not directly
-      imageUrl: `/api/images/${fileAsset.id}` 
+      success: true,
+      imageUrl: imageUrl 
     });
   } catch (error) {
     console.error('Error saving file:', error);

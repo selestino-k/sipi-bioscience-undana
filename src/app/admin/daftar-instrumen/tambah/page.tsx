@@ -197,6 +197,7 @@ export default function TambahInstrumenPage() {
                           onChange={field.onChange}
                           resourceType="instrumen"
                           description="Upload gambar instrumen untuk ditampilkan di halaman katalog"
+                          disabled={isSubmitting}
                         />
                       </FormControl>
                       <FormMessage />

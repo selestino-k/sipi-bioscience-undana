@@ -91,6 +91,18 @@ export async function createInstrumen(data: {
 }) {
 
   try {
+    // Check if a similar instrument already exists
+    const existingInstrument = await db.instrumen.findFirst({
+      where: {
+        nama_instrumen: data.nama_instrumen,
+        merk_instrumen: data.merk_instrumen,
+        tipe_instrumen: data.tipe_instrumen
+      }
+    });
+
+    if (existingInstrument) {
+      throw new Error("A similar instrument already exists in the database");
+    }
     // Create a new instrument using Prisma
     const newInstrumen = await db.instrumen.create({
       data: {

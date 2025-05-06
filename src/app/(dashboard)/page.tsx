@@ -5,9 +5,19 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 
+
 const Page = async () => {
     const session = await auth();
-    if (!session) redirect("/sign-in");
+    if (!session || !session.user) redirect("/sign-in");
+    // Check if user is admin
+    // const user = await prisma.user.findUnique({
+    //     where: { id: session.user.id },
+    //     select: { role: true },
+    // });
+    
+    // if (user?.role == "ADMIN") {
+    //     redirect("/admin");
+    // }
 
     return (
         <div>

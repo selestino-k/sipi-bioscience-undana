@@ -41,12 +41,12 @@ export function ImageUpload({
       const formData = new FormData();
       formData.append('file', file);
 
-    // Only append resourceType if it's provided and not empty
+      // Include resourceType for organizing files in S3 folders
       if (resourceType && resourceType.trim() !== '') {
         formData.append('resourceType', resourceType);
       }
       
-      // Upload the image
+      // Upload the image to API which will forward to S3
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
@@ -58,14 +58,14 @@ export function ImageUpload({
         throw new Error(result.error || 'Failed to upload image');
       }
 
-      // Set the permanent image URL
+      // Set the S3 image URL returned from the API
       setImagePreview(result.imageUrl);
       onChange(result.imageUrl);
       
       // Clean up temporary preview
       URL.revokeObjectURL(localPreview);
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error('Error uploading image to S3:', error);
       setImagePreview(null);
       onChange(null);
     } finally {
@@ -108,6 +108,8 @@ export function ImageUpload({
               fill
               style={{ objectFit: 'cover' }}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              // Add unoptimized prop for external S3 URLs
+              unoptimized={imagePreview?.startsWith('https://') || false}
             />
             {isUploading && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
