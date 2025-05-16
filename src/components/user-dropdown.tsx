@@ -55,8 +55,6 @@ export function UserDropdown({
         )}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {/* Admin dashboard link - only visible for admins */}
-          {isAdmin && (
             <Link href="/admin" passHref>
               <div onClick={handleItemClick} className="w-full">
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
@@ -64,10 +62,8 @@ export function UserDropdown({
                   Dashboard Admin
                 </DropdownMenuItem>
               </div>
-            </Link>
-          )}
+            </Link>  
           <DropdownMenuGroup/>
-          {/* User dashboard link - visible for all users */}
         <DropdownMenuSeparator />
         <Link href="/pinjaman" passHref>
             <div onClick={handleItemClick} className="w-full">

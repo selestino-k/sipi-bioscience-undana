@@ -2,6 +2,8 @@
 
 import {
   EllipsisVertical,
+  Globe,
+  Settings,
   User,
 } from "lucide-react"
 import Link from "next/link"
@@ -21,7 +23,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { SignOut } from "./sign-out"
+import { SignOut } from "../sign-out"
 
 export function NavUser({
   user,
@@ -70,14 +72,14 @@ export function NavUser({
           <Link href="/admin/profil" passHref>
             <div onClick={handleItemClick} className="w-full">
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                Pengaturan Akun
+                <Settings/>Pengaturan Akun
               </DropdownMenuItem>
             </div>
           </Link>
           <Link href="/" passHref>
             <div onClick={handleItemClick} className="w-full">
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                Pergi ke Web SI Peminjaman
+                <Globe/> Pergi ke Web SI Peminjaman
               </DropdownMenuItem>
             </div>
           </Link>
