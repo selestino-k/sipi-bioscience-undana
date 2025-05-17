@@ -18,7 +18,11 @@ export const metadata: Metadata = {
 
 async function getData(): Promise<barang[]> {
     // Fetch data from your API here.
-    return await prisma.barang.findMany()
+    return await prisma.barang.findMany({
+        orderBy: {
+            barang_id: 'asc',
+        },
+    })
 }
 
 export default async function DaftarBarang() {

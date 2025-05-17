@@ -13,11 +13,6 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'si-inv-bioscience-image-bucket.s3.amazonaws.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
         hostname: 'si-inv-bioscience-image-bucket.s3.ap-southeast-2.amazonaws.com',
         pathname: '/**',
       }

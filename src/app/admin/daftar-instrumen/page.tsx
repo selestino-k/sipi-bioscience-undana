@@ -18,11 +18,15 @@ export const metadata: Metadata = {
 
 async function getData(): Promise<instrumen[]> {
     // Fetch data from your API here with no caching
-    return await prisma.instrumen.findMany();
+    return await prisma.instrumen.findMany({
+        orderBy: {
+            instrumen_id: 'asc',
+        },
+    });
+
 }
 
 export default async function DaftarInstrumen() {
-    // The searchParams will force a refetch when it changes
     const data = await getData();
     const session = await auth();
     if (!session) redirect('/sign-in');

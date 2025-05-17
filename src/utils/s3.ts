@@ -23,13 +23,11 @@ export async function uploadFileToS3(
     Key: fileName,
     Body: file,
     ContentType: contentType,
-    ACL: "public-read", // Set the ACL to public-read to allow public access
-    // Make the object publicly accessible
   });
 
   try {
     await s3Client.send(command);
-    return `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+    return `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
   } catch (error) {
     console.error('S3 Upload Error:', error);
     throw new Error('Failed to upload to S3');
