@@ -41,12 +41,12 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
     
     // Upload to S3
-    const imageUrl = await uploadFileToS3(buffer, filename, file.type);
+    const image_url = await uploadFileToS3(buffer, filename, file.type);
     
     // Return the direct S3 URL that can be stored in the Instrumen table
     return NextResponse.json({ 
       success: true,
-      imageUrl: imageUrl 
+      imageUrl: image_url
     });
   } catch (error) {
     console.error('Error saving file:', error);

@@ -15,21 +15,25 @@ const bucketName = process.env.S3_BUCKET_NAME || "";
 // Upload file to S3
 export async function uploadFileToS3(
   file: Buffer, 
-  filename: string, 
+  fileName: string, 
   contentType: string
 ): Promise<string> {
   const command = new PutObjectCommand({
     Bucket: bucketName,
-    Key: filename,
+    Key: fileName,
     Body: file,
     ContentType: contentType,
+    ACL: "public-read", // Set the ACL to public-read to allow public access
     // Make the object publicly accessible
   });
 
-  await s3Client.send(command);
-  
-  // Return the URL to the file
-  return `https://${bucketName}.s3.amazonaws.com/${filename}`;
+  try {
+    await s3Client.send(command);
+    return `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+  } catch (error) {
+    console.error('S3 Upload Error:', error);
+    throw new Error('Failed to upload to S3');
+  }
 }
 
 // Get a signed URL for temporary access to a private file

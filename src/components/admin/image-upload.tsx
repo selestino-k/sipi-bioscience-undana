@@ -58,14 +58,14 @@ export function ImageUpload({
         throw new Error(result.error || 'Failed to upload image');
       }
 
-      // Set the S3 image URL returned from the API
-      setImagePreview(result.imageUrl);
+      // Only update the preview once S3 upload is complete
+      URL.revokeObjectURL(localPreview); // Clean up previous preview
+      setImagePreview(result.imageUrl); // Set the S3 URL
       onChange(result.imageUrl);
       
-      // Clean up temporary preview
-      URL.revokeObjectURL(localPreview);
     } catch (error) {
       console.error('Error uploading image to S3:', error);
+      URL.revokeObjectURL(localPreview); // Clean up on error
       setImagePreview(null);
       onChange(null);
     } finally {
