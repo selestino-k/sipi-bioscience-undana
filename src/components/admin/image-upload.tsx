@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Upload, X } from "lucide-react";
@@ -26,14 +26,22 @@ export function ImageUpload({
   disabled = false,
 }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(value || null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [imageLoadError, setImageLoadError] = useState(false);
 
-  // Add image error handling
+  // Add useEffect to handle initial value
+  useEffect(() => {
+    if (value) {
+      setImagePreview(value);
+      setImageLoadError(false);
+    }
+  }, [value]);
+
   const handleImageError = () => {
     setImageLoadError(true);
     setUploadError('Tidak dapat memuat gambar. Silakan coba unggah ulang.');
+    console.error('Failed to load image:', imagePreview);
   };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,9 +160,12 @@ export function ImageUpload({
               fill
               style={{ objectFit: 'cover' }}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              unoptimized={true} // Always use unoptimized for S3 images
+              priority={true}
+              unoptimized={true}
               onError={handleImageError}
-              className={imageLoadError ? 'opacity-50' : ''}
+              className={`transition-opacity duration-300 ${
+                imageLoadError ? 'opacity-50' : 'opacity-100'
+              }`}
             />
             {isUploading && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -162,10 +173,23 @@ export function ImageUpload({
               </div>
             )}
             {imageLoadError && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-sm text-red-500 bg-white/90 px-4 py-2 rounded">
-                  Gambar tidak dapat dimuat
-                </p>
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                <div className="text-center p-4">
+                  <p className="text-sm text-red-500 bg-white/90 px-4 py-2 rounded mb-2">
+                    Gambar tidak dapat dimuat
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setImageLoadError(false);
+                      setImagePreview(value || null);
+                    }}
+                  >
+                    Coba Lagi
+                  </Button>
+                </div>
               </div>
             )}
           </div>

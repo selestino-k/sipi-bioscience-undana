@@ -36,8 +36,8 @@ export async function getCatalogue(): Promise<Katalog[]> {
     return instruments.map(instrumen => ({
       ...instrumen,
       // Handle missing image field
-      image_url: instrumen.image_url || "/placeholder.svg", // Default to empty string if null
-      image: instrumen.image_url || "/placeholder.svg", // Default to empty string if null
+      image_url: instrumen.image_url || "/images/placeholder.svg", // Default to empty string if null
+      image: instrumen.image_url || "/images/placeholder.svg", // Default to empty string if null
     }));
   } catch (error) {
     console.error("Failed to fetch instruments:", error);

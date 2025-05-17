@@ -5,10 +5,16 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // Updated to use remotePatterns instead of domains
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'si-inv-bioscience-image-bucket.s3.amazonaws.com',
         pathname: '/**',
       },
       {
