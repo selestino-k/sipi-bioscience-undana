@@ -141,11 +141,11 @@ export function ImageUpload({
           <p className={`mt-2 text-sm ${uploadError ? 'text-red-500' : 'text-gray-500'}`}>
             Klik untuk upload gambar
           </p>
-          <p className="text-xs text-gray-400">(JPG, PNG, maksimal 5MB)</p>
+          <p className="text-xs text-gray-400">(JPG, PNG, WEBP, maksimal 5MB)</p>
           <input
             id={id}
             type="file"
-            accept="image/jpeg,image/png,image/jpg"
+            accept="image/jpeg,image/png,image/jpg,image/webp"
             className="hidden"
             onChange={handleImageChange}
             disabled={disabled || isUploading}
@@ -196,9 +196,9 @@ export function ImageUpload({
           {!disabled && (
             <Button
               type="button"
-              variant="outline"
+              variant="secondary"
               size="icon"
-              className="absolute -top-2 -right-2 h-8 w-8 rounded-full bg-white shadow-md border border-gray-200"
+              className="absolute -top-2 -right-2 h-8 w-8 rounded-full shadow-md border border-gray-200"
               onClick={handleRemoveImage}
               disabled={isUploading}
             >

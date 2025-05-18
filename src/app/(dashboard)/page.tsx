@@ -31,12 +31,12 @@ const Page = async () => {
                 />
             </div>
             
-            <main className="relative z-10 flex flex-col gap-3 text-white row-start-2 justify-center sm:items-start">
+            <main className="relative z-10 flex flex-col gap-3 text-white row-start-2 items-center sm:items-start">
                 <h3 className="text-lg">
                     Selamat datang di
                 </h3>
                 <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight">
-                Sistem Peminjaman Alat Laboratorium
+                Sistem Peminjaman Alat  <br></br> dan Inventaris Laboratorium
                 </h2>   
                 <h3 className="text-lg mb-6">
                     UPT Lab Terpadu Universitas Nusa Cendana

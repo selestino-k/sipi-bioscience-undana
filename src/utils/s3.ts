@@ -23,6 +23,7 @@ export async function uploadFileToS3(
     Key: fileName,
     Body: file,
     ContentType: contentType,
+    ACL: "public-read", // Make the file publicly readable
   });
 
   try {
