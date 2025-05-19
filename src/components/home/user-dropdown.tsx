@@ -13,7 +13,7 @@ import {
 import { User,Shield, Settings, List } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Link from "next/link"
-import { SignOut } from "./sign-out"
+import { SignOut } from "../sign-out"
 import { useState } from "react"
 
 export function UserDropdown({

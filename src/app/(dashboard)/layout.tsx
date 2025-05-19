@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import NavBar from "@/components/navbar";
+import NavBar from "@/components/home/navbar";
 import { SessionProvider } from "next-auth/react";
-import { Footer } from "@/components/footer";
+import { Footer } from "@/components/home/footer";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "sonner";
 
@@ -25,7 +25,7 @@ export default async function DashboardLayout({
       enableSystem
       disableTransitionOnChange
           >
-        <main className="gap-3 w-full">
+        <main className="gap-3 w-full scroll-smooth">
         <NavBar/>
         <SessionProvider>
             <div className="flex w-full min-h-screen items-center justify-center">
