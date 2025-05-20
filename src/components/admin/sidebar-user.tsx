@@ -69,7 +69,7 @@ export function NavUser({
           >            
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-          <Link href="/admin/profil" passHref>
+          <Link href="/admin/pengaturan-akun" passHref>
             <div onClick={handleItemClick} className="w-full">
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                 <Settings/>Pengaturan Akun

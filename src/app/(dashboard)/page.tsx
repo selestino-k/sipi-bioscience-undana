@@ -47,16 +47,16 @@ const Page = async () => {
             </div>
                 <main className="relative z-10 flex flex-col gap-3 text-white items-center p-8 w-full">
                     <div className="text-center w-full">
-                       
+              
                         <h1 className="text-4xl md:text-5xl/9 font-bold sm:tracking-tight mt-2">
                             Selamat datang di Sistem Peminjaman Alat 
                         </h1>  
                         <h1 className="text-4xl md:text-5xl/9 font-bold sm:tracking-tight mt-3">
                             dan  Inventaris Laboratorium
                         </h1>   
-                        <h3 className="text-lg mt-4 mb-6">
+                        <h2 className="text-2xl mt-4 mb-6">
                             UPT Lab Terpadu Universitas Nusa Cendana
-                        </h3>
+                        </h2>
                     </div>
                     <HoverMotion>
                         <Button asChild className="h-12 text-lg px-6" variant="secondary">
@@ -73,7 +73,7 @@ const Page = async () => {
         <div id="tentang" className="flex items-center justify-center h-full w-full relative">
                 <main className="relative z-10 flex flex-col gap-3 items-center p-8 w-full mt-10">
                     <div className="text-center w-full">
-                       
+                      
                         <h1 className="text-3xl md:text-4xl/9 font-bold sm:tracking-tight mt-2">
                             Tentang Sistem Peminjaman Alat dan Inventaris Laboratorium
                         </h1>  

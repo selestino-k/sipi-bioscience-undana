@@ -16,7 +16,13 @@ export const revalidate = 0; // Disable static generation for this page
 
 async function getData(): Promise<alat[]> {
     // Fetch data from your API here.
-    return await prisma.alat.findMany();
+    return await prisma.alat.findMany(
+        {
+            orderBy: {
+                alat_id: 'asc',
+            },
+        }
+    );
 }
 
 export default async function DaftarAlat() {

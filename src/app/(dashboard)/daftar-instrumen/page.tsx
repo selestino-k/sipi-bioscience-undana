@@ -20,7 +20,11 @@ export const metadata: Metadata = {
 
 async function getData(): Promise<instrumen[]> {
     // Fetch data from your API here.
-    return await prisma.instrumen.findMany()
+    return await prisma.instrumen.findMany({
+            orderBy: {
+                instrumen_id: 'asc',
+            },
+        });
 }
 
 export default async function DaftarInstrumen() {

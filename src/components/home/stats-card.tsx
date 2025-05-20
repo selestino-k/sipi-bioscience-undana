@@ -29,6 +29,7 @@ export function StatsCard({ title, value, iconType, href }: StatsCardProps) {
       <motion.div
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
+        
         className="flex flex-col items-center p-6 rounded-lg bg-white/5 backdrop-blur-sm 
         border border-white/10 hover:border-primary/50 transition-colors"
       >
