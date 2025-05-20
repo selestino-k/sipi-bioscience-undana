@@ -63,6 +63,7 @@ export default async function RentalsPage() {
       // Add flattened instrument fields
       instrument_name: rental.instrumen?.nama_instrumen || null,
       instrument_merk: rental.instrumen?.merk_instrumen || null,
+      instrument_tipe: rental.instrumen?.tipe_instrumen || null,
       // Add flattened user fields
       user_name: rental.user?.name || null,
       user_email: rental.user?.email || null,

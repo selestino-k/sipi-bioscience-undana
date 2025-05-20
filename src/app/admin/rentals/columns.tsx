@@ -22,6 +22,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { DialogDescription } from "@radix-ui/react-dialog"
 
 // Define the type for the rental data
 type Rental = {
@@ -36,12 +37,13 @@ type Rental = {
   instrument_id?: number
   instrument_name?: string  | null  // Add flattened instrument fields
   instrument_merk?: string | null
+  instrument_tipe?: string | null
   user_name?: string| null    // Add flattened user fields
   user_email?: string | null
 }
 
 // Add this component for image preview
-function ImagePreview({ imageUrl, instrumentName }: { imageUrl: string, instrumentName: string }) {
+function ImagePreview({ imageUrl, instrumentName, instrumentMerk, instrumenTipe }: { imageUrl: string, instrumentName: string, instrumentMerk: string, instrumenTipe: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!imageUrl) return null;
@@ -65,6 +67,7 @@ function ImagePreview({ imageUrl, instrumentName }: { imageUrl: string, instrume
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogTitle>{instrumentName}</DialogTitle>
+          <DialogDescription>{instrumentMerk} - {instrumenTipe}</DialogDescription>
           <div className="relative h-80 w-full">
             <Image 
               src={imageUrl || "placeholder.svg"} 
@@ -93,9 +96,11 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       const image_url = row.getValue("image_url") as string;
       const instrument_name = row.getValue("instrument_name") as string;
+      const instrumen_tipe = row.original.instrument_tipe as string;
+      const instrumen_merk = row.original.instrument_merk as string;
   
       return image_url ? (
-        <ImagePreview imageUrl={image_url} instrumentName={instrument_name} />
+        <ImagePreview imageUrl={image_url} instrumentName={instrument_name} instrumentMerk={instrumen_merk} instrumenTipe={instrumen_tipe}/>
       ) : (
         <div className="h-12 w-12 flex items-center justify-center bg-gray-100 rounded-md">
           <span className="text-gray-400 text-xs">No Image</span>
@@ -109,11 +114,12 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       const instrumentName = row.getValue("instrument_name") as string;
       const instrumentMerk = row.original.instrument_merk;
+      const instrumentTipe = row.original.instrument_tipe;
       
       return (
         <div>
           <div className="font-medium">{String(instrumentName || "N/A")}</div>
-          <div className="text-sm text-gray-500">{instrumentMerk || ""}</div>
+          <div className="text-sm text-gray-500">{instrumentMerk || ""} - {instrumentTipe || ""}</div>
         </div>
       );
     }

@@ -36,7 +36,28 @@ interface ChartBoxProps {
   }>;
 }
 
+// Add this function to aggregate data by date
+function aggregateDataByDate(data: Array<{ date: string; rents: number }>) {
+  return Object.entries(
+    data.reduce((acc, curr) => {
+      // Get just the date part without time
+      const dateKey = new Date(curr.date).toISOString().split('T')[0]
+      acc[dateKey] = (acc[dateKey] || 0) + curr.rents
+      return acc
+    }, {} as Record<string, number>)
+  ).map(([date, rents]) => ({
+    date,
+    rents
+  }))
+}
+
 export function ChartBox({ instrumenCount, rentCount, barangCount, alatCount, userCount, chartData }: ChartBoxProps) {
+  // Aggregate the data before rendering
+  const aggregatedData = React.useMemo(
+    () => aggregateDataByDate(chartData),
+    [chartData]
+  )
+
   return (
     <Card>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
@@ -96,7 +117,7 @@ export function ChartBox({ instrumenCount, rentCount, barangCount, alatCount, us
           className="aspect-auto h-[250px] w-full"
         >
           <BarChart
-            data={chartData}
+            data={aggregatedData}
             margin={{
               left: 12,
               right: 12,
@@ -121,7 +142,7 @@ export function ChartBox({ instrumenCount, rentCount, barangCount, alatCount, us
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value}
+              tickFormatter={(value) => Math.round(value).toString()}
             />
             <ChartTooltip
               content={
@@ -141,7 +162,7 @@ export function ChartBox({ instrumenCount, rentCount, barangCount, alatCount, us
             <Bar 
               dataKey="rents" 
               fill="hsl(var(--primary))"
-              name="Peminjaman" 
+              name="Total Peminjaman" 
             />
           </BarChart>
         </ChartContainer>
