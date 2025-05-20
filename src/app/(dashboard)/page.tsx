@@ -38,7 +38,7 @@ const Page = async () => {
         <div className="flex items-center justify-center h-screen w-full relative">
             <div className="absolute inset-0 z-0">
                 <Image 
-                    src="/background.jpg"
+                    src="/images/background.jpg"
                     alt="Background"
                     fill
                     className="object-cover opacity-95"

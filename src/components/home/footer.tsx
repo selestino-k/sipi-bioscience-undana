@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link"
-import { Facebook, Instagram,  Mail, MapPin, Phone } from "lucide-react"
+import { Facebook, Instagram,  Mail, MapPin } from "lucide-react"
 import { scrollToElement } from "@/utils/scroll"
 import Image from "next/image"
 
@@ -82,7 +82,7 @@ export function Footer() {
               <Link 
               href="https://undana.ac.id">
               <Image
-                src="/icons/Logo_Undana.png"
+                src="/images/Logo_Undana.png"
                 alt="Logo UNDANA"
                 width={100}
                 height={100}
@@ -93,7 +93,7 @@ export function Footer() {
               <Link
               href="https://bioscience.undana.ac.id">
               <Image
-                src="/icons/logo-biosains-kan.jpeg"
+                src="/images/logo-biosains-kan.jpeg"
                 alt="Logo Biosains"
                 width={200}
                 height={200}
