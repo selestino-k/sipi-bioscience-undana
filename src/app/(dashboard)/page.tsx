@@ -30,6 +30,7 @@ async function getStats() {
 
 const Page = async () => {
     const stats = await getStats();
+    
    
     return (
         <div className="grid w-full">
@@ -49,10 +50,10 @@ const Page = async () => {
                     <div className="text-center w-full">
               
                         <h1 className="text-4xl md:text-5xl/9 font-bold sm:tracking-tight mt-2">
-                            Selamat datang di Sistem Peminjaman Alat 
+                            Selamat datang di SIPI
                         </h1>  
-                        <h1 className="text-4xl md:text-5xl/9 font-bold sm:tracking-tight mt-3">
-                            dan  Inventaris Laboratorium
+                        <h1 className="text-2xl md:text-3xl/9 font-bold sm:tracking-tight mt-3">
+                            Sistem Informasi Peminjaman dan Inventaris
                         </h1>   
                         <h2 className="text-2xl mt-4 mb-6">
                             UPT Lab Terpadu Universitas Nusa Cendana
@@ -75,13 +76,13 @@ const Page = async () => {
                     <div className="text-center w-full">
                       
                         <h1 className="text-3xl md:text-4xl/9 font-bold sm:tracking-tight mt-2">
-                            Tentang Sistem Peminjaman Alat dan Inventaris Laboratorium
+                            Tentang SIPI Lab Bioscience
                         </h1>  
                         <h2 className="text-xl mt-4 mb-6">
                             UPT Lab Terpadu Universitas Nusa Cendana
                         </h2>
                         <p className="text-lg mt-4 mb-6 w-2/3 mx-auto">
-                            Sistem Peminjaman Alat dan Inventaris Laboratorium adalah sistem yang dirancang untuk memudahkan proses peminjaman alat dan inventaris di UPT Laboratorium Terpadu Universitas Nusa Cendana. Sistem ini bertujuan untuk meningkatkan efisiensi dan transparansi dalam pengelolaan alat dan inventaris, serta memberikan kemudahan bagi pengguna dalam melakukan peminjaman.  
+                            <b>SIPI</b> atau <b>S</b>istem <b>I</b>nformasi <b>P</b>eminjaman alat dan <b>I</b>nventaris laboratorium adalah sistem yang dirancang untuk memudahkan proses peminjaman alat dan inventaris di UPT Laboratorium Terpadu Universitas Nusa Cendana. Sistem ini bertujuan untuk meningkatkan efisiensi dan transparansi dalam pengelolaan alat dan inventaris, serta memberikan kemudahan bagi pengguna dalam melakukan peminjaman.  
                         </p>
                     </div>
                     <FeatureCardList/>

@@ -21,7 +21,7 @@ export default async function NavBar() {
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <Microscope/>
           <div className="grid grid-flow-col grid-rows-2">
-            <span className="text-lg font-bold">SI Inventaris dan Peminjaman</span>
+            <span className="text-lg font-bold">SIPI Lab Bioscience</span>
             <span className="text-sm">UPT Lab Terpadu UNDANA</span>
           </div>
         </Link>

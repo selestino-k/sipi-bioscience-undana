@@ -24,10 +24,15 @@ export const metadata: Metadata = {
 export default async function SignInPage() {
   const session = await auth();
 
+   // Debug session data
+  console.log('Session:', session);
+  console.log('User role:', session?.user?.role);
+
+
   // Check if user is authenticated
-  if (session) {
+  if (session?.user) {
     // Check user role and redirect accordingly
-    if (session.user?.role === "ADMIN") {
+    if (session.user.role === "ADMIN") {
       redirect("/admin");
     } else {
       redirect("/"); // Regular users go to home page
@@ -62,7 +67,7 @@ export default async function SignInPage() {
             <CircleLoader className="h-12 w-12" />
           </div>
           }>
-        <LoginForm />
+         <LoginForm />
         </Suspense>
       </main>
     </div>

@@ -80,7 +80,7 @@ export function RentInstrumenDialog({
     setIsSubmitting(true)
     
     if (!user) {
-      toast.error("You must be logged in to rent instruments")
+      toast.error("Anda harus masuk untuk mengajukan pinjaman instrumen")
       setIsSubmitting(false)
       return
     }
@@ -94,7 +94,7 @@ export function RentInstrumenDialog({
         user_id: user.id,
         image_url: instrumen.image_url || "", // Ensure image_url is passed correctly
       })
-      toast.success("Sukses menggunakan instrumen")
+      toast.success("Sukses mengajukan pinjaman instrumen")
       form.reset()
       onOpenChange(false)
       // Use router.refresh() to refresh the server components

@@ -30,7 +30,7 @@ const Page = async () => {
                     Selamat datang  <b>{session.user?.name}</b> ({session.user?.email})  di Panel Admin
                 </h3>
                 <h2 className="text-2xl/7 font-bold  sm:truncate sm:text-5xl sm:tracking-tight">
-                 SI Inventaris dan Peminjaman Lab Bioscience
+                 SI Peminjaman dan Inventaris Lab Bioscience
                 </h2>   
                 <h3 className="text-lg">
                     UPT Laboratorium Terpadu - Universitas Nusa Cendana

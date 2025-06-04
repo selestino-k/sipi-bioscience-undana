@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 
 } from "@/components/ui/dropdown-menu"
-import { User,Shield, Settings, List } from "lucide-react"
+import { User, Settings, List } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Link from "next/link"
 import { SignOut } from "../sign-out"
@@ -26,7 +26,6 @@ export function UserDropdown({
     }
 }) {
   const [open, setOpen] = useState(false)
-  const isAdmin = user.role === "ADMIN"
 
   
   // Prevent closing when clicking inside items by stopping event propagation
@@ -48,23 +47,8 @@ export function UserDropdown({
       <DropdownMenuContent className="w-56" onCloseAutoFocus={(e) => e.preventDefault()}>
         <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
         <DropdownMenuItem disabled>{user.email}</DropdownMenuItem>
-        {isAdmin && (
-          <DropdownMenuItem disabled className="text-xs text-muted-foreground">
-            Admin
-          </DropdownMenuItem>
-        )}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-            <Link href="/admin" passHref>
-              <div onClick={handleItemClick} className="w-full">
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                  <Shield className="mr-2 h-4 w-4" />
-                  Dashboard Admin
-                </DropdownMenuItem>
-              </div>
-            </Link>  
-          <DropdownMenuGroup/>
-        <DropdownMenuSeparator />
         <Link href="/pinjaman" passHref>
             <div onClick={handleItemClick} className="w-full">
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>

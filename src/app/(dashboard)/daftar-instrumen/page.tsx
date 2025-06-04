@@ -7,8 +7,6 @@ import { redirect } from "next/navigation";
 import { Metadata } from "next";
 
 
-
-
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 export const revalidate = 0; // Disable static generation for this page
 

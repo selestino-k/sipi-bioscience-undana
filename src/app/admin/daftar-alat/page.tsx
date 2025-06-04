@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";  
 import { Metadata } from "next";
+import { AlatPDF } from "@/components/pdf/alat-pdf";
+import { DownloadPDFButton } from "@/components/pdf/download-pdf";
 
 export const metadata: Metadata = {
     title: "Daftar Alat",
@@ -27,7 +29,7 @@ async function getData(): Promise<alat[]> {
 }
 
 export default async function DaftarAlat() {
-    const data = await getData()
+    const alatData = await getData()
     const session = await auth();
         if (!session) redirect ('/sign-in');
 
@@ -38,10 +40,18 @@ export default async function DaftarAlat() {
                 <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight mb-6 sm:mb-10">
                     Manajemen Daftar Alat Laboratorium
                 </h2>    
+                <div className="flex flex-wrap gap-4 mb-6 justify-between items-center">
                     <Button>
                         <Link href="/admin/daftar-alat/tambah">Tambah Alat Laboratorium</Link>
                     </Button>
-                    <DataTable columns={columns} data={data} />
+                     <DownloadPDFButton
+                        data={alatData}
+                        PDFDocument={AlatPDF}
+                        filename="daftar-alat"
+                        label="Download Daftar Alat"
+                    />
+                </div>
+                    <DataTable columns={columns} data={alatData} />
                 </div>
             </main>
             

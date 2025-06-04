@@ -35,12 +35,19 @@ export function LoginForm() {
         setIsLoading(false);
         return;
       }
-      
+
+       // Fetch user role after successful login
+      const userResponse = await fetch('/api/user/me');
+      const userData = await userResponse.json();
       // Refresh to get updated session
       router.refresh();
       
-      // Client-side redirection will happen via the server component
-      router.push("/");
+      // Redirect based on role
+      if (userData.role === "ADMIN") {
+        router.push("/admin");
+      } else {
+        router.push("/");
+      }
       
     } catch {
       setError("Terjadi kesalahan saat login. Silakan coba lagi.");

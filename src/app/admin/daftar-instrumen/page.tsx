@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { DownloadPDFButton } from "@/components/pdf/download-pdf";
+import { InstrumenPDF } from "@/components/pdf/instrumen-pdf";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 export const revalidate = 0; // Disable static generation for this page
@@ -27,7 +29,7 @@ async function getData(): Promise<instrumen[]> {
 }
 
 export default async function DaftarInstrumen() {
-    const data = await getData();
+    const instrumenData = await getData();
     const session = await auth();
     if (!session) redirect('/sign-in');
     
@@ -38,10 +40,21 @@ export default async function DaftarInstrumen() {
                     <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight mb-6 sm:mb-10">
                         Manajemen Daftar Instrumen
                     </h2>       
+                    <div className="flex flex-wrap gap-4 mb-6 justify-between items-center">
                     <Button>
                         <Link href="/admin/daftar-instrumen/tambah">Tambah Instrumen</Link>
                     </Button>
-                    <DataTable columns={columns} data={data} />
+                    
+                    
+                    <DownloadPDFButton
+                        data={instrumenData}
+                        PDFDocument={InstrumenPDF}
+                        filename="daftar-instrumen"
+                        label="Download Daftar Instrumen"
+                    />
+                    </div>
+
+                    <DataTable columns={columns} data={instrumenData} />
                 </div>
             </main>
             <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">

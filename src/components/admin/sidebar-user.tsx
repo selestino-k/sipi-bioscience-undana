@@ -2,7 +2,6 @@
 
 import {
   EllipsisVertical,
-  Globe,
   Settings,
   User,
 } from "lucide-react"
@@ -73,13 +72,6 @@ export function NavUser({
             <div onClick={handleItemClick} className="w-full">
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                 <Settings/>Pengaturan Akun
-              </DropdownMenuItem>
-            </div>
-          </Link>
-          <Link href="/" passHref>
-            <div onClick={handleItemClick} className="w-full">
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                <Globe/> Pergi ke Web SI Peminjaman
               </DropdownMenuItem>
             </div>
           </Link>
