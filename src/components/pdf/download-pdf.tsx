@@ -5,9 +5,12 @@ import { FileDown } from "lucide-react"
 import { ReactElement, useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 
-// Dynamically import PDFDownloadLink with no SSR
+// Dynamically import PDFDownloadLink as ESM module
 const PDFDownloadLink = dynamic(
-  () => import('@react-pdf/renderer').then(mod => mod.PDFDownloadLink),
+  async () => {
+    const mod = await import('@react-pdf/renderer')
+    return mod.PDFDownloadLink
+  },
   { 
     ssr: false,
     loading: () => (
@@ -34,23 +37,27 @@ export function DownloadPDFButton<T>({
 }: DownloadPDFButtonProps<T>) {
   const [isClient, setIsClient] = useState(false)
 
-  // Use useEffect to mark component as client-side
   useEffect(() => {
     setIsClient(true)
   }, [])
 
-  // Show nothing until client-side
   if (!isClient) return null
 
   return (
     <PDFDownloadLink 
       document={<PDFDocument data={data} />}
-      fileName={`${filename}-${new Date().toLocaleDateString()}.pdf`}
+      fileName={`${filename}-${new Date().toLocaleDateString('id-ID')}.pdf`}
     >
-      {({ loading }) => (
-        <Button disabled={loading} variant="secondary">
+      {({ loading, error }) => (
+        <Button 
+          disabled={loading} 
+          variant="secondary"
+          className={error ? "text-destructive" : ""}
+        >
           <FileDown className="mr-2 h-4 w-4" />
-          {loading ? "Generating PDF..." : label}
+          {loading ? "Generating PDF..." : 
+           error ? "Error generating PDF" : 
+           label}
         </Button>
       )}
     </PDFDownloadLink>
