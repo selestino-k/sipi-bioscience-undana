@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";  
 import { Metadata } from "next";
 import { AlatPDF } from "@/components/pdf/alat-pdf";
-import { DownloadPDFButton } from "@/components/pdf/download-pdf";
+import { PDFDownloadButton } from "@/components/pdf/pdf-download-button";
 
 export const metadata: Metadata = {
     title: "Daftar Alat",
@@ -44,7 +44,7 @@ export default async function DaftarAlat() {
                     <Button>
                         <Link href="/admin/daftar-alat/tambah">Tambah Alat Laboratorium</Link>
                     </Button>
-                     <DownloadPDFButton
+                     <PDFDownloadButton<alat>
                         data={alatData}
                         PDFDocument={AlatPDF}
                         filename="daftar-alat"

@@ -48,7 +48,7 @@ interface AlatPDFProps {
 export const AlatPDF = ({ data }: AlatPDFProps) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <Text style={styles.header}>Daftar Instrumen Laboratorium</Text>
+      <Text style={styles.header}>Daftar Alat Laboratorium</Text>
       
       
       <View style={[styles.tableRow, styles.tableHeader]}>

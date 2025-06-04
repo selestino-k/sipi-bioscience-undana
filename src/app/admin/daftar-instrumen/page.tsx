@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
-import { DownloadPDFButton } from "@/components/pdf/download-pdf";
+import { PDFDownloadButton } from "@/components/pdf/pdf-download-button";
 import { InstrumenPDF } from "@/components/pdf/instrumen-pdf";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
@@ -46,7 +46,7 @@ export default async function DaftarInstrumen() {
                     </Button>
                     
                     
-                    <DownloadPDFButton
+                    <PDFDownloadButton<instrumen>
                         data={instrumenData}
                         PDFDocument={InstrumenPDF}
                         filename="daftar-instrumen"

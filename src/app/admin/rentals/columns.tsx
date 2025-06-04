@@ -67,7 +67,7 @@ function ImagePreview({ imageUrl, instrumentName, instrumentMerk, instrumenTipe 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogTitle>{instrumentName}</DialogTitle>
-          <DialogDescription>{instrumentMerk} - {instrumenTipe}</DialogDescription>
+          <DialogDescription>{instrumentMerk} {instrumenTipe}</DialogDescription>
           <div className="relative h-80 w-full">
             <Image 
               src={imageUrl || "placeholder.svg"} 
@@ -119,7 +119,7 @@ export const columns: ColumnDef<Rental>[] = [
       return (
         <div>
           <div className="font-medium">{String(instrumentName || "N/A")}</div>
-          <div className="text-sm text-gray-500">{instrumentMerk || ""} - {instrumentTipe || ""}</div>
+          <div className="text-sm text-gray-500">{instrumentMerk || ""}  {instrumentTipe || ""}</div>
         </div>
       );
     }

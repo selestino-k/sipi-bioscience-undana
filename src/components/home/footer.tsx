@@ -100,7 +100,7 @@ export function Footer() {
                 className="object-contain opacity-80 hover:opacity-100 transition-opacity"
               />
             </Link>
-        </div>
+           </div>
           </div>
         </div>
         <div className="mt-8 border-t pt-8 text-center text-sm text-white">

@@ -5,6 +5,8 @@ import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+import { RentalPDF } from "@/components/pdf/rental-pdf";
+import { PDFDownloadButton } from "@/components/pdf/pdf-download-button";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 export const revalidate = 0; // Disable static generation for this page
@@ -82,6 +84,14 @@ export default async function RentalsPage() {
         <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight mb-6 sm:mb-10">
           Manajemen Peminjaman
         </h2> 
+        <div className="flex flex-wrap gap-4 mb-6 justify-between items-center">
+          <PDFDownloadButton<RentalWithRelations>
+            data={rentals}
+            PDFDocument={RentalPDF}
+            filename="daftar-peminjaman"
+            label="Download Daftar Peminjaman"
+          />
+        </div>
           <DataTable columns={columns} data={transformedRentals} />
         </div>
       </main>
