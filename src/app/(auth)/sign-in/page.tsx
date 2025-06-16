@@ -26,11 +26,6 @@ export const metadata: Metadata = {
 export default async function SignInPage() {
   const session = await auth();
 
-   // Debug session data
-  console.log('Session:', session);
-  console.log('User role:', session?.user?.role);
-
-
   // Check if user is authenticated
   if (session?.user) {
     // Check user role and redirect accordingly

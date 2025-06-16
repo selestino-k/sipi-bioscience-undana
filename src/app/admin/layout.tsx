@@ -9,7 +9,7 @@ import { ModeToggle } from "@/components/dark-switch";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "SI Inventaris Lab Bioscience",
+  title: "Panel Admin SIPI Lab Bioscience Undana",
   description: "Sistem Informasi Inventaris Lab Bioscience - UPT Laboratorium Terpadu Universitas Nusa Cendana",
 };
 

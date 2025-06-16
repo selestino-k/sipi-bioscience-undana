@@ -98,20 +98,21 @@ return (
             <Settings/>Pengaturan Akun
           </Button>
           {user ? (
-          <Button 
-            variant="outline" 
-            className="w-full justify-start mb-2"
-            onClick={() => handleNavigation("/pengaturan-akun")}
-          >
-            <User/>{user.name} ({user.email})
-          </Button>
-         ) : (
-          <Button variant="outline" 
-                className="w-full justify-start mb-2"
-                onClick={() => handleNavigation("/sign-in")}
-              ><User/>Masuk
-          </Button>
-    )}
+            <Button 
+              variant="outline" 
+              className="w-full justify-start mb-2"
+              onClick={() => handleNavigation("/pengaturan-akun")}
+            >
+              <User/>{user.name} ({user.email})
+            </Button>
+          ) : (
+            <Button variant="outline" 
+                  className="w-full justify-start mb-2"
+                  onClick={() => handleNavigation("/sign-in")}
+            >
+              <User/>Masuk
+            </Button>
+         )}
       <DrawerFooter className="pt-2">
         <SignOut/>
       </DrawerFooter>
