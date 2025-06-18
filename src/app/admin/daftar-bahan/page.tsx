@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { BahanPDF } from "@/components/pdf/bahan-pdf";
+import { PDFDownloadButton } from "@/components/pdf/pdf-download-button";
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 export const revalidate = 0; // Disable static generation for this page
@@ -26,7 +28,7 @@ async function getData(): Promise<bahan[]> {
 }
 
 export default async function DaftarBahan() {
-    const data = await getData()
+    const bahanData = await getData()
     const session = await auth();
     if (!session) redirect ('/sign-in');    
     
@@ -37,10 +39,18 @@ export default async function DaftarBahan() {
                     <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight mb-6 sm:mb-10">
                         Manajemen Daftar Bahan Kimia
                     </h2>  
+                    <div className="flex flex-wrap gap-4 mb-6 justify-between items-center">
                     <Button>
                         <Link href="/admin/daftar-bahan/tambah">Tambah Bahan Kimia</Link>
                     </Button>
-                    <DataTable columns={columns} data={data} />
+                    <PDFDownloadButton<bahan>
+                        data={bahanData}
+                        PDFDocument={BahanPDF}
+                        filename="daftar-bahan-kimia"
+                        label="Unduh Daftar Bahan Kimia"
+                    />
+                    </div>
+                    <DataTable columns={columns} data={bahanData} />
                 </div>
             </main>
             

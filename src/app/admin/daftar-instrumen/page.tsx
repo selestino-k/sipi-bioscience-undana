@@ -50,7 +50,7 @@ export default async function DaftarInstrumen() {
                         data={instrumenData}
                         PDFDocument={InstrumenPDF}
                         filename="daftar-instrumen"
-                        label="Download Daftar Instrumen"
+                        label="Unduh Daftar Instrumen"
                     />
                     </div>
 

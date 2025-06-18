@@ -36,6 +36,8 @@ import {
 // Form validation schema
 const bahanFormSchema = z.object({
   nama_bahan: z.string().min(1, { message: "Nama bahan kimia wajib diisi" }),
+  rumus_bahan: z.string().min(1, { message: "Rumus bahan wajib diisi" }),
+  jumlah_bahan: z.string().min(1, { message: "Jumlah bahan wajib diisi" }),
   tipe_bahan: z.string().min(1, { message: "Tipe bahan wajib diisi" }),
   status: z.string().min(1, { message: "Status wajib diisi" }),
 });
@@ -56,11 +58,13 @@ export function EditBahanDialog({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  // Initialize form with the bahant's current values
+  // Initialize form with the bahan's current values
   const form = useForm<EditFormValues>({
     resolver: zodResolver(bahanFormSchema),
     defaultValues: {
       nama_bahan: bahan.nama_bahan,
+      rumus_bahan: bahan.rumus_bahan,
+      jumlah_bahan: bahan.jumlah_bahan,
       tipe_bahan: bahan.tipe_bahan,
       status: bahan.status,
     },
@@ -71,14 +75,14 @@ export function EditBahanDialog({
     
     try {
       await updateBahan(bahan.bahan_id, values);
-      toast.success("bahan berhasil diperbarui");
+      toast.success("Bahan kimia berhasil diperbarui");
       onOpenChange(false);
       
       // Use router.refresh() to refresh the server components
       router.refresh();
     } catch (error) {
       console.error("Failed to update bahan:", error);
-      toast.error("Gagal memperbarui bahan");
+      toast.error("Gagal memperbarui bahan kimia");
     } finally {
       setIsSubmitting(false);
     }
@@ -105,18 +109,53 @@ export function EditBahanDialog({
               )}
             />
             <FormField
-              control={form.control}
-              name="tipe_bahan"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tipe</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Tipe bahan" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                  control={form.control}
+                  name="rumus_bahan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Rumus Kimia</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Rumus Kimia Bahan" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="tipe_bahan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tipe Bahan Kimia</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Tipe Bahan Kimia" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Padat">Padat</SelectItem>
+                          <SelectItem value="Cair">Cair</SelectItem>
+                          <SelectItem value="Gas">Gas</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="jumlah_bahan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Jumlah Bahan Kimia</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Jumlah Bahan Kimia dalam gr atau ml" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
             <FormField
               control={form.control}
               name="status"

@@ -1,7 +1,6 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../node_modules/.prisma/client"
-
 }
 
 datasource db {
@@ -27,8 +26,8 @@ model account {
   updatedAt         DateTime
   user              user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "account_userId_fkey")
 
-  @@unique([provider, providerAccountId], map: "account_provider_providerAccountId_key")
-  @@index([userId], map: "account_userId_idx")
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model alat {
@@ -41,7 +40,7 @@ model alat {
 }
 
 model authenticator {
-  credentialID         String  @unique(map: "authenticator_credentialID_key") @db.VarChar(191)
+  credentialID         String  @unique @db.VarChar(191)
   userId               String  @db.VarChar(191)
   providerAccountId    String  @db.VarChar(191)
   credentialPublicKey  String  @db.VarChar(191)
@@ -55,12 +54,14 @@ model authenticator {
 }
 
 model bahan {
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime
-  nama_bahan String   @db.VarChar(255)
-  tipe_bahan String   @db.VarChar(255)
-  status     String   @default("PENDING") @db.VarChar(191)
-  bahan_id   Int      @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime
+  nama_bahan    String    @db.VarChar(255)
+  status        String    @default("PENDING") @db.VarChar(191)
+  bahan_id      Int       @id @default(autoincrement())
+  tipe_bahan    String    @db.VarChar(255)
+  jumlah_bahan  String    @db.VarChar(255)
+  rumus_bahan   String    @db.VarChar(255)
 }
 
 model barang {
@@ -100,8 +101,8 @@ model rental {
   instrumen          instrumen @relation(fields: [instrumen_id], references: [instrumen_id], onDelete: NoAction, map: "rental_instrumen_id_fkey")
   user               user      @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "rental_user_id_fkey")
 
-  @@index([instrumen_id], map: "rental_instrumen_id_idx")
-  @@index([user_id], map: "rental_user_id_idx")
+  @@index([instrumen_id])
+  @@index([user_id])
 }
 
 model session {
@@ -113,12 +114,12 @@ model session {
   updatedAt    DateTime
   user         user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "session_userId_fkey")
 
-  @@unique([userId, sessionToken], map: "session_userId_sessionToken_key")
-  @@index([userId], map: "session_userId_idx")
+  @@unique([userId, sessionToken])
+  @@index([userId])
 }
 
 model user {
-  email         String?         @unique(map: "user_email_key") @db.VarChar(191)
+  email         String?         @unique @db.VarChar(191)
   name          String?         @db.VarChar(191)
   createdAt     DateTime        @default(now())
   emailVerified DateTime?
@@ -138,14 +139,8 @@ model verificationtoken {
   token      String   @db.VarChar(191)
   expires    DateTime
 
-  @@unique([identifier, expires], map: "verificationtoken_identifier_expires_key")
+  @@unique([identifier, expires])
 }
-
-enum user_role {
-  USER
-  ADMIN
-}
-
 
 model fileasset {
   id        String   @id @default(cuid())
@@ -153,7 +148,12 @@ model fileasset {
   mimeType  String
   size      Int
   data      Bytes
-  category  String   // instrumen, barang, alat, etc.
+  category  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum user_role {
+  USER
+  ADMIN
 }

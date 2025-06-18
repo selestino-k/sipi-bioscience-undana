@@ -89,7 +89,7 @@ export default async function RentalsPage() {
             data={rentals}
             PDFDocument={RentalPDF}
             filename="daftar-peminjaman"
-            label="Download Daftar Peminjaman"
+            label="Unduh Daftar Peminjaman"
           />
         </div>
           <DataTable columns={columns} data={transformedRentals} />

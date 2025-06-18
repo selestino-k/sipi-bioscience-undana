@@ -8,6 +8,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { AuthLoading } from "./auth-loading";
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +55,11 @@ export function LoginForm() {
       setIsLoading(false);
     }
   }
+
+  if (isLoading) {
+    return <AuthLoading />
+  }
+
 
   return (
     <>

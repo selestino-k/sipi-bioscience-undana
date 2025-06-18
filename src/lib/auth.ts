@@ -4,7 +4,6 @@ import db from "@/lib/db/db";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from 'next-auth/providers/google';
-import EmailProvider from "next-auth/providers/nodemailer";
 import { schema } from "@/lib/schema";
 
 const adapter = CustomPrismaAdapter(db);
@@ -55,11 +54,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return user;
       },
     }),
-    // Only include EmailProvider if you've configured email settings
-    ...(process.env.EMAIL_SERVER ? [EmailProvider({
-      server: process.env.EMAIL_SERVER,
-      from: process.env.EMAIL_FROM || "noreply@example.com",
-    })] : []),
   ],
   callbacks: {
     async jwt({ token, user }) {

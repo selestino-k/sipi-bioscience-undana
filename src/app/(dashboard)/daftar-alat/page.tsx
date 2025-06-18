@@ -5,6 +5,8 @@ import { alat } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+import { Suspense } from "react";
+import { CircleLoader } from "@/components/ui/circle-loader";
 
 export const metadata: Metadata = {
     title: "Daftar Alat",
@@ -24,9 +26,14 @@ async function getData(): Promise<alat[]> {
         }
     );
 }
+async function LoadingAlat() {
+    // Simulate a loading state
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const data = await getData();
+    return <DataTable columns={columns} data={data} />;
+}
 
 export default async function DaftarAlat() {
-    const data = await getData()
     const session = await auth();
     if (!session) redirect ('/sign-in');
 
@@ -38,7 +45,15 @@ export default async function DaftarAlat() {
                     <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight">
                         Daftar Alat Laboratorium
                     </h2>   
-                    <DataTable columns={columns} data={data} />
+                    <Suspense 
+                        fallback={
+                            <div className="flex justify-center items-center h-dvh">
+                                <CircleLoader size="xl"/>
+                            </div>
+                        }
+                    >
+                        <LoadingAlat />
+                    </Suspense>
                 </div>
             </main>
             

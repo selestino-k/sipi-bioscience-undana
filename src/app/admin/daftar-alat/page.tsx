@@ -48,7 +48,7 @@ export default async function DaftarAlat() {
                         data={alatData}
                         PDFDocument={AlatPDF}
                         filename="daftar-alat"
-                        label="Download Daftar Alat"
+                        label="Unduh Daftar Alat"
                     />
                 </div>
                     <DataTable columns={columns} data={alatData} />

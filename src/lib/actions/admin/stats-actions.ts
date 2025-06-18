@@ -2,6 +2,7 @@ import prisma  from "@/lib/prisma";
 
 export async function getStats() {
   const instrumenCount = await prisma.instrumen.count();
+  const bahanCount = await prisma.bahan.count();
   const alatCount = await prisma.alat.count();
   const barangCount = await prisma.barang.count();
   const userCount = await prisma.user.count();
@@ -34,6 +35,7 @@ export async function getStats() {
 
   return {
     instrumenCount,
+    bahanCount,
     rentCount,
     alatCount,
     barangCount,

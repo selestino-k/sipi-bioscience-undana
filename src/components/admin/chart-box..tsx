@@ -26,6 +26,7 @@ const chartConfig = {
 
 interface ChartBoxProps {
     instrumenCount: number;
+    bahanCount: number;
     rentCount: number;
     barangCount: number;
     alatCount: number;
@@ -51,7 +52,7 @@ function aggregateDataByDate(data: Array<{ date: string; rents: number }>) {
   }))
 }
 
-export function ChartBox({ instrumenCount, rentCount, barangCount, alatCount, userCount, chartData }: ChartBoxProps) {
+export function ChartBox({ instrumenCount, bahanCount, rentCount, barangCount, alatCount, userCount, chartData }: ChartBoxProps) {
   // Aggregate the data before rendering
   const aggregatedData = React.useMemo(
     () => aggregateDataByDate(chartData),
@@ -82,6 +83,14 @@ export function ChartBox({ instrumenCount, rentCount, barangCount, alatCount, us
             </span>
             <span className="text-lg font-bold leading-none sm:text-3xl">
               {instrumenCount}
+            </span>
+          </div>
+          <div className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
+            <span className="text-xs text-muted-foreground">
+              Total Bahan Kimia
+            </span>
+            <span className="text-lg font-bold leading-none sm:text-3xl">
+              {bahanCount}
             </span>
           </div>
           <div className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left sm:border-l sm:border-t-0 sm:px-8 sm:py-6">

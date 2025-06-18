@@ -51,6 +51,14 @@ export const columns: ColumnDef<Alat>[] = [
   {
     accessorKey: "updatedAt",
     header: "Tanggal Pembaruan",
+    cell: ({ row }) => {
+      const date = row.getValue("updatedAt") as Date
+      return new Date(date).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      })
+    }
   },
   {
     accessorKey: "status",

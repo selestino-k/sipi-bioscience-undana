@@ -53,6 +53,7 @@ interface RentInstrumenDialogProps {
   user: {
     id: string;
     email?: string | null;
+    name?: string | null;
   } | null;
 }
 
@@ -158,7 +159,6 @@ export function RentInstrumenDialog({
         </div>
 
         {/* Divider */}
-        <div className="border-t my-4"></div>
 
         {!user ? (
           <div className="text-center py-4">
@@ -170,9 +170,8 @@ export function RentInstrumenDialog({
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="bg-muted/50 p-4 rounded-lg mb-4">
-                <h3 className="font-medium mb-2">Meminjam sebagai:</h3>
-                <p>{user.email}</p>
+              <div className="bg-muted/50 p-2 rounded-lg">
+                <h3 className="font-medium mb-2">Meminjam sebagai: {user.name}({user.email})</h3>
               </div>
               
               <FormField

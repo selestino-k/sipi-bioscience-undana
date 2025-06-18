@@ -1,9 +1,8 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Pencil, Trash2, Eye } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +33,8 @@ export type Bahan = {
   bahan_id: number
   nama_bahan: string
   tipe_bahan: string
+  rumus_bahan: string
+  jumlah_bahan: string
   updatedAt: Date;
   status: string;
 }
@@ -48,12 +49,28 @@ export const columns: ColumnDef<Bahan>[] = [
     header: "Nama",
   },
   {
+    accessorKey: "rumus_bahan",
+    header: "Rumus Kimia",
+  },
+  {
     accessorKey: "tipe_bahan",
-    header: "Tipe",
+    header: "Tipe Bahan",
+  },
+  {
+    accessorKey: "jumlah_bahan",
+    header: "Jumlah Bahan",
   },
   {
     accessorKey: "updatedAt",
     header: "Tanggal Pembaruan",
+    cell: ({ row }) => {
+      const date = row.getValue("updatedAt") as Date
+      return new Date(date).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      })
+    }
   },
   {
     accessorKey: "status",
@@ -88,7 +105,6 @@ export const columns: ColumnDef<Bahan>[] = [
             setIsDeleting(true)
             await deleteBahan(bahan.bahan_id)
             toast.success("Bahan kimia berhasil dihapus")
-            // Use router.refresh() instead of window.location.reload()
             router.refresh()
           } catch (error) {
             console.error("Failed to delete material:", error)
@@ -110,12 +126,6 @@ export const columns: ColumnDef<Bahan>[] = [
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link href={`/admin/daftar-instrumen/${bahan.bahan_id}/detail`}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Detail
-                  </Link>
-                </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => setIsEditDialogOpen(true)}
                 >
@@ -139,7 +149,7 @@ export const columns: ColumnDef<Bahan>[] = [
                 <AlertDialogHeader>
                   <AlertDialogTitle>Apakah Anda yakin?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Tindakan ini akan menghapus bahan kimia &quot;{bahan.nama_bahan}&quot; secara permanen dan tidak dapat dibatalkan.
+                    Tindakan ini akan menghapus bahan kimia &quot;{bahan.nama_bahan} ({bahan.rumus_bahan})&quot; secara permanen dan tidak dapat dibatalkan.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

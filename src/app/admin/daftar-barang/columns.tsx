@@ -3,9 +3,8 @@
 import { deleteBarang } from "@/lib/actions/admin/barang-actions"
 import { ColumnDef } from "@tanstack/react-table"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Pencil, Trash2, Eye } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -99,12 +98,6 @@ export const columns: ColumnDef<Barang>[] = [
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link href={`/admin/daftar-instrumen/${barang.barang_id}/detail`}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    Detail
-                  </Link>
-                </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => setIsEditDialogOpen(true)}
                 >

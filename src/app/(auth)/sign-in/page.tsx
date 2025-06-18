@@ -4,9 +4,10 @@ import { redirect } from "next/navigation";
 import { GoogleSignIn } from "@/components/google-signin";
 import { LoginForm } from "@/components/auth/login-form";
 import { Suspense } from "react";
-import { CircleLoader } from "@/components/ui/circle-loader";
 import Link from "next/link";
 import Image from "next/image";
+import { AuthLoading } from "@/components/auth/auth-loading";
+
 // Extend Next-Auth types
 declare module "next-auth" {
   interface User {
@@ -38,6 +39,7 @@ export default async function SignInPage() {
   
   return (
     <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]">
+      <Suspense fallback={<AuthLoading />}>
       <main className="w-full max-w-md mx-auto space-y-6 row-start-2 p-8 rounded-xl shadow-lg">
         <div className="space-y-2 text-center">
           <div className="pb-6 flex items-center justify-center md:justify-start space-x-6">
@@ -90,14 +92,9 @@ export default async function SignInPage() {
             </span>
           </div>
         </div>
-        <Suspense fallback={
-          <div className="flex justify-center items-center h-96">
-            <CircleLoader className="h-12 w-12" />
-          </div>
-          }>
          <LoginForm />
-        </Suspense>
       </main>
+      </Suspense>
     </div>
   );
 }

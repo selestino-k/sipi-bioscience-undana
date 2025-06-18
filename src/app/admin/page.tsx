@@ -39,6 +39,7 @@ const Page = async () => {
                 <ChartBox 
                     rentCount={stats.rentCount}
                     instrumenCount={stats.instrumenCount}
+                    bahanCount={stats.bahanCount}
                     barangCount={stats.barangCount}
                     alatCount={stats.alatCount}
                     userCount={stats.userCount}
