@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon } from "lucide-react"
-import { format } from "date-fns"
 
 import {
   Dialog,
@@ -206,7 +205,11 @@ export function RentInstrumenDialog({
                               className="w-full pl-3 text-left font-normal"
                             >
                               {field.value ? (
-                                format(field.value, "PPP")
+                                field.value.toLocaleDateString("id-ID", {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                })
                               ) : (
                                 <span>Pilih Tanggal</span>
                               )}
@@ -245,7 +248,11 @@ export function RentInstrumenDialog({
                               className="w-full pl-3 text-left font-normal"
                             >
                               {field.value ? (
-                                format(field.value, "PPP")
+                                field.value.toLocaleDateString("id-ID", {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                })
                               ) : (
                                 <span>Pilih Tanggal</span>
                               )}

@@ -28,7 +28,7 @@ async function getData(): Promise<bahan[]> {
 }
 async function LoadingBahan() {
     // Simulate a loading state
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const data = await getData();
     return <DataTable columns={columns} data={data} />;
 }

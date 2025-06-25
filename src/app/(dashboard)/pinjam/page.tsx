@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 // Add this loading component
 async function LoadingCatalog() {
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  await new Promise((resolve) => setTimeout(resolve, 500));
   return <KatalogPage />;
 }
 
