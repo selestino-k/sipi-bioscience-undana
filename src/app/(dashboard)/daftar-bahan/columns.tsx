@@ -6,6 +6,8 @@ import { ColumnDef } from "@tanstack/react-table"
 export type Bahan = {
   bahan_id: number
   nama_bahan: string
+  rumus_bahan: string
+  jumlah_bahan: string
   tipe_bahan: string
   updatedAt: Date;
   status: string;
@@ -21,12 +23,28 @@ export const columns: ColumnDef<Bahan>[] = [
     header: "Nama",
   },
   {
+    accessorKey: "rumus_bahan",
+    header: "Rumus Kimia",
+  },
+  {
     accessorKey: "tipe_bahan",
-    header: "Tipe",
+    header: "Tipe Bahan",
+  },
+  {
+    accessorKey: "jumlah_bahan",
+    header: "Jumlah Bahan",
   },
   {
     accessorKey: "updatedAt",
-    header: "Tanggal",
+    header: "Tanggal Pembaruan",
+    cell: ({ row }) => {
+      const date = row.getValue("updatedAt") as Date
+      return new Date(date).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      })
+    }
   },
   {
     accessorKey: "status",

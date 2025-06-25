@@ -2,6 +2,7 @@
 
 import db from "@/lib/db/db";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { z } from "zod";
 import { executeAction } from "./executeAction";
 
@@ -38,10 +39,12 @@ async function _createUserWithHashedPassword(userData: z.infer<typeof createUser
   // Create the user with the hashed password
   const user = await db.user.create({
     data: {
+        id: crypto.randomUUID(), // Generate a unique ID for the user
         email: userData.email,
         password: hashedPassword,
         name: userData.name || userData.email.split('@')[0], // Use part of email as name if not provided
         role: "USER", // Sign Up always creates a USER role
+        updatedAt: new Date(), // Set the updatedAt field to the current date
     },
   });
   

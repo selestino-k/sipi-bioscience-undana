@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { DropdownMenu } from "@/components/ui/dropdown-menu" 
-import { NavUser } from "../sidebar-user"
+import { NavUser } from "./sidebar-user"
 import { auth } from "@/lib/auth"
 
 const items = [

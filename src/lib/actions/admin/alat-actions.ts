@@ -71,7 +71,8 @@ export async function createAlat(data: {
       data: {
         nama_alat: data.nama_alat,
         jumlah_alat: data.jumlah_alat, // Changed field name to match Prisma schema
-        status: data.status
+        status: data.status,
+        updatedAt: new Date(), // Set the updatedAt field to the current date
       }
     });
 

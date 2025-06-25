@@ -1,15 +1,23 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
+// Add detailed logging for connection issues
 const prismaClientSingleton = () => {
-  return new PrismaClient();
-};
+  return new PrismaClient({
+    log: ['query', 'info', 'warn', 'error'],
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL,
+      },
+    },
+  })
+}
 
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
-} & typeof global;
+// PrismaClient is attached to the `global` object in development to prevent
+// exhausting your database connection limit.
+const globalForPrisma = globalThis as unknown as { prisma: ReturnType<typeof prismaClientSingleton> }
 
-const db = globalThis.prismaGlobal ?? prismaClientSingleton();
+const prisma = globalForPrisma.prisma ?? prismaClientSingleton()
 
-export default db;
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
-if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = db;
+export default prisma

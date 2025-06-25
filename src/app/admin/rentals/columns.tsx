@@ -22,27 +22,28 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { DialogDescription } from "@radix-ui/react-dialog"
 
 // Define the type for the rental data
 type Rental = {
   id: string
   purpose: string
-  start_date: Date | string
-  end_date: Date | string
-  image_url?: string
-  // Optional image_url field for the image preview
+  start_date?: string | Date | null
+  end_date?: string | Date | null
+  image_url?: string | null // Optional image_url field for the image preview
   status: string
-  createdAt: Date | string
-  updatedAt: Date | string
+  createdAt: Date | string | null
+  updatedAt: Date | string | null
   instrument_id?: number
-  instrument_name?: string  // Add flattened instrument fields
-  instrument_merk?: string
-  user_name?: string        // Add flattened user fields
-  user_email?: string
+  instrument_name?: string  | null  // Add flattened instrument fields
+  instrument_merk?: string | null
+  instrument_tipe?: string | null
+  user_name?: string| null    // Add flattened user fields
+  user_email?: string | null
 }
 
 // Add this component for image preview
-function ImagePreview({ imageUrl, instrumentName }: { imageUrl: string, instrumentName: string }) {
+function ImagePreview({ imageUrl, instrumentName, instrumentMerk, instrumenTipe }: { imageUrl: string, instrumentName: string, instrumentMerk: string, instrumenTipe: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!imageUrl) return null;
@@ -66,6 +67,7 @@ function ImagePreview({ imageUrl, instrumentName }: { imageUrl: string, instrume
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogTitle>{instrumentName}</DialogTitle>
+          <DialogDescription>{instrumentMerk} {instrumenTipe}</DialogDescription>
           <div className="relative h-80 w-full">
             <Image 
               src={imageUrl || "placeholder.svg"} 
@@ -94,9 +96,11 @@ export const columns: ColumnDef<Rental>[] = [
     cell: ({ row }) => {
       const image_url = row.getValue("image_url") as string;
       const instrument_name = row.getValue("instrument_name") as string;
+      const instrumen_tipe = row.original.instrument_tipe as string;
+      const instrumen_merk = row.original.instrument_merk as string;
   
       return image_url ? (
-        <ImagePreview imageUrl={image_url} instrumentName={instrument_name} />
+        <ImagePreview imageUrl={image_url} instrumentName={instrument_name} instrumentMerk={instrumen_merk} instrumenTipe={instrumen_tipe}/>
       ) : (
         <div className="h-12 w-12 flex items-center justify-center bg-gray-100 rounded-md">
           <span className="text-gray-400 text-xs">No Image</span>
@@ -108,13 +112,14 @@ export const columns: ColumnDef<Rental>[] = [
     accessorKey: "instrument_name",
     header: "Instrumen",
     cell: ({ row }) => {
-      const instrumentName = row.getValue("instrument_name");
+      const instrumentName = row.getValue("instrument_name") as string;
       const instrumentMerk = row.original.instrument_merk;
+      const instrumentTipe = row.original.instrument_tipe;
       
       return (
         <div>
-          <div className="font-medium">{instrumentName || "N/A"}</div>
-          <div className="text-sm text-gray-500">{instrumentMerk || ""}</div>
+          <div className="font-medium">{String(instrumentName || "N/A")}</div>
+          <div className="text-sm text-gray-500">{instrumentMerk || ""}  {instrumentTipe || ""}</div>
         </div>
       );
     }
@@ -123,7 +128,7 @@ export const columns: ColumnDef<Rental>[] = [
     accessorKey: "user_email",
     header: "Peminjam",
     cell: ({ row }) => {
-      const userEmail = row.getValue("user_email");
+      const userEmail = row.getValue("user_email") as string;
       const userName = row.original.user_name;
       
       return (

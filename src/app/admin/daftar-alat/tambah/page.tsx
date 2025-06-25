@@ -25,7 +25,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ImageUpload } from "@/components/admin/image-upload";
 
 // Form validation schema
 const alatFormSchema = z.object({
@@ -71,8 +70,8 @@ export default function TambahAlatPage() {
   }
   
   return (
-    <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex w-full flex-col gap-3 row-start-2 items-center sm:items-start">
+    <div className="grid w-full grid-rows-1 items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex w-full flex-col gap-3 row-start-1 items-center sm:items-start">
         <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight mb-6">
           Tambah Alat Laboratorium Baru
         </h2>
@@ -109,24 +108,6 @@ export default function TambahAlatPage() {
                     </FormItem>
                   )}
                 />   
-               <FormField
-                control={form.control}
-                name="image_url"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gambar Alat</FormLabel>
-                    <FormControl>
-                      <ImageUpload
-                        value={field.value || ''}
-                        onChange={field.onChange}
-                        resourceType="alat"
-                        description="Upload gambar alat kimia untuk ditampilkan di halaman katalog"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
                  <FormField
                   control={form.control}
                   name="status"

@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon } from "lucide-react"
-import { format } from "date-fns"
 
 import {
   Dialog,
@@ -53,6 +52,7 @@ interface RentInstrumenDialogProps {
   user: {
     id: string;
     email?: string | null;
+    name?: string | null;
   } | null;
 }
 
@@ -80,7 +80,7 @@ export function RentInstrumenDialog({
     setIsSubmitting(true)
     
     if (!user) {
-      toast.error("You must be logged in to rent instruments")
+      toast.error("Anda harus masuk untuk mengajukan pinjaman instrumen")
       setIsSubmitting(false)
       return
     }
@@ -94,7 +94,7 @@ export function RentInstrumenDialog({
         user_id: user.id,
         image_url: instrumen.image_url || "", // Ensure image_url is passed correctly
       })
-      toast.success("Sukses menggunakan instrumen")
+      toast.success("Sukses mengajukan pinjaman instrumen")
       form.reset()
       onOpenChange(false)
       // Use router.refresh() to refresh the server components
@@ -158,7 +158,6 @@ export function RentInstrumenDialog({
         </div>
 
         {/* Divider */}
-        <div className="border-t my-4"></div>
 
         {!user ? (
           <div className="text-center py-4">
@@ -170,9 +169,8 @@ export function RentInstrumenDialog({
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="bg-muted/50 p-4 rounded-lg mb-4">
-                <h3 className="font-medium mb-2">Meminjam sebagai:</h3>
-                <p>{user.email}</p>
+              <div className="bg-muted/50 p-2 rounded-lg">
+                <h3 className="font-medium mb-2">Meminjam sebagai: {user.name}({user.email})</h3>
               </div>
               
               <FormField
@@ -207,7 +205,11 @@ export function RentInstrumenDialog({
                               className="w-full pl-3 text-left font-normal"
                             >
                               {field.value ? (
-                                format(field.value, "PPP")
+                                field.value.toLocaleDateString("id-ID", {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                })
                               ) : (
                                 <span>Pilih Tanggal</span>
                               )}
@@ -246,7 +248,11 @@ export function RentInstrumenDialog({
                               className="w-full pl-3 text-left font-normal"
                             >
                               {field.value ? (
-                                format(field.value, "PPP")
+                                field.value.toLocaleDateString("id-ID", {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                })
                               ) : (
                                 <span>Pilih Tanggal</span>
                               )}

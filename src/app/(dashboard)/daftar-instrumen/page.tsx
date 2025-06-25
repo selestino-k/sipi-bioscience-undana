@@ -1,24 +1,42 @@
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
 import prisma from "@/lib/prisma";
-import { Instrumen } from "@prisma/client";
+import { instrumen } from "@prisma/client";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { Metadata } from "next";
+import { Suspense } from "react";
+import { CircleLoader } from "@/components/ui/circle-loader";
 
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
+export const revalidate = 0; // Disable static generation for this page
+
+export const metadata: Metadata = {
+    title: "Daftar Instrumen",
+    description: "Daftar semua instrumen yang tersedia.",
+};
 
 
-async function getData(): Promise<Instrumen[]> {
+async function getData(): Promise<instrumen[]> {
     // Fetch data from your API here.
-    return await prisma.instrumen.findMany()
+    return await prisma.instrumen.findMany({
+            orderBy: {
+                instrumen_id: 'asc',
+            },
+        });
+}
+async function LoadingInstrumen() {
+    // Simulate a loading state
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const data = await getData();
+    return <DataTable columns={columns} data={data} />;
 }
 
-export default async function DaftarInstrumen(
-    {
-    }: {
-        searchParams: { refresh?: string }
-    }
-) {
-    const data = await getData()
+export default async function DaftarInstrumen() {
+    // The searchParams will force a refetch when it changes
+    const session = await auth()
+    if (!session) redirect('/sign-in')
   
     return (
         <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -27,7 +45,15 @@ export default async function DaftarInstrumen(
                     <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight">
                     Daftar Instrumen
                     </h2>  
-                    <DataTable columns={columns} data={data} />
+                    <Suspense 
+                        fallback={
+                            <div className="flex justify-center items-center h-dvh">
+                                <CircleLoader size="xl"/>
+                            </div>
+                        }
+                    >
+                        <LoadingInstrumen />
+                    </Suspense>
                 </div>
             </main>
             <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">

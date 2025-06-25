@@ -76,6 +76,7 @@ export async function createBarang(data: {
         merk_barang: data.merk_barang,
         tipe_barang: data.tipe_barang,
         jumlah_barang: data.jumlah_barang,
+        updatedAt: new Date(), // Set the updatedAt field to the current date
       }
     });
 

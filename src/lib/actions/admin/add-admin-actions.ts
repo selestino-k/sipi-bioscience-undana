@@ -3,8 +3,10 @@
 import db from "@/lib/db/db";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 export async function createAdmin(data: {
+  id: string;
   name: string;
   email: string;
   password: string;
@@ -18,10 +20,12 @@ export async function createAdmin(data: {
     // Create a new admin using Prisma with hashed password
     const newAdmin = await db.user.create({
       data: {
+        id: crypto.randomUUID(), // Generate a unique ID for the admin
         name: data.name,
         email: data.email,
         password: hashedPassword, // Store the hashed password
-        role: "ADMIN"
+        role: "ADMIN",
+        updatedAt: new Date(), // Set the updatedAt field to the current date
       }
     });
 

@@ -13,7 +13,7 @@ export async function deleteInstrumen(instrumenId: number) {
     const instrumen = await db.instrumen.findUnique({
       where: { instrumen_id: instrumenId },
       include: {
-        rentals: {
+        rental: {
           where: {
             status: {
               in: ["PENDING", "APPROVED", "ACTIVE"]
@@ -28,7 +28,7 @@ export async function deleteInstrumen(instrumenId: number) {
     }
 
     // Don't allow deletion if instrument has active rentals
-    if (instrumen.rentals.length > 0) {
+    if (instrumen.rental.length > 0) {
       throw new Error("Cannot delete instrument with active rentals");
     }
 
@@ -91,6 +91,18 @@ export async function createInstrumen(data: {
 }) {
 
   try {
+    // Check if a similar instrument already exists
+    const existingInstrument = await db.instrumen.findFirst({
+      where: {
+        nama_instrumen: data.nama_instrumen,
+        merk_instrumen: data.merk_instrumen,
+        tipe_instrumen: data.tipe_instrumen
+      }
+    });
+
+    if (existingInstrument) {
+      throw new Error("A similar instrument already exists in the database");
+    }
     // Create a new instrument using Prisma
     const newInstrumen = await db.instrumen.create({
       data: {
@@ -99,7 +111,9 @@ export async function createInstrumen(data: {
         tipe_instrumen: data.tipe_instrumen,
         layanan: data.layanan,
         status: data.status,
-        image_url: data.image_url || null  // Store the processed image URL
+        image_url: data.image_url || null,  // Store the processed image URL
+        updatedAt: new Date(), // Set the updatedAt field to the current date
+
       }
     });
 

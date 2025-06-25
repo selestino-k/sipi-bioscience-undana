@@ -30,7 +30,8 @@ export async function rentInstrumen(data: {
         purpose: data.purpose,
         start_date: data.start_date,
         end_date: data.end_date,
-        status: "PENDING" // Set as PENDING for admin approval
+        status: "PENDING", // Set as PENDING for admin approval
+        updatedAt: new Date(), // Set the updatedAt field to the current date
 
 
       }

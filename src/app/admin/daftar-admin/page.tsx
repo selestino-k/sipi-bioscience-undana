@@ -1,17 +1,24 @@
 import { auth } from "@/lib/auth";
 import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { User } from "@prisma/client";
+import { user } from "@prisma/client";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Daftar Pengguna",
+    description: "Daftar semua admin dan pengguna yang tersedia.",
+};
+
 
 const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic'; // This ensures the page is not statically cached
 
-async function getData(): Promise<User[]> {
+async function getData(): Promise<user[]> {
     // Fetch data from your API here with no caching
     return await prisma.user.findMany();
 }
@@ -22,6 +29,8 @@ export default async function DaftarAdmin() {
   if (!session) redirect("/sign-in");
   
   // Check if user is admin
+  if (!session.user) redirect("/sign-in");
+  
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: { role: true },
@@ -32,8 +41,8 @@ export default async function DaftarAdmin() {
   }
   
   return (
-    <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-            <main className="flex w-full flex-col gap-3 row-start-2 items-center sm:items-start">
+    <div className="grid w-full grid-rows-1 items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+            <main className="flex w-full flex-col gap-3 row-start-1 items-center sm:items-start">
                 <div className="container mx-auto py-10">
                 <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight mb-6 sm:mb-10">
                     Daftar User

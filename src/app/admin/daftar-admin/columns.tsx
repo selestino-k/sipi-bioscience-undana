@@ -4,13 +4,13 @@ import { ColumnDef } from "@tanstack/react-table"
 
 // This type is used to define the shape of our data.
 export type User = {
-    id: number
-    email: string
+    id: string
+    email: string | null
     role: string 
     createdAt: Date
 }
 
-export const columns: ColumnDef<Instrumen>[] = [
+export const columns: ColumnDef<User>[] = [
  {
     accessorKey: "id",
     header: "ID",

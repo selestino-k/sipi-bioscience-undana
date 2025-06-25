@@ -1,0 +1,8 @@
+# Block all crawlers for /pengaturan-akun
+User-agent: *
+Disallow: /pengaturan-akun
+
+# Block all crawlers for /daftar-admin
+User-agent: *
+Disallow: /daftar-admin
+

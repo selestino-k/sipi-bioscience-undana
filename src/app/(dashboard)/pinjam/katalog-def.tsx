@@ -1,9 +1,23 @@
 import { Suspense } from "react"
 import ProductCatalog from "./katalog-lab"
 import db from "@/lib/db/db"
+import { CircleLoader } from "@/components/ui/circle-loader"
+
+// Define the proper interface that matches your data
+interface Katalog {
+  instrumen_id: number;
+  nama_instrumen: string;
+  merk_instrumen: string;
+  tipe_instrumen: string;
+  layanan: string;
+  status: string;
+  image_url: string; // Now non-nullable
+  image: string;
+}
 
 // Fetch function
-export async function getCatalogue() {
+export async function getCatalogue(): Promise<Katalog[]> {
+  // Fetch instruments data from Prisma DB
   try {
     // Fetch instruments data from Prisma DB
     const instruments = await db.instrumen.findMany({
@@ -16,15 +30,14 @@ export async function getCatalogue() {
         status: true,
         image_url: true,
       },
-      // Optional: Add any filters you need
-      // where: { ... }
     });
     
     // Map to the expected format
     return instruments.map(instrumen => ({
       ...instrumen,
       // Handle missing image field
-      image:  "/placeholder.svg"
+      image_url: instrumen.image_url || "/images/placeholder.svg", // Default to empty string if null
+      image: instrumen.image_url || "/images/placeholder.svg", // Default to empty string if null
     }));
   } catch (error) {
     console.error("Failed to fetch instruments:", error);
@@ -37,7 +50,11 @@ export default async function KatalogPage() {
   const catalogueData = await getCatalogue();
   
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={
+      <div className="flex justify-center items-center h-96">
+        <CircleLoader className="h-12 w-12" />
+      </div>
+    }>
       <ProductCatalog initialData={catalogueData} />
     </Suspense>
   );

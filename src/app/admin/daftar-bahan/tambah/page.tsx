@@ -29,7 +29,9 @@ import {
 // Form validation schema
 const bahanFormSchema = z.object({
   nama_bahan: z.string().min(1, { message: "Nama bahan kimia wajib diisi" }),
+  rumus_bahan: z.string().min(1, { message: "Tipe bahan kimia wajib diisi" }),
   tipe_bahan: z.string().min(1, { message: "Tipe bahan kimia wajib diisi" }),
+  jumlah_bahan: z.string().min(1, { message: "Jumlah bahan kimia tidak boleh kosong" }),
   status: z.string().min(1, { message: "Status wajib diisi" }),
 });
 
@@ -44,7 +46,9 @@ export default function TambahBahanPage() {
     resolver: zodResolver(bahanFormSchema),
     defaultValues: {
       nama_bahan: "",
+      rumus_bahan: "",
       tipe_bahan: "",
+      jumlah_bahan: "",
       status: "TERSEDIA",
     },
   });
@@ -54,9 +58,8 @@ export default function TambahBahanPage() {
     
     try {
       await createBahan(values);
-      toast.success("Instrumen berhasil ditambahkan");
+      toast.success("Bahan Kimia berhasil ditambahkan");
       
-      // Navigate back to the instrument list
       router.push("/admin/daftar-bahan");
       router.refresh();
     } catch (error) {
@@ -68,8 +71,8 @@ export default function TambahBahanPage() {
   }
   
   return (
-    <div className="grid w-full grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex w-full flex-col gap-3 row-start-2 items-center sm:items-start">
+    <div className="grid w-full grid-rows-1 items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex w-full flex-col gap-3 row-start-1 items-center sm:items-start">
         <h2 className="text-2xl/7 font-bold sm:truncate sm:text-5xl sm:tracking-tight mb-6">
           Tambah Bahan Kimia Baru
         </h2>
@@ -95,12 +98,47 @@ export default function TambahBahanPage() {
                 />
                 <FormField
                   control={form.control}
+                  name="rumus_bahan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Rumus Kimia</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Rumus Kimia Bahan" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="tipe_bahan"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tipe</FormLabel>
+                      <FormLabel>Tipe Bahan Kimia</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Pilih Tipe Bahan Kimia" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Padat">Padat</SelectItem>
+                          <SelectItem value="Cair">Cair</SelectItem>
+                          <SelectItem value="Gas">Gas</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="jumlah_bahan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Jumlah Bahan Kimia</FormLabel>
                       <FormControl>
-                        <Input placeholder="Tipe Bahan" {...field} />
+                        <Input placeholder="Jumlah Bahan Kimia dalam gr atau ml" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

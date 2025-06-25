@@ -83,16 +83,29 @@ export function EditBarangDialog({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
-          <DialogTitle>Edit bahan</DialogTitle>
+          <DialogTitle>Edit barang</DialogTitle>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Form fields remain the same */}
             <FormField
               control={form.control}
+              name="merk_barang"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Merk barang</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Merk barang" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="nama_barang"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nama bahan</FormLabel>
+                  <FormLabel>Nama barang</FormLabel>
                   <FormControl>
                     <Input placeholder="Nama barang" {...field} />
                   </FormControl>
@@ -105,9 +118,9 @@ export function EditBarangDialog({
               name="tipe_barang"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tipe</FormLabel>
+                  <FormLabel>Tipe barang</FormLabel>
                   <FormControl>
-                    <Input placeholder="Tipe bahan" {...field} />
+                    <Input placeholder="Tipe barang" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -118,7 +131,7 @@ export function EditBarangDialog({
               name="jumlah_barang"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Jumlah</FormLabel>
+                  <FormLabel>Jumlah barang</FormLabel>
                   <FormControl>
                     <Input placeholder="Jumlah barang" {...field} />
                   </FormControl>
