@@ -54,14 +54,16 @@ model authenticator {
 }
 
 model bahan {
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime
-  nama_bahan    String    @db.VarChar(255)
-  status        String    @default("PENDING") @db.VarChar(191)
-  bahan_id      Int       @id @default(autoincrement())
-  tipe_bahan    String    @db.VarChar(255)
-  jumlah_bahan  String    @db.VarChar(255)
-  rumus_bahan   String    @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+  nama_bahan   String   @db.VarChar(255)
+  status       String   @default("PENDING") @db.VarChar(191)
+  bahan_id     Int      @id @default(autoincrement())
+  tipe_bahan   String   @db.VarChar(255)
+  volume_bahan String?  @db.VarChar(255)
+  rumus_bahan  String   @db.VarChar(255)
+  merek_bahan  String?  @db.VarChar
+  jumlah_bahan String?  @db.VarChar
 }
 
 model barang {
@@ -151,6 +153,14 @@ model fileasset {
   category  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model ruang {
+  ruang_id   Int       @id @default(autoincrement())
+  nama_ruang String    @unique(map: "ruang_ruang_key") @db.VarChar
+  createdAt  DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime? @db.Timestamp(6)
+  ruang_desc String?
 }
 
 enum user_role {

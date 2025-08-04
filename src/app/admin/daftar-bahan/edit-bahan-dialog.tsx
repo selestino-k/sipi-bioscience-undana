@@ -37,6 +37,7 @@ import {
 const bahanFormSchema = z.object({
   nama_bahan: z.string().min(1, { message: "Nama bahan kimia wajib diisi" }),
   rumus_bahan: z.string().min(1, { message: "Rumus bahan wajib diisi" }),
+  volume_bahan: z.string().min(1, { message: "Volume bahan wajib diisi" }),
   jumlah_bahan: z.string().min(1, { message: "Jumlah bahan wajib diisi" }),
   tipe_bahan: z.string().min(1, { message: "Tipe bahan wajib diisi" }),
   status: z.string().min(1, { message: "Status wajib diisi" }),
@@ -64,6 +65,7 @@ export function EditBahanDialog({
     defaultValues: {
       nama_bahan: bahan.nama_bahan,
       rumus_bahan: bahan.rumus_bahan,
+      volume_bahan: bahan.volume_bahan,
       jumlah_bahan: bahan.jumlah_bahan,
       tipe_bahan: bahan.tipe_bahan,
       status: bahan.status,
@@ -134,11 +136,25 @@ export function EditBahanDialog({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Padat">Padat</SelectItem>
-                          <SelectItem value="Cair">Cair</SelectItem>
+                          <SelectItem value="Solid">Solid</SelectItem>
+                          <SelectItem value="PO">Pelarut Organik (PO) </SelectItem>
+                          <SelectItem value="Asam">Asam</SelectItem>
                           <SelectItem value="Gas">Gas</SelectItem>
                         </SelectContent>
                       </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="volume_bahan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Volume Bahan Kimia</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Volume Bahan Kimia dalam gr atau ml" {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -150,7 +166,7 @@ export function EditBahanDialog({
                     <FormItem>
                       <FormLabel>Jumlah Bahan Kimia</FormLabel>
                       <FormControl>
-                        <Input placeholder="Jumlah Bahan Kimia dalam gr atau ml" {...field} />
+                        <Input placeholder="Jumlah Bahan Kimia" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -172,6 +188,7 @@ export function EditBahanDialog({
                       <SelectItem value="TERSEDIA">TERSEDIA</SelectItem>
                       <SelectItem value="PENDING">PENDING</SelectItem>
                       <SelectItem value="TIDAK TERSEDIA">TIDAK TERSEDIA</SelectItem>
+                    <SelectItem value ="EXPIRED">EXPIRED</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

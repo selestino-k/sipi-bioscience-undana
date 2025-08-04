@@ -23,52 +23,37 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { deleteBahan } from "@/lib/actions/admin/bahan-actions"
-import { EditBahanDialog } from "./edit-bahan-dialog"
+import { deleteRuang } from "@/lib/actions/admin/ruang-actions"
 import { useRouter } from "next/navigation"
+import { EditRuangDialog } from "./edit-ruang-dialog"
 
 
-
-export type Bahan = {
-  bahan_id: number
-  nama_bahan: string
-  merek_bahan: string
-  tipe_bahan: string
-  rumus_bahan: string
-  volume_bahan: string
-  jumlah_bahan: string
-  updatedAt: Date;
-  status: string;
+export type Ruang = {
+  ruang_id: number
+  nama_ruang: string
+  ruang_desc: string | null
+  updatedAt: Date
 }
 
-export const columns: ColumnDef<Bahan>[] = [
- {
-    accessorKey: "bahan_id",
-    header: "ID",
+export const columns: ColumnDef<Ruang>[] = [
+  {
+    id: "no",
+    header: "No",
+    cell: ({ row }) => {
+      return row.index + 1
+    }
   },
   {
-    accessorKey: "nama_bahan",
+    accessorKey: "nama_ruang",
     header: "Nama",
   },
   {
-    accessorKey: "merek_bahan",
-    header: "Merek",
-  },
-  {
-    accessorKey: "rumus_bahan",
-    header: "Rumus Kimia",
-  },
-  {
-    accessorKey: "tipe_bahan",
-    header: "Tipe Bahan",
-  },
-  {
-    accessorKey: "volume_bahan",
-    header: "Volume Bahan",
-  },
-  {
-    accessorKey: "jumlah_bahan",
-    header: "Jumlah Bahan",
+    accessorKey: "ruang_desc",
+    header: "Deskripsi",
+    cell: ({ row }) => {
+      const desc = row.getValue("ruang_desc") as string
+      return desc.length > 50 ? `${desc.slice(0, 50)}...` : desc
+    }
   },
   {
     accessorKey: "updatedAt",
@@ -83,25 +68,10 @@ export const columns: ColumnDef<Bahan>[] = [
     }
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status = row.getValue("status") as string
-      return (
-        <div className={`px-2 py-1 rounded-full text-xs font-medium inline-block
-          ${status === 'TERSEDIA' ? 'bg-green-100 text-green-800' : 
-            status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
-          {status}
-        </div>
-      )
-    }
-  },
-
-  {
-    id: "actions",
+    accessorKey: "action",
     header: "Aksi",
     cell: ({ row }) => {
-      const bahan = row.original
+      const ruang = row.original
       
       // Create a component to use React hooks
       function ActionCell() {
@@ -113,18 +83,19 @@ export const columns: ColumnDef<Bahan>[] = [
         const handleDelete = async () => {
           try {
             setIsDeleting(true)
-            await deleteBahan(bahan.bahan_id)
-            toast.success("Bahan kimia berhasil dihapus")
+            await deleteRuang(ruang.ruang_id)
+            toast.success("Ruang Lab berhasil dihapus")
+            // Use router.refresh() instead of window.location.reload()
             router.refresh()
           } catch (error) {
-            console.error("Failed to delete material:", error)
-            toast.error("Gagal menghapus Bahan Kimia")
+            console.error("Failed to delete room:", error)
+            toast.error("Gagal menghapus Ruang Lab")
           } finally {
             setIsDeleting(false)
             setIsDeleteDialogOpen(false)
           }
         }
-        
+
         return (
           <>
             <DropdownMenu>
@@ -159,7 +130,7 @@ export const columns: ColumnDef<Bahan>[] = [
                 <AlertDialogHeader>
                   <AlertDialogTitle>Apakah Anda yakin?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Tindakan ini akan menghapus bahan kimia &quot;{bahan.nama_bahan} ({bahan.rumus_bahan})&quot; secara permanen dan tidak dapat dibatalkan.
+                    Tindakan ini akan menghapus ruangan laboratorium &quot;{ruang.nama_ruang}&quot; secara permanen dan tidak dapat dibatalkan.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -178,17 +149,21 @@ export const columns: ColumnDef<Bahan>[] = [
               </AlertDialogContent>
             </AlertDialog>
             
-            {/* Edit Dialog */}
-            <EditBahanDialog 
-              bahan={bahan} 
-              isOpen={isEditDialogOpen} 
-              onOpenChange={setIsEditDialogOpen} 
-            />
-          </>
+
+        {/* Edit Dialog can be implemented similarly if needed */}
+          <EditRuangDialog
+            isOpen={isEditDialogOpen}  
+            onOpenChange={setIsEditDialogOpen}
+            ruang={ruang}
+          />
+        </>
+
+        
         )
       }
 
       return <ActionCell />;
     }
   },
+  
 ]

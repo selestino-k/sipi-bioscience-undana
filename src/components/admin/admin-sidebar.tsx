@@ -1,4 +1,4 @@
-import { Calendar, Home, Calculator, FlaskConical, Pipette, Armchair, User } from "lucide-react"
+import { Calendar, Home, Calculator, FlaskConical, Pipette, Armchair, User, DoorOpen } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -44,6 +44,11 @@ const items = [
     title: " Daftar Barang",
     url: "/admin/daftar-barang",
     icon: Armchair,
+  },
+  {
+    title: "Daftar Ruang",
+    url: "/admin/daftar-ruang",
+    icon: DoorOpen,
   },
   {
     title: "Daftar Pengguna",

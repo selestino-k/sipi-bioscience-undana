@@ -29,8 +29,10 @@ import {
 // Form validation schema
 const bahanFormSchema = z.object({
   nama_bahan: z.string().min(1, { message: "Nama bahan kimia wajib diisi" }),
+  merek_bahan: z.string().min(1, { message: "Merek bahan kimia wajib diisi" }),
   rumus_bahan: z.string().min(1, { message: "Tipe bahan kimia wajib diisi" }),
   tipe_bahan: z.string().min(1, { message: "Tipe bahan kimia wajib diisi" }),
+  volume_bahan: z.string().min(1, { message: "Volume bahan kimia wajib diisi" }),
   jumlah_bahan: z.string().min(1, { message: "Jumlah bahan kimia tidak boleh kosong" }),
   status: z.string().min(1, { message: "Status wajib diisi" }),
 });
@@ -46,8 +48,10 @@ export default function TambahBahanPage() {
     resolver: zodResolver(bahanFormSchema),
     defaultValues: {
       nama_bahan: "",
+      merek_bahan: "",
       rumus_bahan: "",
       tipe_bahan: "",
+      volume_bahan: "",
       jumlah_bahan: "",
       status: "TERSEDIA",
     },
@@ -98,6 +102,19 @@ export default function TambahBahanPage() {
                 />
                 <FormField
                   control={form.control}
+                  name="merek_bahan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Merek Bahan Kimia</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Merek Bahan" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="rumus_bahan"
                   render={({ field }) => (
                     <FormItem>
@@ -122,14 +139,28 @@ export default function TambahBahanPage() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Padat">Padat</SelectItem>
-                          <SelectItem value="Cair">Cair</SelectItem>
+                          <SelectItem value="Solid">Solid</SelectItem>
+                          <SelectItem value="PO">Pelarut Organik (PO) </SelectItem>
                           <SelectItem value="Gas">Gas</SelectItem>
+                          <SelectItem value="Asam">Asam</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
                     </FormItem>
                   )}
+                />
+                <FormField
+                  control={form.control}
+                  name="volume_bahan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Volume Bahan Kimia</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Volume Bahan Kimia dalam gr atau ml" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}  
                 />
                 <FormField
                   control={form.control}
@@ -160,6 +191,7 @@ export default function TambahBahanPage() {
                           <SelectItem value="TERSEDIA">TERSEDIA</SelectItem>
                           <SelectItem value="PENDING">PENDING</SelectItem>
                           <SelectItem value="TIDAK TERSEDIA">TIDAK TERSEDIA</SelectItem>
+                          <SelectItem value="EXPIRED">EXPIRED</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

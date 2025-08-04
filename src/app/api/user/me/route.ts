@@ -1,6 +1,22 @@
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { unstable_cache } from 'next/cache';
+
+const getUserRole = unstable_cache(
+  async (email: string) => {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { role: true }
+    });
+    return user;
+  },
+  ['user-role'],
+  {
+    revalidate: 60, // Cache for 60 seconds
+    tags: ['user-role']
+  }
+);
 
 export async function GET() {
   try {
@@ -13,12 +29,14 @@ export async function GET() {
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { role: true }
-    });
+    const user = await getUserRole(session.user.email);
+    
+    // Add cache headers
+    const response = NextResponse.json(user);
+    response.headers.set('Cache-Control', 's-maxage=60, stale-while-revalidate');
+    
+    return response;
 
-    return NextResponse.json(user);
   } catch (error) {
     console.error('Error fetching user:', error);
     return NextResponse.json(

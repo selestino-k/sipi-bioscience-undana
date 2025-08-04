@@ -36,9 +36,11 @@ export async function deleteBahan(bahanId: number) {
 
 export async function updateBahan(bahanId: number, data: {
   nama_bahan?: string;
+  merek_bahan?: string;
   rumus_bahan?: string;
   tipe_bahan?: string;
   jumlah_bahan?: string;
+  volume_bahan?: string;
   status?: string;
 }) {
   try {
@@ -47,8 +49,10 @@ export async function updateBahan(bahanId: number, data: {
       where: { bahan_id: bahanId },
       data: {
         nama_bahan: data.nama_bahan,
+        merek_bahan: data.merek_bahan,
         rumus_bahan: data.rumus_bahan,
         tipe_bahan: data.tipe_bahan,
+        volume_bahan: data.volume_bahan,
         jumlah_bahan: data.jumlah_bahan,
         status: data.status
       }
@@ -66,9 +70,11 @@ export async function updateBahan(bahanId: number, data: {
 
 export async function createBahan(data: {
   nama_bahan: string;
+  merek_bahan: string;
   rumus_bahan: string;
   tipe_bahan: string;
   jumlah_bahan: string;
+  volume_bahan: string
   status: string;
 }) {
   try {
@@ -76,8 +82,10 @@ export async function createBahan(data: {
     const newBahan = await db.bahan.create({
       data: {
         nama_bahan: data.nama_bahan,
+        merek_bahan: data.merek_bahan,
         rumus_bahan: data.rumus_bahan,
         tipe_bahan: data.tipe_bahan,
+        volume_bahan: data.volume_bahan,
         jumlah_bahan: data.jumlah_bahan, 
         status: data.status,
         updatedAt: new Date(), // Set the updatedAt field to the current date
