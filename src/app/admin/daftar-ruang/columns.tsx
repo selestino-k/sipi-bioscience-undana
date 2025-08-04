@@ -32,7 +32,7 @@ export type Ruang = {
   ruang_id: number
   nama_ruang: string
   ruang_desc: string | null
-  updatedAt: Date
+  updatedAt?: Date | null 
 }
 
 export const columns: ColumnDef<Ruang>[] = [

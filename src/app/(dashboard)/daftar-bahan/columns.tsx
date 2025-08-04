@@ -7,7 +7,9 @@ export type Bahan = {
   bahan_id: number
   nama_bahan: string
   rumus_bahan: string
-  jumlah_bahan: string
+  merek_bahan?: string | null
+  jumlah_bahan?: string | null
+  volume_bahan?: string | null
   tipe_bahan: string
   updatedAt: Date;
   status: string;
@@ -15,7 +17,7 @@ export type Bahan = {
 
 export const columns: ColumnDef<Bahan>[] = [
  {
-    accessorKey: "id",
+    accessorKey: "bahan_id",
     header: "ID",
   },
   {
@@ -25,6 +27,10 @@ export const columns: ColumnDef<Bahan>[] = [
   {
     accessorKey: "rumus_bahan",
     header: "Rumus Kimia",
+  },
+  {
+    accessorKey: "merek_bahan",
+    header: "Merek",
   },
   {
     accessorKey: "tipe_bahan",

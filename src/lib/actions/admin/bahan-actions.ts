@@ -70,11 +70,11 @@ export async function updateBahan(bahanId: number, data: {
 
 export async function createBahan(data: {
   nama_bahan: string;
-  merek_bahan: string;
+  merek_bahan?: string | null;
   rumus_bahan: string;
   tipe_bahan: string;
-  jumlah_bahan: string;
-  volume_bahan: string
+  jumlah_bahan?: string | null;
+  volume_bahan?: string | null;
   status: string;
 }) {
   try {
@@ -82,11 +82,11 @@ export async function createBahan(data: {
     const newBahan = await db.bahan.create({
       data: {
         nama_bahan: data.nama_bahan,
-        merek_bahan: data.merek_bahan,
+        merek_bahan: data.merek_bahan || null,
         rumus_bahan: data.rumus_bahan,
         tipe_bahan: data.tipe_bahan,
-        volume_bahan: data.volume_bahan,
-        jumlah_bahan: data.jumlah_bahan, 
+        volume_bahan: data.volume_bahan || null,
+        jumlah_bahan: data.jumlah_bahan || null,
         status: data.status,
         updatedAt: new Date(), // Set the updatedAt field to the current date
       }

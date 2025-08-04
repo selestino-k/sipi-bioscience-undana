@@ -35,12 +35,14 @@ import {
 
 // Form validation schema
 const bahanFormSchema = z.object({
-  nama_bahan: z.string().min(1, { message: "Nama bahan kimia wajib diisi" }),
-  rumus_bahan: z.string().min(1, { message: "Rumus bahan wajib diisi" }),
-  volume_bahan: z.string().min(1, { message: "Volume bahan wajib diisi" }),
-  jumlah_bahan: z.string().min(1, { message: "Jumlah bahan wajib diisi" }),
-  tipe_bahan: z.string().min(1, { message: "Tipe bahan wajib diisi" }),
-  status: z.string().min(1, { message: "Status wajib diisi" }),
+
+  nama_bahan: z.string().min(1, "Nama bahan tidak boleh kosong"),
+  rumus_bahan: z.string().min(1, "Rumus kimia tidak boleh kosong"),
+  merek_bahan: z.string().optional(),
+  tipe_bahan: z.string().min(1, "Tipe bahan tidak boleh kosong"),
+  volume_bahan: z.string().optional(),
+  jumlah_bahan: z.string().optional(),
+  status: z.string().min(1, "Status tidak boleh kosong"),
 });
 
 type EditFormValues = z.infer<typeof bahanFormSchema>;
@@ -65,8 +67,9 @@ export function EditBahanDialog({
     defaultValues: {
       nama_bahan: bahan.nama_bahan,
       rumus_bahan: bahan.rumus_bahan,
-      volume_bahan: bahan.volume_bahan,
-      jumlah_bahan: bahan.jumlah_bahan,
+      volume_bahan: bahan.volume_bahan ?? undefined,
+      jumlah_bahan: bahan.jumlah_bahan ?? undefined,
+      merek_bahan: bahan.merek_bahan ?? undefined,
       tipe_bahan: bahan.tipe_bahan,
       status: bahan.status,
     },
@@ -118,6 +121,19 @@ export function EditBahanDialog({
                       <FormLabel>Rumus Kimia</FormLabel>
                       <FormControl>
                         <Input placeholder="Rumus Kimia Bahan" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="merek_bahan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Merek Bahan</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Merek Bahan" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
